@@ -1,0 +1,22 @@
+{
+  "app_name": "Poker planning",
+  "create": "Create room",
+  "join": "Connect to the room",
+  "kick": "Kick",
+  "confirm_modal": {
+    "title": "Are you sure you want to leave?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+
+  "room": {
+    "toolbar": {
+      "finish": "Finish",
+      "delete": "Delete",
+      "restart": "Restart"
+    },
+    "leave": "Leave",
+    "share": "Share",
+    "history": "History"
+  }
+}
