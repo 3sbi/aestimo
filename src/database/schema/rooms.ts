@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  integer,
   pgEnum,
   pgTable,
   serial,
@@ -12,15 +13,18 @@ import {
 const voteTypeEnum = pgEnum("voteType", ["custom", "fibonacci"]);
 const statusEnum = pgEnum("status", ["started", "finished"]);
 
-export const rooms = pgTable("rooms", {
+export const roomsTable = pgTable("rooms", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  name: varchar({ length: 256 }).notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
   voteType: voteTypeEnum("voteType").notNull(),
-  uuid: uuid("uuid")
+  uuid: uuid()
     .unique()
     .notNull()
     .default(sql`gen_random_uuid()`),
   status: statusEnum("status").notNull().default("started"),
+  votingRound: integer().notNull().default(1),
+  cardsOpened: boolean().notNull(),
   private: boolean("private").notNull(),
 });

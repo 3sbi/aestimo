@@ -1,17 +1,19 @@
 import { integer, json, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
-import { players } from "./players";
-import { rooms } from "./rooms";
+import { roomsTable } from "./Rooms";
+import { usersTable } from "./Users";
 
 export type VotingCard = { color: string; label: string };
 
-export const votes = pgTable("votes", {
+export const votesTable = pgTable("votes", {
   id: serial("id").primaryKey(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  value: json("value").$type<VotingCard>().notNull(),
-  roomId: integer("room_id")
-    .references(() => rooms.id)
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+  value: json().$type<VotingCard>().notNull(),
+  roomId: integer()
+    .references(() => roomsTable.id)
     .notNull(),
-  playerId: integer("player_id")
-    .references(() => players.id)
+  userId: integer()
+    .references(() => usersTable.id)
     .notNull(),
+  votingRound: integer().notNull().default(1),
 });

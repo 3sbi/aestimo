@@ -1,5 +1,4 @@
-# planpoker.net 
-
+# planpoker.net
 
 ## Getting Started
 
@@ -11,9 +10,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Links
-
-To learn more about Next.js, take a look at the following resources:
+## Acknowledgements
 
 - [Next.js Documentation](https://nextjs.org/docs) - This porject uses Next.js, learn about their features and API from docs.
 - [Planning Poker website](https://planning-poker-agile.web.app/) - This project took huge inspiration from [planning-poker](https://github.com/hellomuthu23/planning-poker). Support them with your star as well!

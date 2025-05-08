@@ -1,8 +1,11 @@
-import { json, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
-import type { VotingCard } from "./votes";
+import { integer, json, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
+import { roomsTable } from "./Rooms";
+import type { VotingCard } from "./Votes";
 
-export const voteTypes = pgTable("vote_types", {
-  id: serial("id").primaryKey(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  values: json("values").$type<VotingCard[]>().notNull(),
+export const voteTypesTable = pgTable("vote_types", {
+  id: serial().primaryKey(),
+  values: json().$type<VotingCard[]>().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+  roomId: integer().references(() => roomsTable.id),
 });
