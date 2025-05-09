@@ -1,16 +1,13 @@
 import "server-only";
 
 import { eq, sql } from "drizzle-orm";
-import { db } from "../db";
-import { roomsTable } from "../schema/Rooms";
-import { usersTable } from "../schema/Users";
-import { voteTypesTable } from "../schema/VoteTypes";
+import { db, roomsTable, usersTable, voteTypesTable } from "../database";
 
 class Rooms {
   async getOne(uuid: string) {
     const room = (
       await db.select().from(roomsTable).where(eq(roomsTable.uuid, uuid))
-    )[0];
+    ).shift();
 
     return room;
   }
@@ -41,18 +38,35 @@ class Rooms {
   async goToNextRound(roomId: number) {
     const room = (
       await db.select().from(roomsTable).where(eq(roomsTable.id, roomId))
-    )[0];
-
-    return await db
-      .update(roomsTable)
-      .set({
-        updatedAt: sql`NOW()`,
-        cardsOpened: false,
-        votingRound: room.votingRound + 1,
-        status: "started",
-      })
-      .where(eq(roomsTable.id, roomId));
+    ).shift();
+    if (room) {
+      return await db
+        .update(roomsTable)
+        .set({
+          updatedAt: sql`NOW()`,
+          cardsOpened: false,
+          votingRound: room.votingRound + 1,
+          status: "started",
+        })
+        .where(eq(roomsTable.id, roomId));
+    }
   }
+
+  async changeRoomPrivacy(id: number, newPrivacyState: boolean) {
+    const room = (
+      await db
+        .update(roomsTable)
+        .set({
+          updatedAt: sql`NOW()`,
+          private: newPrivacyState,
+        })
+        .where(eq(roomsTable.id, id))
+        .returning()
+    ).shift();
+    return room;
+  }
+
+  async deleteRoom() {}
 }
 
 export default new Rooms();

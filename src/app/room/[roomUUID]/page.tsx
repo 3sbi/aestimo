@@ -1,10 +1,11 @@
 import "server-only";
 
-import Toolbar from "@/app/room/[roomUUID]/_components/Toolbar";
-import CardsHand from "./_components/CardsHand";
-import UsersList from "./_components/UsersList";
-import { Rooms } from "@/database";
+import { i18nConfig } from "@/i18n/get-dictionary";
+import { Rooms } from "@/services";
 import { notFound } from "next/navigation";
+import CardsHand from "./_components/CardsHand";
+import Toolbar from "./_components/Toolbar";
+import UsersList from "./_components/UsersList";
 
 type Props = {
   params: Promise<{ roomUUID: string }>;
@@ -20,7 +21,7 @@ export default async function Page({ params }: Props) {
     <>
       <UsersList roomId={room.id} votingRound={room.votingRound} />
       <CardsHand cards={cards.values} />
-      <Toolbar />
+      <Toolbar locale={i18nConfig.defaultLocale} />
     </>
   );
 }

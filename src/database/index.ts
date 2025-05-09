@@ -1,2 +1,6 @@
-export { default as Rooms } from "./models/Rooms";
-export { default as Users } from "./models/Users";
+export { db } from "./db";
+export { roomsTable } from "./schemas/Rooms";
+export { usersTable } from "./schemas/Users";
+export { votesTable } from "./schemas/Votes";
+export { voteTypesTable } from "./schemas/VoteTypes";
+

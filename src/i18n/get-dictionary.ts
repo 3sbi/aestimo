@@ -8,7 +8,7 @@ export const i18nConfig = {
   locales: ["en", "ru"],
 } as const;
 
-export type i18nLocale = (typeof i18nConfig)["locales"][number];
+export type I18nLocale = (typeof i18nConfig)["locales"][number];
 
 const dictionaries = { ru, en };
 

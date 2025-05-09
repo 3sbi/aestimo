@@ -1,10 +1,14 @@
-import "server-only";
+"use client";
 
+import CreateRoomForm from "@/components/CreateRoomForm";
+import JoinRoomForm from "@/components/JoinRoomForm";
+import { i18nConfig } from "@/i18n/get-dictionary";
 
 export default function Home() {
   return (
-    <div className="font-[family-name:var(--font-geist-sans)]">
-
+    <div>
+      <CreateRoomForm locale={i18nConfig.defaultLocale} />
+      <JoinRoomForm locale={i18nConfig.defaultLocale} />
     </div>
   );
 }

@@ -1,23 +1,26 @@
 {
-  "toolbar": {
-    "create": "Create room",
-    "join": "Connect to the room",
-    "kick": "Kick"
-  },
+  "language": "English",
+
   "confirm_modal": {
     "title": "Are you sure you want to leave?",
     "confirm": "Confirm",
     "cancel": "Cancel"
   },
 
+  "joinRoomForm": {
+    "uuid": "UUID",
+    "username": "Name",
+    "join": "Join"
+  },
+
   "room": {
     "toolbar": {
-      "finish": "Finish",
-      "delete": "Delete",
-      "restart": "Restart"
-    },
-    "leave": "Leave",
-    "share": "Share",
-    "history": "History"
+      "reveal": "Открыть",
+      "delete": "Удалить",
+      "restart": "Начать раунд заново",
+      "leave": "Выйти",
+      "invite": "Пригласить",
+      "history": "History"
+    }
   }
 }
