@@ -9,6 +9,11 @@
     "join": "Присоединиться"
   },
 
+  "createRoomForm": {
+    "username": "Имя",
+    "create": "Создать"
+  },
+
   "room": {
     "toolbar": {
       "reveal": "Reveal",

@@ -13,7 +13,7 @@ type Props = {
 
 const CardsHand: React.FC<Props> = ({ cards }) => {
   return (
-    <div>
+    <div className="card">
       {cards.map((card) => (
         <div
           key={card.label}

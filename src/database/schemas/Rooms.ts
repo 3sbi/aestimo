@@ -9,8 +9,8 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { voteTypesTable } from "./VoteTypes";
 
-const voteTypeEnum = pgEnum("voteType", ["custom", "fibonacci"]);
 const statusEnum = pgEnum("status", ["started", "finished"]);
 
 export const roomsTable = pgTable("rooms", {
@@ -18,7 +18,9 @@ export const roomsTable = pgTable("rooms", {
   name: varchar({ length: 255 }).notNull(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
-  voteType: voteTypeEnum("voteType").notNull(),
+  votyTypeId: integer()
+    .references(() => voteTypesTable.id)
+    .notNull(),
   uuid: uuid()
     .unique()
     .notNull()

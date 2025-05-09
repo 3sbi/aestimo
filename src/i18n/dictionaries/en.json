@@ -13,6 +13,11 @@
     "join": "Join"
   },
 
+  "createRoomForm": {
+    "username": "Имя",
+    "create": "Создать"
+  },
+
   "room": {
     "toolbar": {
       "reveal": "Открыть",

@@ -32,7 +32,7 @@ const UsersList: React.FC<Props> = async ({ roomId, votingRound }) => {
   const users = await Rooms.getUsers(roomId);
 
   return (
-    <div>
+    <div className="card">
       {users.map((user) => (
         <UserCard
           key={user.id}

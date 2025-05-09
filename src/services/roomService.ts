@@ -12,15 +12,24 @@ class Rooms {
     return room;
   }
 
+  async deleteRoom(values) {
+    const room = await db.insert(roomsTable).values(values);
+  }
+
   async getUsers(roomId: number) {
     return db.select().from(usersTable).where(eq(usersTable.roomId, roomId));
   }
 
   async getVoteTypes(roomId: number) {
+    const rooms = await db
+      .select({ voteTypeId: roomsTable.votyTypeId })
+      .from(roomsTable)
+      .where(eq(roomsTable.id, roomId));
+    const { voteTypeId } = rooms[0];
     const voteTypes = await db
       .select()
       .from(voteTypesTable)
-      .where(eq(voteTypesTable.roomId, roomId));
+      .where(eq(voteTypesTable.id, voteTypeId));
     return voteTypes[0];
   }
 
@@ -65,8 +74,6 @@ class Rooms {
     ).shift();
     return room;
   }
-
-  async deleteRoom() {}
 }
 
 export default new Rooms();
