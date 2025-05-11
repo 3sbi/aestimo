@@ -27,8 +27,7 @@ export const roomsTable = pgTable("rooms", {
     .default(sql`gen_random_uuid()`),
   status: statusEnum("status").notNull().default("started"),
   votingRound: integer().notNull().default(1),
-  cardsOpened: boolean().notNull().default(false),
-  password: varchar({ length: 255 }).notNull(),
+  password: varchar({ length: 255 }),
 
   // defines if room can be joined or not. Defaults to being open to join
   private: boolean().notNull().default(false),

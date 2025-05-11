@@ -15,7 +15,9 @@ const rolesEnum = pgEnum("role", ["admin", "basic"]);
 export const usersTable = pgTable("users", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
-  roomId: integer().references(() => roomsTable.id),
+  roomId: integer()
+    .references(() => roomsTable.id)
+    .notNull(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
   role: rolesEnum().notNull().default("basic"),

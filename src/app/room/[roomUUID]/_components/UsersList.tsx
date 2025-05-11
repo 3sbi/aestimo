@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Rooms, Users } from "@/services";
+import { Rooms, Users } from "@/database/services";
 
 type UserCardProps = Props & {
   roomId: number;

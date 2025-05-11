@@ -1,7 +1,7 @@
 import "server-only";
 
+import { Rooms } from "@/database/services";
 import { i18nConfig } from "@/i18n/get-dictionary";
-import { Rooms } from "@/services";
 import { notFound } from "next/navigation";
 import CardsHand from "./_components/CardsHand";
 import Toolbar from "./_components/Toolbar";
