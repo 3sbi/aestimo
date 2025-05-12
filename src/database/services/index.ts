@@ -1,3 +1,4 @@
-export { default as RoomsService } from "./roomsService";
-export { default as UsersService } from "./usersService";
-export { default as voteTypesService } from "./voteTypesService";
+export { default as RoomsService } from "./RoomsService";
+export { default as UsersService } from "./UsersService";
+export { default as voteTypesService } from "./VoteTypesService";
+

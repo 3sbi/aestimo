@@ -12,9 +12,11 @@ const CreateRoomForm: React.FC<Props> = ({ locale }) => {
   const dictionary = getDictionary(locale);
   const i18n = dictionary.createRoomForm;
   return (
-    <form action="/api/rooms/create" method="post">
-      <Input type="text" label={i18n.username} />
-      <Button variant="primary">{i18n.create}</Button>
+    <form action="/api/rooms" method="post">
+      <Input type="text" name="username" label={i18n.username} />
+      <Button variant="primary" className="mt-4">
+        {i18n.create}
+      </Button>
     </form>
   );
 };

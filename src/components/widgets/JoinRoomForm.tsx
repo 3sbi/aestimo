@@ -12,7 +12,7 @@ const JoinRoomForm: React.FC<{ locale: I18nLocale }> = ({ locale }) => {
     <form action="/api/rooms/" method="POST">
       <Input id="uuid" type="text" label={i18n.uuid} />
       <Input id="username" type="text" label={i18n.username} />
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" className="mt-4">
         {i18n.join}
       </Button>
     </form>

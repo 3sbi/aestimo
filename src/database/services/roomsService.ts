@@ -1,121 +1,77 @@
 import "server-only";
 
-import { eq, sql } from "drizzle-orm";
-import { z } from "zod";
-import { db, roomsTable, usersTable, voteTypesTable } from "..";
-import usersService from "./usersService";
-import voteTypesService from "./voteTypesService";
+import { CreateRoomDto } from "@/database/dtos/CreateRoomDtoSchema";
+import { JoinRoomDto } from "@/database/dtos/JoinRoomDtoSchema";
+import {
+  RoomRepository,
+  UserRepository,
+  VoteTypeRepository,
+} from "@/database/repositories";
+import { Room, User } from "@/database/types";
 
-export class RoomsService {
-  CreateRoomDtoSchema = z.object({
-    name: z.string(),
-    username: z.string(),
-    voteOptions: z.array(
-      z.object({
-        color: z.string(),
-        label: z.string(),
-      })
-    ),
-  });
-
-  JoinRoomDtoSchema = z.object({
-    username: z.string(),
-    uuid: z.string(),
-  });
-
+class RoomsService {
   async getOne(uuid: string) {
-    const room = (
-      await db.select().from(roomsTable).where(eq(roomsTable.uuid, uuid))
-    ).shift();
-
-    return room;
+    return RoomRepository.getByUUID(uuid);
   }
 
-  async createRoom(values: z.infer<typeof this.CreateRoomDtoSchema>) {
+  async createRoom(values: CreateRoomDto): Promise<{ room: Room; user: User }> {
     const { username, name, voteOptions } = values;
-    const voteType = await voteTypesService.create(voteOptions);
-    const res = await db
-      .insert(roomsTable)
-      .values({
-        createdAt: sql`NOW()`,
-        updatedAt: sql`NOW()`,
-        name,
-        votyTypeId: voteType.id,
-      })
-      .returning();
-    const room = res[0];
+    const voteType = await VoteTypeRepository.create(voteOptions);
 
-    const user = await usersService.create(room.id, username, "admin");
+    const room = await RoomRepository.create({
+      name,
+      voteTypeId: voteType.id,
+    });
+
+    const user = await UserRepository.create({
+      roomId: room.id,
+      name: username,
+      role: "admin",
+    });
     return { room, user };
   }
 
-  async joinRoom(values: z.infer<typeof this.JoinRoomDtoSchema>) {
+  async joinRoom(
+    values: JoinRoomDto
+  ): Promise<{ room: Room; user: User } | null> {
     const { uuid, username } = values;
     const room = await this.getOne(uuid);
     if (!room) return null;
 
-    const user = await usersService.create(room.id, username, "basic");
+    const user = await UserRepository.create({
+      roomId: room.id,
+      name: username,
+      role: "basic",
+    });
     return { room, user };
   }
 
   async getUsers(roomId: number) {
-    return db.select().from(usersTable).where(eq(usersTable.roomId, roomId));
+    return UserRepository.getByRoomId(roomId);
   }
 
-  async getVoteTypes(roomId: number) {
-    const rooms = await db
-      .select({ voteTypeId: roomsTable.votyTypeId })
-      .from(roomsTable)
-      .where(eq(roomsTable.id, roomId));
-    const { voteTypeId } = rooms[0];
-    const voteTypes = await db
-      .select()
-      .from(voteTypesTable)
-      .where(eq(voteTypesTable.id, voteTypeId));
-    return voteTypes[0];
+  async getVoteTypes(id: number) {
+    const { votyTypeId } = await RoomRepository.getById(id);
+    const voteType = await VoteTypeRepository.getById(votyTypeId);
+    return voteType;
   }
 
-  async openCards(roomId: number) {
-    const res = await db
-      .update(roomsTable)
-      .set({
-        updatedAt: sql`NOW()`,
-        status: "finished",
-      })
-      .where(eq(roomsTable.id, roomId))
-      .returning();
-    const room = res[0];
+  async openCards(id: number) {
+    return RoomRepository.update(id, { status: "finished" });
+  }
+
+  async goToNextRound(id: number) {
+    const item = await RoomRepository.getById(id);
+    const room = await RoomRepository.update(id, {
+      votingRound: item.votingRound + 1,
+      status: "started",
+    });
+
     return room;
   }
 
-  async goToNextRound(roomId: number) {
-    const room = (
-      await db.select().from(roomsTable).where(eq(roomsTable.id, roomId))
-    ).shift();
-    if (!room) return null;
-
-    const res = await db
-      .update(roomsTable)
-      .set({
-        updatedAt: sql`NOW()`,
-        votingRound: room.votingRound + 1,
-        status: "started",
-      })
-      .where(eq(roomsTable.id, roomId))
-      .returning();
-    return res[0];
-  }
-
-  async changeRoomPrivacy(id: number, newPrivacyState: boolean) {
-    const res = await db
-      .update(roomsTable)
-      .set({
-        updatedAt: sql`NOW()`,
-        private: newPrivacyState,
-      })
-      .where(eq(roomsTable.id, id))
-      .returning();
-    const room = res.shift();
+  async changeRoomPrivacy(id: number, newPrivate: boolean) {
+    const room = RoomRepository.update(id, { private: newPrivate });
     return room;
   }
 }

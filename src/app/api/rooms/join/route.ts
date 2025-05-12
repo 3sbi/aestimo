@@ -1,11 +1,12 @@
 import "server-only";
 
+import { JoinRoomDtoSchema } from "@/database/dtos/JoinRoomDtoSchema";
 import { RoomsService } from "@/database/services";
 
 export async function POST(request: Request) {
   const req = await request.json();
   const { success, data, error } =
-    RoomsService.JoinRoomDtoSchema.safeParse(req);
+    JoinRoomDtoSchema.safeParse(req);
   if (!success) {
     return Response.json(
       { success: false },
