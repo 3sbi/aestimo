@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Rooms, Users } from "@/database/services";
+import { UsersService } from "@/database/services";
 
 type UserCardProps = Props & {
   roomId: number;
@@ -13,7 +13,11 @@ const UserCard: React.FC<UserCardProps> = async ({
   roomId,
   votingRound,
 }) => {
-  const voted: boolean = await Users.hasVoted(user.id, roomId, votingRound);
+  const voted: boolean = await UsersService.hasVoted(
+    user.id,
+    roomId,
+    votingRound
+  );
 
   return (
     <div>
@@ -29,7 +33,7 @@ type Props = {
 };
 
 const UsersList: React.FC<Props> = async ({ roomId, votingRound }) => {
-  const users = await Rooms.getUsers(roomId);
+  const users = await UsersService.getUsersByRoomId(roomId);
 
   return (
     <div className="card">

@@ -18,7 +18,7 @@ export default function Home() {
             <TabsTrigger value="join">{i18n.joinRoomForm.join}</TabsTrigger>
           </TabsList>
           <TabsContent value="create">
-            <CreateRoomForm locale={i18nConfig.defaultLocale} />
+            <CreateRoomForm i18n={i18n.createRoomForm} />
           </TabsContent>
           <TabsContent value="join">
             <JoinRoomForm locale={i18nConfig.defaultLocale} />

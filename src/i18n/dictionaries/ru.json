@@ -1,7 +1,11 @@
 {
   "language": "Русский",
-  "create": "Создать комнату",
-  "kick": "Кикнуть",
+
+  "confirmModal": {
+    "title": "ВЫ уверены, что хотите выйти?",
+    "confirm": "Выйти",
+    "cancel": "Отмена"
+  },
 
   "joinRoomForm": {
     "uuid": "UUID",
@@ -11,17 +15,19 @@
 
   "createRoomForm": {
     "username": "Имя",
+    "roomName": "Название комнаты",
+    "checkboxes": "Опции",
     "create": "Создать"
   },
 
   "room": {
     "toolbar": {
-      "reveal": "Reveal",
-      "delete": "Delete",
-      "restart": "Restart",
-      "leave": "Leave",
-      "invite": "Invite",
-      "history": "History"
+      "reveal": "Открыть",
+      "delete": "Удалить",
+      "restart": "Начать заново",
+      "leave": "Выйти",
+      "invite": "Пригласить",
+      "history": "История"
     }
   }
 }

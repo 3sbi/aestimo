@@ -1,12 +1,12 @@
 import { db, roomsTable } from "@/database";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 class RoomRepository {
   static async getByUUID(uuid: string) {
     const res = await db
       .select()
       .from(roomsTable)
-      .where(eq(roomsTable.uuid, uuid));
+      .where(and(eq(roomsTable.uuid, uuid), eq(roomsTable.private, false)));
 
     const room = res[0];
     return room;

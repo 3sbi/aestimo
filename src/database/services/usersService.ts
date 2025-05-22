@@ -1,4 +1,4 @@
-import { VoteRepository } from "@/database/repositories";
+import { VoteRepository, UserRepository } from "@/database/repositories";
 
 class Users {
   async hasVoted(
@@ -8,6 +8,11 @@ class Users {
   ): Promise<boolean> {
     const votes = await VoteRepository.get({ userId, roomId, round });
     return votes.length > 0;
+  }
+
+  async getUsersByRoomId(roomId: number) {
+    const users = await UserRepository.getByRoomId(roomId);
+    return users;
   }
 }
 

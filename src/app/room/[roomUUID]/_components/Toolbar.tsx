@@ -1,11 +1,20 @@
-import "server-only";
+"use client";
 
 import React from "react";
 import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
 
-const Toolbar: React.FC<{ locale: I18nLocale }> = ({ locale }) => {
-  const dictionary = getDictionary(locale);
-  const i18n = dictionary.room.toolbar;
+type Props = {
+  i18n: {
+    reveal: string;
+    delete: string;
+    restart: string;
+    leave: string;
+    invite: string;
+    history: string;
+  };
+};
+
+const Toolbar: React.FC<Props> = ({ i18n }) => {
 
   function onClickReveal() {}
 

@@ -1,5 +1,6 @@
-import "server-only";
+"use client";
 
+import { Card } from "@/components/Card";
 import React from "react";
 
 interface Card {
@@ -8,20 +9,29 @@ interface Card {
 }
 
 type Props = {
+  roomId: number;
   cards: Card[];
 };
 
-const CardsHand: React.FC<Props> = ({ cards }) => {
+const CardsHand: React.FC<Props> = ({ cards, roomId }) => {
+  const onClick = (value: string) => {
+    const data = { value, roomId };
+
+    fetch("/api/vote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(data),
+    });
+  };
+
   return (
-    <div className="card">
+    <div className="flex gap-1 flex-wrap">
       {cards.map((card) => (
-        <div
-          key={card.label}
-          className="p-4 border-2 rounded-r-lg"
-          style={{ backgroundColor: card.color }}
-        >
+        <Card key={card.label} color={card.color} onClick={onClick}>
           {card.label}
-        </div>
+        </Card>
       ))}
     </div>
   );

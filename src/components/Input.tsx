@@ -5,7 +5,7 @@ const Input = React.forwardRef<
   React.ComponentProps<"input"> & { label: string }
 >(({ label, className, type, ...props }, ref) => {
   return (
-    <div className="space-y-1 flex flex-col">
+    <div className="space-y-1 flex flex-col mb-3">
       <label htmlFor={props.id}>{label}</label>
       <input
         id={props.id}
