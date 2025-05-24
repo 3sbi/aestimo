@@ -2,19 +2,12 @@
 
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
-import type { DefinedVoteType } from "@/consts/predefinedVoteTypes";
-import { PREDEFINED_VOTE_TYPES } from "@/consts/predefinedVoteTypes";
+import type { DefinedVoteType } from "@/server/consts/predefinedVoteTypes";
 import { Loader2Icon } from "lucide-react";
-import Form from "next/form";
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
-import { create } from "./actions";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const initialState = {
-  name: "",
-  username: "",
-  vote_type: PREDEFINED_VOTE_TYPES[0].id,
-};
+type Response = { room: { uuid: string }; user: { uuid: string } };
 
 type Props = {
   i18n: {
@@ -23,40 +16,98 @@ type Props = {
     checkboxes: string;
     create: string;
   };
+  predefinedVoteTypes: DefinedVoteType[];
 };
 
-const CreateRoomForm: React.FC<Props> = ({ i18n }) => {
-  const { pending } = useFormStatus();
-  const [state, formAction] = useActionState(create, initialState);
+const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [voteTypeId, setVoteTypeIdId] = useState<string>(
+    predefinedVoteTypes[0].id
+  );
+
   const getLabel = (option: DefinedVoteType): string => {
     return `${option.name} (${option.values.map((o) => o.label).join(", ")})`;
   };
 
+  const onFinish = async () => {
+    setLoading(true);
+    try {
+      const options = predefinedVoteTypes.find(
+        (option) => option.id === voteTypeId
+      );
+
+      if (options) {
+        const values = {
+          name,
+          username,
+          voteOptions: options?.values,
+        };
+
+        const res = await fetch("/api/rooms", {
+          method: "POST",
+          body: JSON.stringify(values),
+        });
+        if (res.ok) {
+          const { room }: Response = await res.json();
+          router.replace(`/rooms/${room.uuid}`);
+        }
+      }
+    } catch (err) {}
+
+    setLoading(false);
+  };
+
   return (
-    <Form action={formAction}>
-      <Input type="text" name="name" label={i18n.roomName} />
-      <Input type="text" name="username" label={i18n.username} />
-      <fieldset className="flex flex-col gap-1">
-        <legend>{i18n.checkboxes}</legend>
-        {PREDEFINED_VOTE_TYPES.map((option) => (
-          <div className="flex gap-2" key={option.id}>
-            <input
-              type="radio"
-              id={option.id}
-              name="vote_type"
-              value={option.id}
-            />
-            <label htmlFor={option.id}>{getLabel(option)}</label>
-          </div>
-        ))}
-      </fieldset>
-      <Button variant="primary" className="mt-4">
-        {pending && (
+    <form className="flex flex-col justify-between">
+      <div>
+        <Input
+          type="text"
+          name="name"
+          label={i18n.roomName}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          type="text"
+          name="username"
+          label={i18n.username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <fieldset className="flex flex-col gap-1">
+          <legend>{i18n.checkboxes}</legend>
+          {predefinedVoteTypes.map((option) => (
+            <div className="flex gap-2" key={option.id}>
+              <input
+                type="radio"
+                id={option.id}
+                name="voteType"
+                value={option.id}
+                checked={option.id === voteTypeId}
+                onChange={(e) => {
+                  const id = e.target.value;
+                  setVoteTypeIdId(id);
+                }}
+              />
+              <label htmlFor={option.id}>{getLabel(option)}</label>
+            </div>
+          ))}
+        </fieldset>
+      </div>
+      <Button
+        variant="primary"
+        className="mt-4"
+        onClick={onFinish}
+        type="button"
+        disabled={loading}
+      >
+        {loading && (
           <Loader2Icon className="animate-spin" width={20} height={20} />
         )}
         {i18n.create}
       </Button>
-    </Form>
+    </form>
   );
 };
 

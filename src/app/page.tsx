@@ -3,28 +3,35 @@ import "server-only";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import CreateRoomForm from "@/components/widgets/CreateRoomForm";
 import JoinRoomForm from "@/components/widgets/JoinRoomForm";
-import { getDictionary, i18nConfig } from "@/i18n/get-dictionary";
+import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
+import { PREDEFINED_VOTE_TYPES } from "@/server/consts/predefinedVoteTypes";
+import { cookies } from "next/headers";
 
-export default function Home() {
-  const i18n = getDictionary(i18nConfig.defaultLocale);
+export default async function Home() {
+  const cookieStore = await cookies();
+  const lang: I18nLocale = cookieStore.get("lang")?.value as I18nLocale;
+  const i18n = getDictionary(lang);
   return (
-    <div className="h-full w-full">
-      <div className="m-auto card w-[400px]">
-        <Tabs defaultValue="create">
-          <TabsList>
-            <TabsTrigger value="create">
-              {i18n.createRoomForm.create}
-            </TabsTrigger>
-            <TabsTrigger value="join">{i18n.joinRoomForm.join}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="create">
-            <CreateRoomForm i18n={i18n.createRoomForm} />
-          </TabsContent>
-          <TabsContent value="join">
-            <JoinRoomForm locale={i18nConfig.defaultLocale} />
-          </TabsContent>
-        </Tabs>
-      </div>
+    <div className="m-auto card w-[400px] h-[400px] flex flex-col">
+      <Tabs defaultValue="create" className="grow">
+        <TabsList className="w-full">
+          <TabsTrigger className="w-full" value="create">
+            {i18n.createRoomForm.create}
+          </TabsTrigger>
+          <TabsTrigger className="w-full" value="join">
+            {i18n.joinRoomForm.join}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="create">
+          <CreateRoomForm
+            i18n={i18n.createRoomForm}
+            predefinedVoteTypes={PREDEFINED_VOTE_TYPES}
+          />
+        </TabsContent>
+
+        <TabsContent value="join">something</TabsContent>
+      </Tabs>
     </div>
   );
 }
