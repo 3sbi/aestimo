@@ -25,10 +25,10 @@ export class ConfigInstance {
   }
 
   private envSchema = z.object({
-    PORT: z.coerce.number().default(3000),
+    PORT: z.coerce.number().default(8080),
     DATABASE_URL: z.string().min(1),
     SESSION_SECRET: z.string().min(32),
-    NODE_ENV: z.enum(["development", "production"]),
+    NODE_ENV: z.enum(["development", "production"]).default("production"),
   });
 
   private parse(data: unknown) {
