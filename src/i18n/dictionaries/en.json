@@ -21,6 +21,9 @@
   },
 
   "room": {
+    "header": {
+      "round": "Round"
+    },
     "toolbar": {
       "reveal": "Reveal",
       "delete": "Delete",

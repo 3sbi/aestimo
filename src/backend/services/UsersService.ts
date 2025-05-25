@@ -1,18 +1,11 @@
-import {
-  RoomRepository,
-  UserRepository,
-  VoteRepository,
-} from "@/server/repositories";
+import "server-only";
+
+import { RoomRepository, UserRepository } from "@/backend/repositories";
 import { Room, User } from "../types";
 
 class UsersService {
-  async hasVoted(
-    userId: number,
-    roomId: number,
-    round: number
-  ): Promise<boolean> {
-    const votes = await VoteRepository.get({ userId, roomId, round });
-    return votes.length > 0;
+  async getOne(userUUID: string): Promise<User | undefined> {
+    return UserRepository.getByUUID(userUUID);
   }
 
   async checkIfUserExistsInRoom(

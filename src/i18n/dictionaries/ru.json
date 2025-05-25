@@ -21,6 +21,9 @@
   },
 
   "room": {
+    "header": {
+      "round": "Раунд"
+    },
     "toolbar": {
       "reveal": "Открыть",
       "delete": "Удалить",

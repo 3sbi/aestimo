@@ -1,0 +1,27 @@
+import "server-only";
+
+import { getIronSession, IronSession, SessionOptions } from "iron-session";
+import { cookies } from "next/headers";
+import { config } from "./config";
+import { Room, User } from "./types";
+
+interface SessionData {
+  userUUID: User["uuid"];
+  userName: User["name"];
+  userRole: User["role"];
+  roomName: Room["name"];
+  roomUUID: Room["uuid"];
+}
+
+const sessionOptions: SessionOptions = {
+  password: config.sessionSecret,
+  cookieName: "session",
+  cookieOptions: {
+    secure: process.env.NODE_ENV === "production",
+  },
+};
+
+export const getSession = async (): Promise<IronSession<SessionData>> => {
+  const cookiesStore = await cookies();
+  return getIronSession(cookiesStore, sessionOptions);
+};

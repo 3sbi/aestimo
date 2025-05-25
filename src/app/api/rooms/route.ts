@@ -1,8 +1,8 @@
 import "server-only";
 
-import { CreateRoomDtoSchema } from "@/server/dtos/CreateRoomDtoSchema";
-import { RoomsService } from "@/server/services";
-import { cookies } from "next/headers";
+import { CreateRoomDtoSchema } from "@/backend/dtos/CreateRoomDtoSchema";
+import { roomsService } from "@/backend/services";
+import { getSession } from "@/backend/session";
 
 export async function POST(request: Request) {
   try {
@@ -14,19 +14,22 @@ export async function POST(request: Request) {
       return Response.json({ error: error.message }, { status: 422 });
     }
 
-    const res = await RoomsService.createRoom(data);
+    const res = await roomsService.createRoom(data);
     if (res === null) {
       return Response.json({ error: "Something went wrong" }, { status: 422 });
     }
-    const cookieStore = await cookies();
-    cookieStore.set("user-uuid", res.user.uuid, { secure: true });
-    cookieStore.set("user-name", res.user.name, { secure: true });
-    cookieStore.set("room-uuid", res.room.uuid, { secure: true });
-    cookieStore.set("room-name", res.room.name, { secure: true });
+    const session = await getSession();
+    session.userRole = res.user.role;
+    session.userName = res.user.name;
+    session.userUUID = res.user.uuid;
 
-    return Response.json(res.room.uuid);
+    session.roomName = res.room.name;
+    session.roomUUID = res.room.uuid;
+    await session.save();
+
+    return Response.json({ roomUUID: res.room.uuid });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return Response.json({ error }, { status: 500 });
   }
 }

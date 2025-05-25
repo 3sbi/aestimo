@@ -1,9 +1,9 @@
-import { db, voteTypesTable } from "@/server";
-import { VoteOption } from "@/server/schemas/Votes";
+import { db, voteTypesTable } from "@/backend";
+import type { VoteCard } from "@/backend/types";
 import { eq, sql } from "drizzle-orm";
 
 class VoteTypeRepository {
-  static async create(voteOptions: VoteOption[]) {
+  static async create(voteOptions: VoteCard[]) {
     const voteTypeRes = await db
       .insert(voteTypesTable)
       .values({
@@ -16,6 +16,7 @@ class VoteTypeRepository {
     const voteType = voteTypeRes[0];
     return voteType;
   }
+
   static async getById(id: number) {
     const res = await db
       .select()

@@ -1,19 +1,58 @@
-import "server-only";
+"use client";
 
-import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
-import { Button } from "../Button";
-import { Input } from "../Input";
+import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
+import { Loader2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-type Props = { locale: I18nLocale; roomUUID: string };
+type Response = { success: boolean };
 
-const JoinRoomForm: React.FC<Props> = ({ locale, roomUUID }) => {
-  const dictionary = getDictionary(locale);
-  const i18n = dictionary.joinRoomForm;
+type Props = {
+  i18n: { username: string; join: string };
+  roomUUID: string;
+};
+
+const JoinRoomForm: React.FC<Props> = ({ i18n, roomUUID }) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+
+  const onFinish = async () => {
+    setLoading(true);
+    try {
+      const body = JSON.stringify({ username });
+      const res = await fetch(`/api/rooms/${roomUUID}/join`, {
+        method: "POST",
+        body,
+      });
+      const result: Response = await res.json();
+      if (result.success) router.replace(`/rooms/${roomUUID}`);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
 
   return (
-    <form action={`/api/rooms/${roomUUID}/join`} method="POST">
-      <Input id="username" type="text" label={i18n.username} />
-      <Button variant="primary" type="submit" className="mt-4">
+    <form>
+      <Input
+        id="username"
+        type="text"
+        label={i18n.username}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <Button
+        variant="primary"
+        type="button"
+        className="mt-4"
+        onClick={onFinish}
+        disabled={loading}
+      >
+        {loading && (
+          <Loader2Icon className="animate-spin" width={20} height={20} />
+        )}
         {i18n.join}
       </Button>
     </form>

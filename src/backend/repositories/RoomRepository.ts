@@ -1,4 +1,4 @@
-import { db, roomsTable } from "@/server";
+import { db, roomsTable } from "@/backend";
 import { and, eq, sql } from "drizzle-orm";
 
 class RoomRepository {
@@ -9,7 +9,6 @@ class RoomRepository {
       .where(and(eq(roomsTable.uuid, uuid), eq(roomsTable.private, false)));
 
     const room = res[0];
-    console.log(room);
     return room;
   }
 
@@ -34,7 +33,7 @@ class RoomRepository {
   }
 
   static async update(
-    id: number,
+    uuid: string,
     values: Partial<typeof roomsTable.$inferSelect>
   ) {
     const res = await db
@@ -43,10 +42,15 @@ class RoomRepository {
         ...values,
         updatedAt: sql`NOW()`,
       })
-      .where(eq(roomsTable.id, id))
+      .where(eq(roomsTable.uuid, uuid))
       .returning();
     const room = res[0];
     return room;
+  }
+
+  static async delete(uuid: string) {
+    await db.delete(roomsTable).where(eq(roomsTable.uuid, uuid));
+    return true;
   }
 }
 

@@ -1,13 +1,13 @@
 "use client";
 
+import type { DefinedVoteType } from "@/backend/consts/predefinedVoteTypes";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
-import type { DefinedVoteType } from "@/server/consts/predefinedVoteTypes";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type Response = { room: { uuid: string }; user: { uuid: string } };
+type Response = { roomUUID: string };
 
 type Props = {
   i18n: {
@@ -51,11 +51,13 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
           body: JSON.stringify(values),
         });
         if (res.ok) {
-          const { room }: Response = await res.json();
-          router.replace(`/rooms/${room.uuid}`);
+          const { roomUUID }: Response = await res.json();
+          router.replace(`/rooms/${roomUUID}`);
         }
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
 
     setLoading(false);
   };

@@ -1,10 +1,7 @@
 import "server-only";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
-import CreateRoomForm from "@/components/widgets/CreateRoomForm";
-import JoinRoomForm from "@/components/widgets/JoinRoomForm";
 import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
-import { PREDEFINED_VOTE_TYPES } from "@/server/consts/predefinedVoteTypes";
 import { cookies } from "next/headers";
 
 export default async function Home() {
@@ -24,10 +21,7 @@ export default async function Home() {
         </TabsList>
 
         <TabsContent value="create">
-          <CreateRoomForm
-            i18n={i18n.createRoomForm}
-            predefinedVoteTypes={PREDEFINED_VOTE_TYPES}
-          />
+      
         </TabsContent>
 
         <TabsContent value="join">something</TabsContent>
