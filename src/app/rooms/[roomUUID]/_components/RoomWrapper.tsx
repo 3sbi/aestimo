@@ -1,20 +1,14 @@
 "use client";
 
-import type { ClientRoom, User, VoteCard } from "@/backend/types";
+import type { ClientRoom, ClientUser, User, VoteCard } from "@/backend/types";
 import React, { useState } from "react";
 import CardsHand from "./CardsHand";
 import Toolbar from "./Toolbar";
-
-type UserListState = {
-  id: number;
-  name: string;
-  voted: boolean;
-  value?: VoteCard;
-}[];
+import UsersList from "./UsersList";
 
 type Props = {
   initialRoom: ClientRoom;
-  initialUsersList: UserListState;
+  initialUsersList: ClientUser[];
   cards: VoteCard[];
   user: Pick<User, "id" | "role">;
   i18n: {
@@ -34,7 +28,7 @@ type Props = {
 
 export const RoomWrapper: React.FC<Props> = (props) => {
   const [room, setRoom] = useState<ClientRoom>(props.initialRoom);
-  const [usersList, setUsersList] = useState<UserListState>(
+  const [usersList, setUsersList] = useState<ClientUser[]>(
     props.initialUsersList
   );
 
@@ -57,39 +51,19 @@ export const RoomWrapper: React.FC<Props> = (props) => {
           {i18n.header.round}:{room.round}
         </div>
       </div>
-
-      <div className="card">
-        {usersList.map((user) => {
-          if (user.value) {
-            const { color, label } = user.value;
-            return (
-              <div key={user.id} style={{ backgroundColor: color }}>
-                <div>{label}</div>
-                <h2>{user.name}</h2>
-              </div>
-            );
-          }
-          return (
-            <div key={user.id}>
-              <div>{user.voted ? "🗳️" : "🤔"}</div>
-              <h2>{user.name}</h2>
-            </div>
-          );
-        })}
-      </div>
-
+      <UsersList usersList={usersList} />
       <CardsHand
         cards={props.cards}
         roomUUID={room.uuid}
         userId={props.user.id}
         setVoted={setVoted}
       />
-
       <Toolbar
         i18n={i18n.toolbar}
         role={props.user.role}
         roomUUID={room.uuid}
         setRoom={setRoom}
+        setUsersList={setUsersList}
       />
     </>
   );

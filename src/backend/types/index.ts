@@ -8,5 +8,11 @@ type VoteCard = { color: string; label: string };
 
 // for client-side only
 type ClientRoom = Pick<Room, "private" | "status" | "name" | "round" | "uuid">;
+type ClientUser = {
+  id: number;
+  name: string;
+  voted: boolean;
+  value?: VoteCard;
+};
 
-export type { Room, User, Vote, VoteCard, VoteType, ClientRoom };
+export type { Room, User, Vote, VoteCard, VoteType, ClientRoom, ClientUser };

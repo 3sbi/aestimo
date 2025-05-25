@@ -1,10 +1,8 @@
 "use client";
 
-import { ClientRoom, User } from "@/backend/types";
-import React from "react";
+import { ClientRoom, ClientUser, User } from "@/backend/types";
 import { useRouter } from "next/navigation";
-
-type ResultResponse = { success: boolean };
+import React from "react";
 
 type Props = {
   roomUUID: string;
@@ -18,16 +16,25 @@ type Props = {
   };
   role: User["role"];
   setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
+  setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
 };
 
-const Toolbar: React.FC<Props> = ({ roomUUID, i18n, role, setRoom }) => {
+const Toolbar: React.FC<Props> = ({
+  roomUUID,
+  i18n,
+  role,
+  setRoom,
+  setUsersList,
+}) => {
   const router = useRouter();
+
   async function onClickRestart() {
     try {
       const res = await fetch(`/api/rooms/${roomUUID}/restart`, {
         method: "POST",
       });
-      const json: ResultResponse = await res.json();
+      const { room }: { room: ClientRoom } = await res.json();
+      setRoom(room);
     } catch (err) {
       console.error(err);
     }
@@ -38,8 +45,8 @@ const Toolbar: React.FC<Props> = ({ roomUUID, i18n, role, setRoom }) => {
       const res = await fetch(`/api/rooms/${roomUUID}/reveal`, {
         method: "POST",
       });
-
-      const json: ResultResponse = await res.json();
+      const json: ClientUser[] = await res.json();
+      setUsersList(json);
     } catch (err) {
       console.error(err);
     }
@@ -48,11 +55,7 @@ const Toolbar: React.FC<Props> = ({ roomUUID, i18n, role, setRoom }) => {
   async function onClickDelete() {
     try {
       const res = await fetch(`/api/rooms/${roomUUID}`, { method: "DELETE" });
-
-      const result: ResultResponse = await res.json();
-      if (result.success) {
-        router.replace("/");
-      }
+      if (res.ok) router.replace("/");
     } catch (err) {
       console.error(err);
     }

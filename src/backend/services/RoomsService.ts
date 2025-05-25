@@ -8,10 +8,10 @@ import {
   VoteRepository,
   VoteTypeRepository,
 } from "@/backend/repositories";
-import { Room, User } from "@/backend/types";
+import { Room, User, VoteCard } from "@/backend/types";
 
 class RoomsService {
-  async getOne(uuid: string) {
+  async getOne(uuid: string): Promise<Room | null> {
     return RoomRepository.getByUUID(uuid);
   }
 
@@ -71,7 +71,9 @@ class RoomsService {
     return voteType;
   }
 
-  async openCards(roomUUID: string) {
+  async openCards(
+    roomUUID: string
+  ): Promise<{ userId: number; name: string | null; value: VoteCard }[]> {
     const room = await RoomRepository.update(roomUUID, { status: "finished" });
     const votes = await VoteRepository.getAllRoundVotes(room.id, room.round);
     return votes;
@@ -85,6 +87,15 @@ class RoomsService {
     });
 
     return room;
+  }
+
+  async addVote(
+    roomId: number,
+    userId: number,
+    value: VoteCard
+  ): Promise<boolean> {
+    const vote = await VoteRepository.create(roomId, userId, value);
+    return !!vote;
   }
 
   async restart(uuid: string): Promise<Room> {

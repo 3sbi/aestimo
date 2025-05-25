@@ -11,7 +11,7 @@ export async function POST(
   const { userUUID } = await getSession();
   const user = await usersService.getOne(userUUID);
   const room = await roomsService.getOne(roomUUID);
-  const isAdmin = user?.role === "admin" && room.uuid === roomUUID;
+  const isAdmin = user?.role === "admin" && room?.uuid === roomUUID;
   if (!isAdmin) {
     return Response.json({ error: "Not admin" }, { status: 403 });
   }

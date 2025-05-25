@@ -8,9 +8,18 @@ export async function POST(
 ) {
   const { roomUUID } = await params;
   const { userUUID } = await getSession();
+
   const user = await usersService.getOne(userUUID);
+  if (!user) {
+    return Response.json({ error: "User not found" }, { status: 404 });
+  }
+
   const room = await roomsService.getOne(roomUUID);
-  const isAdmin = user?.role === "admin" && room.uuid === roomUUID;
+  if (!room) {
+    return Response.json({ error: "Room not found" }, { status: 404 });
+  }
+
+  const isAdmin = user.role === "admin" && room.uuid === roomUUID;
   if (!isAdmin) {
     return Response.json({ error: "Not admin" }, { status: 403 });
   }
