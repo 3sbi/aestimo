@@ -12,7 +12,7 @@ type ClientUser = {
   id: number;
   name: string;
   voted: boolean;
-  value?: VoteCard;
+  vote?: VoteCard;
 };
 
 export type { Room, User, Vote, VoteCard, VoteType, ClientRoom, ClientUser };

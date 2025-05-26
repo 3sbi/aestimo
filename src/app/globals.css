@@ -12,17 +12,20 @@
   --card-foreground: hsl(240 10% 3.9%);
   --border: hsl(146, 20%, 90%);
   --input: hsl(240 5.9% 90%);
-  --primary-foreground: hsl(355.7 100% 97.3%);
-  --secondary: hsl(240 4.8% 95.9%);
-  --secondary-foreground: hsl(240 5.9% 10%);
   --accent: hsl(240 4.8% 95.9%);
   --accent-foreground: hsl(240 5.9% 10%);
   --destructive: hsl(0 84.2% 60.2%);
   --destructive-foreground: hsl(0 0% 98%);
 
+  --secondary: hsl(147, 64%, 95%);
+  --secondary-border: hsl(146, 61%, 89%);
+  --secondary-foreground: hsl(145, 80%, 10%);
+
   /* button */
-  --primary: hsl(146 76% 36%);
+  --primary: hsl(146, 76%, 36%);
   --primary-dark: hsl(146, 80%, 30%);
+  --primary-foreground: hsl(355.7 100% 97.3%);
+
   --primary-border: hsl(146, 80%, 28%);
   --primary-hover: hsl(146, 79%, 42%);
   --ring: hsl(142 76% 36%);
@@ -122,19 +125,4 @@ body {
   height: 100%;
   padding: 0px 20px;
   flex-grow: 1;
-}
-
-.room-users-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin: auto;
-}
-
-.user-card {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 36px;
 }

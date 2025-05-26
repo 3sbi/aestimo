@@ -7,9 +7,6 @@ import { Room, User } from "./types";
 
 interface SessionData {
   userUUID: User["uuid"];
-  userName: User["name"];
-  userRole: User["role"];
-  roomName: Room["name"];
   roomUUID: Room["uuid"];
 }
 

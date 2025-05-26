@@ -1,0 +1,40 @@
+.userCardList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto;
+}
+
+.userCard {
+  background: var(--card);
+  color: var(--card-foreground);
+  border-radius: var(--radius);
+  border-width: 1px;
+  box-shadow: var(--box-shadow);
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3rem; /* (48px) */
+  line-height: 1;
+  max-width: 160px;
+  position: relative;
+}
+
+.userCard .username {
+  position: absolute;
+  top: -16px;
+  font-size: 1.25rem; /* (20px) */
+  line-height: calc(1.75 / 1.25);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100px;
+  border-width: 1px;
+  border-radius: var(--radius);
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  height: 32px;
+  text-align: center;
+  padding: 2px;
+}

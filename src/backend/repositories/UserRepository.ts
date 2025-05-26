@@ -1,7 +1,7 @@
-import { db, usersTable } from "@/backend";
+import { db, roomsTable, usersTable } from "@/backend";
 import { CreateUserDto } from "@/backend/dtos/CreateUserDtoSchema";
 import { eq, sql } from "drizzle-orm";
-import { User } from "../types";
+
 
 class UserRepository {
   static async create(dto: CreateUserDto) {
@@ -17,13 +17,13 @@ class UserRepository {
     return user;
   }
 
-  static async getByUUID(uuid: string): Promise<User | undefined> {
+  static async getByUUID(uuid: string) {
     const res = await db
       .select()
       .from(usersTable)
-      .where(eq(usersTable.uuid, uuid));
-    const user = res.pop();
-    return user;
+      .where(eq(usersTable.uuid, uuid))
+      .leftJoin(roomsTable, eq(usersTable.roomId, roomsTable.id));
+    return res.pop();
   }
 
   static async getById(id: number) {

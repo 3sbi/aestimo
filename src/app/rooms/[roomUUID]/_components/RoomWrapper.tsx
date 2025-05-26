@@ -16,14 +16,13 @@ type Props = {
   i18n: {
     header: {
       round: string;
+      copy: string;
     };
     toolbar: {
+      next: string;
       reveal: string;
-      delete: string;
       restart: string;
-      leave: string;
-      invite: string;
-      history: string;
+      delete: string;
     };
   };
 };
@@ -61,7 +60,7 @@ export const RoomWrapper: React.FC<Props> = (props) => {
       {isAdmin && (
         <Toolbar
           i18n={i18n.toolbar}
-          roomUUID={room.uuid}
+          room={room}
           setRoom={setRoom}
           setUsersList={setUsersList}
         />

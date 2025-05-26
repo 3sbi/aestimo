@@ -19,11 +19,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "Something went wrong" }, { status: 422 });
     }
     const session = await getSession();
-    session.userRole = res.user.role;
-    session.userName = res.user.name;
     session.userUUID = res.user.uuid;
-
-    session.roomName = res.room.name;
     session.roomUUID = res.room.uuid;
     await session.save();
 

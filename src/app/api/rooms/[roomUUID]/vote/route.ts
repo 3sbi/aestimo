@@ -1,7 +1,7 @@
 import { CreateVoteDtoSchema } from "@/backend/dtos/CreateVoteDtoSchema";
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
-import { VoteCard } from "@/backend/types";
+import { Vote, VoteCard } from "@/backend/types";
 
 export async function POST(
   request: Request,
@@ -19,24 +19,19 @@ export async function POST(
     }
 
     const voteTypes = await roomsService.getVoteTypes(roomUUID);
-    const vote: VoteCard | undefined = voteTypes.values[data.voteIndex];
+    const voteValue: VoteCard | undefined = voteTypes.values[data.voteIndex];
 
-    if (!vote) {
+    if (!voteValue) {
       return Response.json({ error: "Vote not found" }, { status: 404 });
     }
 
-    const room = await roomsService.getOne(roomUUID);
-    if (!room) {
-      return Response.json({ error: "Room not found" }, { status: 404 });
-    }
+    const { room, user } = await usersService.checkIfUserExistsInRoom(
+      roomUUID,
+      userUUID
+    );
 
-    const user = await usersService.getOne(userUUID);
-    if (!user) {
-      return Response.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const result: boolean = await roomsService.addVote(room.id, user.id, vote);
-    return Response.json({ success: result });
+    const vote: Vote = await roomsService.addVote(room, user.id, voteValue);
+    return Response.json({ success: !!vote });
   } catch (error) {
     console.log(error);
     return Response.json({ error }, { status: 500 });

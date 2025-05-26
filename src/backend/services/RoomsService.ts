@@ -9,7 +9,8 @@ import {
   VoteRepository,
   VoteTypeRepository,
 } from "@/backend/repositories";
-import { Room, User, VoteCard, VoteType } from "@/backend/types";
+import { Room, User, Vote, VoteCard, VoteType } from "@/backend/types";
+import { VoteNotFoundError } from "@/backend/errors/Vote";
 
 class RoomsService {
   async getOne(uuid: string): Promise<Room> {
@@ -105,13 +106,19 @@ class RoomsService {
     return room;
   }
 
-  async addVote(
-    roomId: number,
-    userId: number,
-    value: VoteCard
-  ): Promise<boolean> {
-    const vote = await VoteRepository.create(roomId, userId, value);
-    return !!vote;
+  async addVote(room: Room, userId: number, value: VoteCard): Promise<Vote> {
+    const existingVote = await VoteRepository.getOne(room.id, room.round);
+    if (existingVote) {
+      const vote = VoteRepository.update(existingVote.id, value);
+      if (!vote) {
+        throw new VoteNotFoundError();
+      }
+    }
+    const vote = await VoteRepository.create(room.id, userId, value);
+    if (!vote) {
+      throw new VoteNotFoundError();
+    }
+    return vote;
   }
 
   async restart(uuid: string): Promise<Room> {

@@ -1,11 +1,12 @@
 import "server-only";
 
+import { UserRepository } from "@/backend/repositories";
+import { getSession } from "@/backend/session";
+import { Room, User } from "@/backend/types";
 import JoinRoomForm from "@/components/widgets/JoinRoomForm";
 import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
 import { cookies } from "next/headers";
-import { getSession } from "@/backend/session";
-import { usersService } from "@/backend/services";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 
 type Props = {
   params: Promise<{ roomUUID: string }>;
@@ -14,14 +15,12 @@ type Props = {
 export default async function Page(props: Props) {
   const { roomUUID } = await props.params;
   const session = await getSession();
+  const res = await UserRepository.getByUUID(session.userUUID);
+  const user: User | undefined = res?.users;
+  const room: Room | undefined | null = res?.rooms;
 
-  try {
-    const user = await usersService.getOne(session.userUUID);
-    if (user && session.roomUUID === roomUUID) {
-      redirect(`/rooms/${roomUUID}`);
-    }
-  } catch (err) {
-    console.error(err);
+  if (session.userUUID === user?.uuid && session.roomUUID === room?.uuid) {
+    redirect(`/rooms/${roomUUID}`, RedirectType.replace);
   }
 
   const cookieStore = await cookies();

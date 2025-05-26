@@ -11,23 +11,28 @@ import { Room, User } from "../types";
 
 class UsersService {
   async getOne(userUUID: string): Promise<User> {
-    const user = await UserRepository.getByUUID(userUUID);
-    if (!user) {
+    const res = await UserRepository.getByUUID(userUUID);
+    if (!res || !res.users) {
       throw new UserNotFoundError();
     }
-    return user;
+    return res.users;
   }
 
   async checkIfUserExistsInRoom(
     roomUUID: string,
     userUUID: string
-  ): Promise<{ user?: User; room?: Room }> {
+  ): Promise<{ user: User; room: Room }> {
     const room = await RoomRepository.getByUUID(roomUUID);
     if (!room) {
       throw new RoomNotFoundError();
     }
+
     const users = await UserRepository.getAllByRoomId(room.id);
     const user = users.find((user) => user.uuid === userUUID);
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+
     return { user, room };
   }
 

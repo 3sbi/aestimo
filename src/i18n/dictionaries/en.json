@@ -22,14 +22,15 @@
 
   "room": {
     "header": {
-      "round": "Round"
+      "round": "Round",
+      "copy": "Copy",
+      "leave": "Leave"
     },
     "toolbar": {
+      "next": "Next round",
       "reveal": "Reveal",
-      "delete": "Delete",
       "restart": "Restart round",
-      "leave": "Leave",
-      "invite": "Invite",
+      "delete": "Delete",
       "history": "History"
     }
   }

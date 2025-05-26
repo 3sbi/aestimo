@@ -8,7 +8,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "PlanPoker.net",
+  title: "planpoker.net",
 };
 
 export default function RootLayout({

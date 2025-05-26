@@ -38,11 +38,7 @@ export async function POST(
     }
 
     const session = await getSession();
-    session.userRole = user.role;
-    session.userName = user.name;
     session.userUUID = user.uuid;
-
-    session.roomName = room.name;
     session.roomUUID = room.uuid;
     await session.save();
 
