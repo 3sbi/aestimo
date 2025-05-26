@@ -2,17 +2,22 @@ import "server-only";
 
 import { CreateRoomDto } from "@/backend/dtos/CreateRoomDtoSchema";
 import { JoinRoomDto } from "@/backend/dtos/JoinRoomDtoSchema";
+import { RoomIsPrivateError, RoomNotFoundError } from "@/backend/errors/Rooms";
 import {
   RoomRepository,
   UserRepository,
   VoteRepository,
   VoteTypeRepository,
 } from "@/backend/repositories";
-import { Room, User, VoteCard } from "@/backend/types";
+import { Room, User, VoteCard, VoteType } from "@/backend/types";
 
 class RoomsService {
-  async getOne(uuid: string): Promise<Room | null> {
-    return RoomRepository.getByUUID(uuid);
+  async getOne(uuid: string): Promise<Room> {
+    const room = await RoomRepository.getByUUID(uuid);
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
+    return room;
   }
 
   async createRoom(values: CreateRoomDto): Promise<{ room: Room; user: User }> {
@@ -23,22 +28,24 @@ class RoomsService {
       name,
       voteTypeId: voteType.id,
     });
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
 
     const user = await UserRepository.create({
       roomId: room.id,
       name: username,
       role: "admin",
     });
+
     return { room, user };
   }
 
-  async joinRoom(
-    values: JoinRoomDto
-  ): Promise<{ room: Room; user?: User } | null> {
+  async joinRoom(values: JoinRoomDto): Promise<{ room: Room; user?: User }> {
     const { roomUUID, username } = values;
     const room = await this.getOne(roomUUID);
-    if (!room) return null;
-    if (room.private) return { room };
+    if (!room) throw new RoomNotFoundError();
+    if (room.private) throw new RoomIsPrivateError();
 
     const user = await UserRepository.create({
       roomId: room.id,
@@ -53,7 +60,6 @@ class RoomsService {
     round: number
   ): Promise<{ id: number; name: string; voted: boolean }[]> {
     const users = await UserRepository.getAllByRoomId(roomId);
-
     const usersList: { id: number; name: string; voted: boolean }[] = [];
     const votes = await VoteRepository.getAllRoundVotes(roomId, round);
     for (const user of users) {
@@ -61,13 +67,15 @@ class RoomsService {
         votes.find((vote) => vote.userId === user.id) !== undefined;
       usersList.push({ id: user.id, name: user.name, voted });
     }
-
     return usersList;
   }
 
-  async getVoteTypes(roomUUID: string) {
-    const { votyTypeId } = await RoomRepository.getByUUID(roomUUID);
-    const voteType = await VoteTypeRepository.getById(votyTypeId);
+  async getVoteTypes(roomUUID: string): Promise<VoteType> {
+    const room = await RoomRepository.getByUUID(roomUUID);
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
+    const voteType = await VoteTypeRepository.getById(room.votyTypeId);
     return voteType;
   }
 
@@ -75,17 +83,25 @@ class RoomsService {
     roomUUID: string
   ): Promise<{ userId: number; name: string | null; value: VoteCard }[]> {
     const room = await RoomRepository.update(roomUUID, { status: "finished" });
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
     const votes = await VoteRepository.getAllRoundVotes(room.id, room.round);
     return votes;
   }
 
-  async goToNextRound(uuid: string) {
+  async goToNextRound(uuid: string): Promise<Room> {
     const item = await RoomRepository.getByUUID(uuid);
+    if (!item) {
+      throw new RoomNotFoundError();
+    }
     const room = await RoomRepository.update(uuid, {
       round: item.round + 1,
       status: "started",
     });
-
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
     return room;
   }
 
@@ -100,12 +116,18 @@ class RoomsService {
 
   async restart(uuid: string): Promise<Room> {
     const room = await RoomRepository.update(uuid, { status: "started" });
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
     await VoteRepository.deleteAll(room.id, room.round);
     return room;
   }
 
   async changeRoomPrivacy(uuid: string, newPrivate: boolean) {
     const room = await RoomRepository.update(uuid, { private: newPrivate });
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
     return room;
   }
 

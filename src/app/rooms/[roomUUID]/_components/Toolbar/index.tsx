@@ -1,8 +1,11 @@
 "use client";
 
-import { ClientRoom, ClientUser, User } from "@/backend/types";
+import { ClientRoom, ClientUser } from "@/backend/types";
+import { api } from "@/lib/api";
+import { EyeIcon, RotateCcwIcon, Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import styles from "./Toolbar.module.css";
 
 type Props = {
   roomUUID: string;
@@ -14,7 +17,6 @@ type Props = {
     invite: string;
     history: string;
   };
-  role: User["role"];
   setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
   setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
 };
@@ -22,7 +24,6 @@ type Props = {
 const Toolbar: React.FC<Props> = ({
   roomUUID,
   i18n,
-  role,
   setRoom,
   setUsersList,
 }) => {
@@ -30,9 +31,7 @@ const Toolbar: React.FC<Props> = ({
 
   async function onClickRestart() {
     try {
-      const res = await fetch(`/api/rooms/${roomUUID}/restart`, {
-        method: "POST",
-      });
+      const res = await api.post(`/api/rooms/${roomUUID}/restart`);
       const { room }: { room: ClientRoom } = await res.json();
       setRoom(room);
     } catch (err) {
@@ -42,9 +41,7 @@ const Toolbar: React.FC<Props> = ({
 
   async function onClickReveal() {
     try {
-      const res = await fetch(`/api/rooms/${roomUUID}/reveal`, {
-        method: "POST",
-      });
+      const res = await api.post(`/api/rooms/${roomUUID}/reveal`);
       const json: ClientUser[] = await res.json();
       setUsersList(json);
     } catch (err) {
@@ -54,40 +51,31 @@ const Toolbar: React.FC<Props> = ({
 
   async function onClickDelete() {
     try {
-      const res = await fetch(`/api/rooms/${roomUUID}`, { method: "DELETE" });
+      const res = await api.post(`/api/rooms/${roomUUID}`);
       if (res.ok) router.replace("/");
     } catch (err) {
       console.error(err);
     }
   }
 
-  function onClickInvite() {
-    navigator.clipboard.writeText(`${window.location.href}/join`);
-  }
-
-  const isAdmin: boolean = role === "admin";
   return (
-    <header className="toolbar">
-      {isAdmin && (
+    <div className={styles.toolbarWrapper}>
+      <div className={styles.toolbar}>
         <button className="btn" onClick={onClickReveal}>
+          <EyeIcon />
           {i18n.reveal}
         </button>
-      )}
-      {isAdmin && (
         <button className="btn" onClick={onClickRestart}>
+          <RotateCcwIcon />
           {i18n.restart}
         </button>
-      )}
-      {isAdmin && (
         <button className="btn" onClick={onClickDelete}>
+          <Trash2Icon />
           {i18n.delete}
         </button>
-      )}
-      <button className="btn" onClick={onClickInvite}>
-        {i18n.invite}
-      </button>
-    </header>
+      </div>
+    </div>
   );
 };
 
-export default Toolbar;
+export { Toolbar };

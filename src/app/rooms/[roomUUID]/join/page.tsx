@@ -5,6 +5,7 @@ import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
 import { cookies } from "next/headers";
 import { getSession } from "@/backend/session";
 import { usersService } from "@/backend/services";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: Promise<{ roomUUID: string }>;
@@ -14,8 +15,13 @@ export default async function Page(props: Props) {
   const { roomUUID } = await props.params;
   const session = await getSession();
 
-  const user = await usersService.getOne(session.userUUID);
-  if (user && session.roomUUID === roomUUID) {
+  try {
+    const user = await usersService.getOne(session.userUUID);
+    if (user && session.roomUUID === roomUUID) {
+      redirect(`/rooms/${roomUUID}`);
+    }
+  } catch (err) {
+    console.error(err);
   }
 
   const cookieStore = await cookies();

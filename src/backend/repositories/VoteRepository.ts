@@ -1,14 +1,17 @@
 import { db, usersTable, votesTable } from "@/backend";
-import type { VoteCard } from "@/backend/types";
+import type { Vote, VoteCard } from "@/backend/types";
 import { and, eq } from "drizzle-orm";
 
 class VoteRepository {
-  static async create(roomId: number, userId: number, value: VoteCard) {
+  static async create(
+    roomId: number,
+    userId: number,
+    value: VoteCard
+  ): Promise<Vote | undefined> {
     const vote = await db
       .insert(votesTable)
       .values({ roomId, userId, value })
       .returning();
-
     return vote.pop();
   }
 
@@ -32,7 +35,6 @@ class VoteRepository {
     await db
       .delete(votesTable)
       .where(and(eq(votesTable.roomId, roomId), eq(votesTable.round, round)));
-
     return true;
   }
 }

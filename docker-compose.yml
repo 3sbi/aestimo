@@ -1,7 +1,7 @@
 services:
-  planpoker_app:
+  planpoker_web:
     build: .
-    container_name: planpoker-app
+    container_name: planpoker-web
     restart: always
     ports:
       - "8080:8080"

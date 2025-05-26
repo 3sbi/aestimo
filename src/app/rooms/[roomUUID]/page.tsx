@@ -36,6 +36,7 @@ export default async function Page({ params }: Props) {
 
   const { values } = await roomsService.getVoteTypes(roomUUID);
   const usersList = await roomsService.getUsers(room.id, room.round);
+  const index = await usersService.getVoteIndex(user.id, room.id, room.round);
 
   return (
     <RoomWrapper
@@ -44,6 +45,7 @@ export default async function Page({ params }: Props) {
       cards={values}
       user={{ id: user.id, role: user.role }}
       i18n={dictionary.room}
+      initialSelectedIndex={index}
     />
   );
 }

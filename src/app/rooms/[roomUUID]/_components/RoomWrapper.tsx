@@ -3,12 +3,14 @@
 import type { ClientRoom, ClientUser, User, VoteCard } from "@/backend/types";
 import React, { useState } from "react";
 import CardsHand from "./CardsHand";
-import Toolbar from "./Toolbar";
+import { Header } from "./Header";
+import { Toolbar } from "./Toolbar";
 import UsersList from "./UsersList";
 
 type Props = {
   initialRoom: ClientRoom;
   initialUsersList: ClientUser[];
+  initialSelectedIndex: number | null;
   cards: VoteCard[];
   user: Pick<User, "id" | "role">;
   i18n: {
@@ -43,28 +45,27 @@ export const RoomWrapper: React.FC<Props> = (props) => {
   };
 
   const i18n = props.i18n;
+  const isAdmin: boolean = props.user.role === "admin";
   return (
-    <>
-      <div className="card flex gap-1">
-        <h2>{room.name}</h2>|
-        <div>
-          {i18n.header.round}:{room.round}
-        </div>
-      </div>
+    <div className="room">
+      <Header room={room} i18n={i18n.header} />
       <UsersList usersList={usersList} />
       <CardsHand
         cards={props.cards}
         roomUUID={room.uuid}
         userId={props.user.id}
         setVoted={setVoted}
+        initialSelectedIndex={props.initialSelectedIndex}
       />
-      <Toolbar
-        i18n={i18n.toolbar}
-        role={props.user.role}
-        roomUUID={room.uuid}
-        setRoom={setRoom}
-        setUsersList={setUsersList}
-      />
-    </>
+
+      {isAdmin && (
+        <Toolbar
+          i18n={i18n.toolbar}
+          roomUUID={room.uuid}
+          setRoom={setRoom}
+          setUsersList={setUsersList}
+        />
+      )}
+    </div>
   );
 };

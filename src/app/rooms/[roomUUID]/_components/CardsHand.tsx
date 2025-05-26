@@ -1,7 +1,8 @@
 "use client";
 
 import { VoteCard } from "@/backend/types";
-import { Card } from "@/components/Card";
+import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 
 type Props = {
@@ -9,22 +10,25 @@ type Props = {
   roomUUID: string;
   userId: number;
   setVoted: (voted: boolean) => void;
+  initialSelectedIndex: number | null;
 };
 
-const CardsHand: React.FC<Props> = ({ cards, roomUUID, setVoted }) => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+const CardsHand: React.FC<Props> = ({
+  cards,
+  roomUUID,
+  setVoted,
+  initialSelectedIndex,
+}) => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(
+    initialSelectedIndex
+  );
 
-  const onClick = async (value: string, index: number) => {
+  const onClick = async (index: number) => {
     if (index === selectedIndex) return;
 
     try {
-      const res = await fetch(`/api/${roomUUID}/vote`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({ value }),
-      });
+      const body = { voteIndex: index };
+      const res = await api.post(`/api/rooms/${roomUUID}/vote`, body);
       const json: { success: boolean } = await res.json();
       if (json.success) {
         setVoted(true);
@@ -36,17 +40,25 @@ const CardsHand: React.FC<Props> = ({ cards, roomUUID, setVoted }) => {
   };
 
   return (
-    <div className="flex gap-1 flex-wrap">
-      {cards.map((card, index) => (
-        <Card
-          key={card.label}
-          color={card.color}
-          onClick={(value) => onClick(value, index)}
-          selected={index === selectedIndex}
-        >
-          {card.label}
-        </Card>
-      ))}
+    <div className="flex items-center gap-4 flex-wrap m-auto">
+      {cards.map((card, index) => {
+        const { color, value } = card;
+        const selected: boolean = index === selectedIndex;
+        return (
+          <div
+            key={value}
+            className={cn(
+              "px-6 py-8 border-1 rounded-lg cursor-pointer font-bold text-4xl",
+              selected ? "-translate-y-2" : ""
+            )}
+            title={value}
+            style={{ backgroundColor: color }}
+            onClick={() => onClick(index)}
+          >
+            {value}
+          </div>
+        );
+      })}
     </div>
   );
 };

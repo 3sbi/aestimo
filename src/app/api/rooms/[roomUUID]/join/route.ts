@@ -11,8 +11,11 @@ export async function POST(
   try {
     const req = await request.json();
     const { roomUUID } = await params;
-    req.roomUUID = roomUUID;
-    const { success, data, error } = JoinRoomDtoSchema.safeParse(req);
+
+    const { success, data, error } = JoinRoomDtoSchema.safeParse({
+      roomUUID,
+      username: req.username,
+    });
 
     if (!success) {
       console.log(error.message);

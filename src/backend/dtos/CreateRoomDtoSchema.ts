@@ -6,7 +6,7 @@ export const CreateRoomDtoSchema = z.object({
   voteOptions: z.array(
     z.object({
       color: z.string(),
-      label: z.string(),
+      value: z.string(),
     })
   ),
 });

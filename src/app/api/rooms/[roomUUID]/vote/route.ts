@@ -1,6 +1,7 @@
 import { CreateVoteDtoSchema } from "@/backend/dtos/CreateVoteDtoSchema";
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
+import { VoteCard } from "@/backend/types";
 
 export async function POST(
   request: Request,
@@ -18,7 +19,11 @@ export async function POST(
     }
 
     const voteTypes = await roomsService.getVoteTypes(roomUUID);
-    const vote = voteTypes.values[data.voteIndex];
+    const vote: VoteCard | undefined = voteTypes.values[data.voteIndex];
+
+    if (!vote) {
+      return Response.json({ error: "Vote not found" }, { status: 404 });
+    }
 
     const room = await roomsService.getOne(roomUUID);
     if (!room) {

@@ -3,6 +3,7 @@
 import type { DefinedVoteType } from "@/backend/consts/predefinedVoteTypes";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import { api } from "@/lib/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -29,7 +30,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   );
 
   const getLabel = (option: DefinedVoteType): string => {
-    return `${option.name} (${option.values.map((o) => o.label).join(", ")})`;
+    return `${option.name} (${option.values.map((o) => o.value).join(", ")})`;
   };
 
   const onFinish = async () => {
@@ -46,10 +47,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
           voteOptions: options?.values,
         };
 
-        const res = await fetch("/api/rooms", {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
+        const res = await api.post("/api/rooms", values);
         if (res.ok) {
           const { roomUUID }: Response = await res.json();
           router.replace(`/rooms/${roomUUID}`);

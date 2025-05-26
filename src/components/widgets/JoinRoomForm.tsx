@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import { api } from "@/lib/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -21,11 +22,7 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomUUID }) => {
   const onFinish = async () => {
     setLoading(true);
     try {
-      const body = JSON.stringify({ username });
-      const res = await fetch(`/api/rooms/${roomUUID}/join`, {
-        method: "POST",
-        body,
-      });
+      const res = await api.post(`/api/rooms/${roomUUID}/join`, { username });
       const result: Response = await res.json();
       if (result.success) router.replace(`/rooms/${roomUUID}`);
     } catch (err) {

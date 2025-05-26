@@ -1,24 +1,28 @@
 import { db, roomsTable } from "@/backend";
 import { and, eq, sql } from "drizzle-orm";
+import { Room } from "../types";
 
 class RoomRepository {
-  static async getByUUID(uuid: string) {
+  static async getByUUID(uuid: string): Promise<Room | undefined> {
     const res = await db
       .select()
       .from(roomsTable)
       .where(and(eq(roomsTable.uuid, uuid), eq(roomsTable.private, false)));
 
-    const room = res[0];
+    const room = res.pop();
     return room;
   }
 
-  static async getById(id: number) {
+  static async getById(id: number): Promise<Room | undefined> {
     const res = await db.select().from(roomsTable).where(eq(roomsTable.id, id));
     const room = res[0];
     return room;
   }
 
-  static async create(dto: { name: string; voteTypeId: number }) {
+  static async create(dto: {
+    name: string;
+    voteTypeId: number;
+  }): Promise<Room | undefined> {
     const res = await db
       .insert(roomsTable)
       .values({
@@ -35,7 +39,7 @@ class RoomRepository {
   static async update(
     uuid: string,
     values: Partial<typeof roomsTable.$inferSelect>
-  ) {
+  ): Promise<Room | undefined> {
     const res = await db
       .update(roomsTable)
       .set({

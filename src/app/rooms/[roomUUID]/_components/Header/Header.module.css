@@ -1,0 +1,15 @@
+.roomHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  color: var(--card-foreground);
+  border-width: 1px;
+  padding: 24px;
+  box-shadow: var(--box-shadow);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  min-width: 600px;
+  width: min-content;
+  margin: 0px auto;
+}
