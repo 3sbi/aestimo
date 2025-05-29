@@ -1,5 +1,6 @@
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
+import { broadcast } from "../route";
 
 // only admin can hit this endpoint
 export async function POST(
@@ -23,6 +24,8 @@ export async function POST(
   if (!isAdmin) {
     return Response.json({ error: "Not admin" }, { status: 403 });
   }
+
   const result = await roomsService.openCards(roomUUID);
+  broadcast({ type: "reveal", data: result });
   return Response.json(result);
 }

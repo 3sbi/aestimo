@@ -1,11 +1,12 @@
 "use client";
 
 import type { ClientRoom, ClientUser, User, VoteCard } from "@/backend/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CardsHand from "./CardsHand";
 import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
 import UsersList from "./UsersList";
+import { Toaster, toast } from "sonner";
 
 type Props = {
   initialRoom: ClientRoom;
@@ -33,6 +34,23 @@ export const RoomWrapper: React.FC<Props> = (props) => {
     props.initialUsersList
   );
 
+  useEffect(() => {
+    const eventSource = new EventSource(`/api/rooms/${props.initialRoom.uuid}`);
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      toast.info(event.data);
+    };
+
+    eventSource.onerror = () => {
+      toast.warning("SSE connection lost, reconnecting...");
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [room.uuid]);
+
   const setVoted = (voted: boolean) => {
     setUsersList((prev) => {
       const index = prev.findIndex((user) => user.id === props.user.id);
@@ -47,6 +65,7 @@ export const RoomWrapper: React.FC<Props> = (props) => {
   const isAdmin: boolean = props.user.role === "admin";
   return (
     <div className="room">
+      <Toaster />
       <Header room={room} i18n={i18n.header} />
       <UsersList usersList={usersList} />
       <CardsHand

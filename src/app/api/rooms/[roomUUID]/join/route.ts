@@ -3,6 +3,8 @@ import "server-only";
 import { JoinRoomDtoSchema } from "@/backend/dtos/JoinRoomDtoSchema";
 import { roomsService } from "@/backend/services";
 import { getSession } from "@/backend/session";
+import { broadcast } from "../route";
+import { ClientUser } from "@/backend/types";
 
 export async function POST(
   request: Request,
@@ -42,6 +44,12 @@ export async function POST(
     session.roomUUID = room.uuid;
     await session.save();
 
+    const joinedUser: ClientUser = {
+      id: user.id,
+      name: user.name,
+      voted: false,
+    };
+    broadcast({ type: "join", data: joinedUser });
     return Response.json({ success: true });
   } catch (error) {
     console.log(error);

@@ -30,22 +30,24 @@ const Header: React.FC<Props> = ({ i18n, room }) => {
   }
 
   return (
-    <header className={styles.roomHeader}>
-      <h2>{room.name}</h2>
-      <div>
-        {i18n.round}:{room.round}
-      </div>
-      <div>
-        <button
-          className="btn"
-          style={{ padding: "8px" }}
-          onClick={onClickInvite}
-          title={i18n.copy}
-        >
-          {clicked ? <CheckIcon /> : <Link2Icon />}
-        </button>
-      </div>
-    </header>
+    <>
+      <header className={styles.roomHeader}>
+        <h2>{room.name}</h2>
+        <div>
+          {i18n.round}:{room.round}
+        </div>
+        <div>
+          <button
+            className="btn"
+            style={{ padding: "8px" }}
+            onClick={onClickInvite}
+            title={i18n.copy}
+          >
+            {clicked ? <CheckIcon /> : <Link2Icon />}
+          </button>
+        </div>
+      </header>
+    </>
   );
 };
 

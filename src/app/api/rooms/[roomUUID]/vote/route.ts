@@ -1,7 +1,8 @@
 import { CreateVoteDtoSchema } from "@/backend/dtos/CreateVoteDtoSchema";
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
-import { Vote, VoteCard } from "@/backend/types";
+import { ClientUser, Vote, VoteCard } from "@/backend/types";
+import { broadcast } from "../route";
 
 export async function POST(
   request: Request,
@@ -31,6 +32,14 @@ export async function POST(
     );
 
     const vote: Vote = await roomsService.addVote(room, user.id, voteValue);
+
+    const votedUser: ClientUser = {
+      id: user.id,
+      name: user.name,
+      voted: true,
+    };
+    broadcast({ type: "voted", data: votedUser });
+
     return Response.json({ success: !!vote });
   } catch (error) {
     console.log(error);

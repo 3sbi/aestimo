@@ -53,7 +53,7 @@ const CardsHand: React.FC<Props> = ({
           <div
             key={value}
             className={cn(
-              "px-6 py-8 border-2 rounded-lg cursor-pointer font-bold text-4xl shadow-md transition",
+              "px-6 py-8 border-2 rounded-lg cursor-pointer font-bold text-4xl shadow-md transition text-black",
               selected ? "-translate-y-4" : ""
             )}
             title={value}

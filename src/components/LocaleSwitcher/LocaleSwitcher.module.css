@@ -1,0 +1,7 @@
+.languageSwitcher {
+}
+
+.languageOption {
+  display: flex;
+  align-items: center;
+}

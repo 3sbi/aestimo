@@ -18,3 +18,12 @@ export const getDictionary = (locale: string) => {
   }
   return dictionaries[i18nConfig.defaultLocale];
 };
+
+export const getLanguageNames = (): Record<string, string> => {
+  const languageNames: Record<string, string> = {};
+  for (const locale of i18nConfig.locales) {
+    const dictionary = getDictionary(locale);
+    languageNames[locale] = dictionary.language;
+  }
+  return languageNames;
+};
