@@ -1,5 +1,5 @@
-import { db, voteTypesTable } from "@/backend";
-import type { VoteCard } from "@/backend/types";
+import { db, voteTypesTable } from "@/backend/db";
+import type { VoteCard } from "@/types";
 import { eq, sql } from "drizzle-orm";
 
 class VoteTypeRepository {

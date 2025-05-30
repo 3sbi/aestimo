@@ -1,10 +1,11 @@
 import "server-only";
 
 import { JoinRoomDtoSchema } from "@/backend/dtos/JoinRoomDtoSchema";
+import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
+import emitter from "@/backend/eventEmitter";
 import { roomsService } from "@/backend/services";
 import { getSession } from "@/backend/session";
-import { broadcast } from "../route";
-import { ClientUser } from "@/backend/types";
+import { ClientUser } from "@/types";
 
 export async function POST(
   request: Request,
@@ -49,10 +50,15 @@ export async function POST(
       name: user.name,
       voted: false,
     };
-    broadcast({ type: "join", data: joinedUser });
+
+    emitter.emit("join", { type: "join", data: joinedUser });
     return Response.json({ success: true });
-  } catch (error) {
-    console.log(error);
-    return Response.json({ error }, { status: 500 });
+  } catch (err) {
+    console.error(err);
+    if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
+      return Response.json({ error: err.message }, { status: 404 });
+    }
+
+    return Response.json({ error: err }, { status: 500 });
   }
 }

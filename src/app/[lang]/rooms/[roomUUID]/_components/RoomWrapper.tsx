@@ -1,12 +1,21 @@
 "use client";
 
-import type { ClientRoom, ClientUser, User, VoteCard } from "@/backend/types";
-import React, { createContext, useEffect, useState } from "react";
+import type { ClientRoom, ClientUser, User, VoteCard } from "@/types";
+import React, { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner";
 import CardsHand from "./CardsHand";
 import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
 import UsersList from "./UsersList";
-import { Toaster, toast } from "sonner";
+
+type EventData =
+  | { type: "vote"; data: ClientUser }
+  | {
+      type: "reveal";
+      data: { userId: number; name: string | null; vote: VoteCard }[];
+    }
+  | { type: "restart"; data: { room: ClientRoom; users: ClientUser[] } }
+  | { type: "join"; data: ClientUser };
 
 type Props = {
   initialRoom: ClientRoom;
@@ -28,17 +37,48 @@ type Props = {
   };
 };
 
-export const RoomWrapper: React.FC<Props> = (props) => {
-  const [room, setRoom] = useState<ClientRoom>(props.initialRoom);
-  const [usersList, setUsersList] = useState<ClientUser[]>(
-    props.initialUsersList
+export const RoomWrapper: React.FC<Props> = ({
+  initialRoom,
+  initialSelectedIndex,
+  initialUsersList,
+  i18n,
+  cards,
+  user,
+}) => {
+  const [room, setRoom] = useState<ClientRoom>(initialRoom);
+  const [usersList, setUsersList] = useState<ClientUser[]>(initialUsersList);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(
+    initialSelectedIndex
   );
 
   useEffect(() => {
-    const eventSource = new EventSource(`/api/rooms/${props.initialRoom.uuid}`);
+    const eventSource = new EventSource(`/api/rooms/${room.uuid}/events`);
 
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      const { type, data }: EventData = JSON.parse(event.data);
+      if (type === "vote") {
+        setUsersList((prev) => {
+          const index = prev.findIndex((user) => user.id === data.id);
+          prev[index].voted = true;
+          return [...prev];
+        });
+      } else if (type === "reveal") {
+        const newUsersList: ClientUser[] = [];
+        for (const user of usersList) {
+          const vote = data.find((vote) => vote.userId === user.id)?.vote;
+          newUsersList.push({
+            ...user,
+            vote,
+            voted: true,
+          });
+        }
+        setUsersList(newUsersList);
+      } else if (type === "restart") {
+        setRoom(data.room);
+        setUsersList(data.users);
+      } else if (type === "join") {
+        setUsersList([...usersList, data]);
+      }
       toast.info(event.data);
     };
 
@@ -53,7 +93,7 @@ export const RoomWrapper: React.FC<Props> = (props) => {
 
   const setVoted = (voted: boolean) => {
     setUsersList((prev) => {
-      const index = prev.findIndex((user) => user.id === props.user.id);
+      const index = prev.findIndex((user) => user.id === user.id);
       if (index !== -1) {
         prev[index].voted = voted;
       }
@@ -61,19 +101,19 @@ export const RoomWrapper: React.FC<Props> = (props) => {
     });
   };
 
-  const i18n = props.i18n;
-  const isAdmin: boolean = props.user.role === "admin";
+  const isAdmin: boolean = user.role === "admin";
   return (
     <div className="room">
       <Toaster />
       <Header room={room} i18n={i18n.header} />
-      <UsersList usersList={usersList} />
+      <UsersList usersList={usersList} currentUserId={user.id} />
       <CardsHand
-        cards={props.cards}
+        cards={cards}
         roomUUID={room.uuid}
-        userId={props.user.id}
+        userId={user.id}
         setVoted={setVoted}
-        initialSelectedIndex={props.initialSelectedIndex}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
       />
 
       {isAdmin && (
@@ -82,6 +122,7 @@ export const RoomWrapper: React.FC<Props> = (props) => {
           room={room}
           setRoom={setRoom}
           setUsersList={setUsersList}
+          setSelectedIndex={setSelectedIndex}
         />
       )}
     </div>

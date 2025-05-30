@@ -18,7 +18,7 @@ export const usersTable = pgTable("users", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   name: varchar("name", { length: 256 }).notNull(),
   roomId: integer("room_id")
-    .references(() => roomsTable.id)
+    .references(() => roomsTable.id, { onDelete: "cascade" })
     .notNull(),
   role: rolesEnum().notNull().default("basic"),
   uuid: uuid()

@@ -1,7 +1,7 @@
 "use client";
 
-import { ClientRoom } from "@/backend/types";
 import { Button } from "@/components/Button";
+import { ClientRoom } from "@/types";
 import { CheckIcon, Link2Icon } from "lucide-react";
 import { useState } from "react";
 import styles from "./Header.module.css";

@@ -1,16 +1,18 @@
 import "server-only";
 
-import { CreateRoomDto } from "@/backend/dtos/CreateRoomDtoSchema";
-import { JoinRoomDto } from "@/backend/dtos/JoinRoomDtoSchema";
-import { RoomIsPrivateError, RoomNotFoundError } from "@/backend/errors/Rooms";
+import { CreateRoomDto, JoinRoomDto } from "@/backend/dtos";
+import {
+  RoomIsPrivateError,
+  RoomNotFoundError,
+  VoteNotFoundError,
+} from "@/backend/errors";
 import {
   RoomRepository,
   UserRepository,
   VoteRepository,
   VoteTypeRepository,
 } from "@/backend/repositories";
-import { Room, User, Vote, VoteCard, VoteType } from "@/backend/types";
-import { VoteNotFoundError } from "@/backend/errors/Vote";
+import { ClientUser, Room, User, Vote, VoteCard, VoteType } from "@/types";
 
 class RoomsService {
   async getOne(uuid: string): Promise<Room> {
@@ -56,17 +58,14 @@ class RoomsService {
     return { room, user };
   }
 
-  async getUsers(
-    roomId: number,
-    round: number
-  ): Promise<{ id: number; name: string; voted: boolean }[]> {
+  async getUsers(roomId: number, round: number): Promise<ClientUser[]> {
     const users = await UserRepository.getAllByRoomId(roomId);
-    const usersList: { id: number; name: string; voted: boolean }[] = [];
+    const usersList: ClientUser[] = [];
     const votes = await VoteRepository.getAllRoundVotes(roomId, round);
     for (const user of users) {
       const voted: boolean =
         votes.find((vote) => vote.userId === user.id) !== undefined;
-      usersList.push({ id: user.id, name: user.name, voted });
+      usersList.push({ id: user.id, name: user.name, role: user.role, voted });
     }
     return usersList;
   }
@@ -82,12 +81,18 @@ class RoomsService {
 
   async openCards(
     roomUUID: string
-  ): Promise<{ userId: number; name: string | null; value: VoteCard }[]> {
+  ): Promise<{ userId: number; name: string | null; vote: VoteCard }[]> {
     const room = await RoomRepository.update(roomUUID, { status: "finished" });
     if (!room) {
       throw new RoomNotFoundError();
     }
     const votes = await VoteRepository.getAllRoundVotes(room.id, room.round);
+    return votes;
+  }
+
+  /* for finished round */
+  async getVotes(roomId: number, round: number) {
+    const votes = await VoteRepository.getAllRoundVotes(roomId, round);
     return votes;
   }
 
@@ -109,10 +114,11 @@ class RoomsService {
   async addVote(room: Room, userId: number, value: VoteCard): Promise<Vote> {
     const existingVote = await VoteRepository.getOne(room.id, room.round);
     if (existingVote) {
-      const vote = VoteRepository.update(existingVote.id, value);
+      const vote = await VoteRepository.update(existingVote.id, value);
       if (!vote) {
         throw new VoteNotFoundError();
       }
+      return vote;
     }
     const vote = await VoteRepository.create(room.id, userId, value);
     if (!vote) {

@@ -19,7 +19,7 @@ export const roomsTable = pgTable("rooms", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   name: varchar({ length: 255 }).notNull(),
   votyTypeId: integer("vote_type_id")
-    .references(() => voteTypesTable.id)
+    .references(() => voteTypesTable.id, { onDelete: "cascade" })
     .notNull(),
   uuid: uuid()
     .unique()

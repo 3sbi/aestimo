@@ -1,7 +1,6 @@
-import { db, roomsTable, usersTable } from "@/backend";
-import { CreateUserDto } from "@/backend/dtos/CreateUserDtoSchema";
+import { db, roomsTable, usersTable } from "@/backend/db";
 import { eq, sql } from "drizzle-orm";
-
+import { CreateUserDto } from "../dtos/CreateUserDtoSchema";
 
 class UserRepository {
   static async create(dto: CreateUserDto) {

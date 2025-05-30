@@ -1,5 +1,5 @@
-import { db, usersTable, votesTable } from "@/backend";
-import type { Vote, VoteCard } from "@/backend/types";
+import { db, usersTable, votesTable } from "@/backend/db";
+import type { Vote, VoteCard } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 
 class VoteRepository {
@@ -38,12 +38,12 @@ class VoteRepository {
   static async getAllRoundVotes(
     roomId: number,
     round: number
-  ): Promise<{ userId: number; name: string | null; value: VoteCard }[]> {
+  ): Promise<{ userId: number; name: string | null; vote: VoteCard }[]> {
     const votes = await db
       .select({
         userId: votesTable.userId,
         name: usersTable.name,
-        value: votesTable.value,
+        vote: votesTable.value,
       })
       .from(votesTable)
       .where(and(eq(votesTable.roomId, roomId), eq(votesTable.round, round)))

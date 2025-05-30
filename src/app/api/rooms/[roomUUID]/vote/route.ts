@@ -1,8 +1,9 @@
 import { CreateVoteDtoSchema } from "@/backend/dtos/CreateVoteDtoSchema";
+import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
-import { ClientUser, Vote, VoteCard } from "@/backend/types";
-import { broadcast } from "../route";
+import { ClientUser, Vote, VoteCard } from "@/types";
+import emitter from "@/backend/eventEmitter";
 
 export async function POST(
   request: Request,
@@ -36,13 +37,19 @@ export async function POST(
     const votedUser: ClientUser = {
       id: user.id,
       name: user.name,
+      role: user.role,
       voted: true,
     };
-    broadcast({ type: "voted", data: votedUser });
 
+    emitter.emit("vote", { type: "vote", data: votedUser });
+    console.log(vote);
     return Response.json({ success: !!vote });
-  } catch (error) {
-    console.log(error);
-    return Response.json({ error }, { status: 500 });
+  } catch (err) {
+    console.error(err);
+    if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
+      return Response.json({ error: err.message }, { status: 404 });
+    }
+
+    return Response.json({ error: err }, { status: 500 });
   }
 }

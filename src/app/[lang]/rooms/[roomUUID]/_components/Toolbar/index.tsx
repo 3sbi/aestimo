@@ -1,7 +1,7 @@
 "use client";
 
-import { ClientRoom, ClientUser } from "@/backend/types";
 import { Button } from "@/components/Button";
+import { ClientRoom, ClientUser } from "@/types";
 import { api } from "@/utils/api";
 import {
   ArrowRightCircleIcon,
@@ -13,7 +13,14 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "./Toolbar.module.css";
 
-type Props = {
+type ButtonProps = {
+  label: string;
+  room: ClientRoom;
+  setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
+  setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
+};
+
+type ToolbarProps = {
   room: ClientRoom;
   i18n: {
     reveal: string;
@@ -23,20 +30,18 @@ type Props = {
   };
   setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
   setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-type ButtonProps = {
-  label: string;
-  room: ClientRoom;
-  setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
-};
-
-const RevealButton: React.FC<
-  ButtonProps & {
-    setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
-  }
-> = ({ label, room, setUsersList }) => {
+const Toolbar: React.FC<ToolbarProps> = ({
+  room,
+  i18n,
+  setRoom,
+  setUsersList,
+  setSelectedIndex,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   async function onClickReveal() {
     if (loading) return;
@@ -51,85 +56,76 @@ const RevealButton: React.FC<
     setLoading(false);
   }
 
-  return (
-    <Button onClick={onClickReveal} disabled={loading}>
-      <EyeIcon />
-      {label}
-    </Button>
-  );
-};
+  const onClickNextRound = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const res = await api.post(`/api/rooms/${room.uuid}`, {});
+      const json: { room: ClientRoom } = await res.json();
+      setRoom(json.room);
+      setSelectedIndex(null);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
 
-const NextRoundButton: React.FC<ButtonProps> = ({ label }) => {
-  return (
-    <Button>
-      <ArrowRightCircleIcon />
-      {label}
-    </Button>
-  );
-};
-
-const RestartButton: React.FC<ButtonProps> = ({ label, room, setRoom }) => {
-  const [loading, setLoading] = useState<boolean>(false);
   async function onClickRestart() {
+    if (loading) return;
     setLoading(true);
     try {
       const res = await api.post(`/api/rooms/${room.uuid}/restart`);
-      const json: { room: ClientRoom } = await res.json();
-      setRoom(json.room);
+      const data: { room: ClientRoom; users: ClientUser[] } = await res.json();
+      setRoom(data.room);
+      setUsersList(data.users);
+      setSelectedIndex(null);
     } catch (err) {
       console.error(err);
     }
     setLoading(false);
   }
-  return (
-    <Button onClick={onClickRestart} disabled={loading}>
-      <RotateCwIcon className={loading ? "animate-spin" : ""} />
-      {label}
-    </Button>
-  );
-};
-
-const DeleteButton: React.FC<ButtonProps> = ({ label, room, setRoom }) => {
-  const router = useRouter();
 
   async function onClickDelete() {
+    if (loading) return;
+    setLoading(true);
     try {
-      const res = await api.post(`/api/rooms/${room.uuid}`);
+      const res = await api.delete(`/api/rooms/${room.uuid}`);
       if (res.ok) {
         router.replace("/");
       }
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   }
 
   return (
-    <Button onClick={onClickDelete}>
-      <Trash2Icon />
-      {label}
-    </Button>
-  );
-};
-
-const Toolbar: React.FC<Props> = ({ room, i18n, setRoom, setUsersList }) => {
-  return (
     <div className={styles.toolbar}>
       {room.status !== "finished" && (
-        <RevealButton
-          label={i18n.reveal}
-          room={room}
-          setRoom={setRoom}
-          setUsersList={setUsersList}
-        />
+        <Button onClick={onClickReveal} disabled={loading}>
+          <EyeIcon />
+          {i18n.reveal}
+        </Button>
       )}
+
       {room.status === "finished" && (
-        <NextRoundButton label={i18n.next} room={room} setRoom={setRoom} />
+        <Button onClick={onClickNextRound} disabled={loading}>
+          <ArrowRightCircleIcon />
+          {i18n.next}
+        </Button>
       )}
-      <RestartButton label={i18n.restart} room={room} setRoom={setRoom} />
-      <DeleteButton label={i18n.delete} room={room} setRoom={setRoom} />
+
+      <Button onClick={onClickRestart} disabled={loading}>
+        <RotateCwIcon />
+        {i18n.restart}
+      </Button>
+
+      <Button onClick={onClickDelete} disabled={loading}>
+        <Trash2Icon />
+        {i18n.delete}
+      </Button>
     </div>
   );
 };
 
 export { Toolbar };
-

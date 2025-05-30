@@ -1,6 +1,6 @@
 import "server-only";
 
-import { VoteType } from "@/backend/types";
+import { VoteType } from "@/types";
 
 export type DefinedVoteType = {
   id: string;

@@ -1,11 +1,11 @@
-import type { VoteCard } from "@/backend/types/index";
+import type { VoteCard } from "@/types/index";
 import {
-  boolean,
-  json,
-  pgTable,
-  serial,
-  timestamp,
-  varchar,
+    boolean,
+    json,
+    pgTable,
+    serial,
+    timestamp,
+    varchar,
 } from "drizzle-orm/pg-core";
 
 export const voteTypesTable = pgTable("vote_types", {

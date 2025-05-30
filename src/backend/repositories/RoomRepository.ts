@@ -1,6 +1,6 @@
-import { db, roomsTable } from "@/backend";
+import { db, roomsTable } from "@/backend/db";
 import { and, eq, sql } from "drizzle-orm";
-import { Room } from "../types";
+import { Room } from "../../types";
 
 class RoomRepository {
   static async getByUUID(uuid: string): Promise<Room | undefined> {

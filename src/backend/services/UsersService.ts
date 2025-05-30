@@ -1,16 +1,15 @@
 import "server-only";
 
-import { RoomNotFoundError } from "@/backend/errors/Rooms";
 import {
   RoomRepository,
   UserRepository,
   VoteRepository,
 } from "@/backend/repositories";
-import { UserNotFoundError } from "../errors/Users";
-import { Room, User } from "../types";
+import { Room, User } from "@/types";
+import { RoomNotFoundError, UserNotFoundError } from "../errors";
 
 class UsersService {
-  async getOne(userUUID: string): Promise<User> {
+  async getOne(userUUID: User["uuid"]): Promise<User> {
     const res = await UserRepository.getByUUID(userUUID);
     if (!res || !res.users) {
       throw new UserNotFoundError();
@@ -18,9 +17,23 @@ class UsersService {
     return res.users;
   }
 
+  async isAdmin(
+    userUUID: User["uuid"],
+    roomUUID: Room["uuid"]
+  ): Promise<boolean> {
+    const res = await UserRepository.getByUUID(userUUID);
+    if (!res || !res.users) {
+      throw new UserNotFoundError();
+    }
+    return (
+      (await this.getOne(userUUID)).role === "admin" &&
+      roomUUID === res.rooms?.uuid
+    );
+  }
+
   async checkIfUserExistsInRoom(
-    roomUUID: string,
-    userUUID: string
+    roomUUID: Room["uuid"],
+    userUUID: User["uuid"]
   ): Promise<{ user: User; room: Room }> {
     const room = await RoomRepository.getByUUID(roomUUID);
     if (!room) {
@@ -37,9 +50,9 @@ class UsersService {
   }
 
   async getVoteIndex(
-    userId: number,
-    roomId: number,
-    round: number
+    userId: User["id"],
+    roomId: Room["id"],
+    round: Room["round"]
   ): Promise<number | null> {
     const votes = await VoteRepository.getAllRoundVotes(roomId, round);
     const index = votes.findIndex((vote) => vote.userId === userId);

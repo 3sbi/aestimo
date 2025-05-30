@@ -1,6 +1,7 @@
 import "server-only";
 
 import { CreateRoomDtoSchema } from "@/backend/dtos/CreateRoomDtoSchema";
+import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { roomsService } from "@/backend/services";
 import { getSession } from "@/backend/session";
 
@@ -24,8 +25,12 @@ export async function POST(request: Request) {
     await session.save();
 
     return Response.json({ roomUUID: res.room.uuid });
-  } catch (error) {
-    console.error(error);
-    return Response.json({ error }, { status: 500 });
+  } catch (err) {
+    console.error(err);
+    if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
+      return Response.json({ error: err.message }, { status: 404 });
+    }
+
+    return Response.json({ error: err }, { status: 500 });
   }
 }

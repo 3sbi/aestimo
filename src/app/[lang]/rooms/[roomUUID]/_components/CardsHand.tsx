@@ -1,6 +1,6 @@
 "use client";
 
-import { VoteCard } from "@/backend/types";
+import { VoteCard } from "@/types";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
 import React, { useState } from "react";
@@ -10,19 +10,17 @@ type Props = {
   roomUUID: string;
   userId: number;
   setVoted: (voted: boolean) => void;
-  initialSelectedIndex: number | null;
+  selectedIndex: number | null;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 const CardsHand: React.FC<Props> = ({
   cards,
   roomUUID,
   setVoted,
-  initialSelectedIndex,
+  selectedIndex,
+  setSelectedIndex,
 }) => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(
-    initialSelectedIndex
-  );
-
   const onClick = async (index: number) => {
     if (index === selectedIndex) return;
 
@@ -30,7 +28,7 @@ const CardsHand: React.FC<Props> = ({
       const body = { voteIndex: index };
       const res = await api.post(`/api/rooms/${roomUUID}/vote`, body);
       const json: { success: boolean } = await res.json();
-      if (json.success) {
+      if (res.ok && json.success) {
         setVoted(true);
         setSelectedIndex(index);
       }

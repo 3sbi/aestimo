@@ -1,9 +1,9 @@
 import "server-only";
 
+import { config } from "@/backend/config";
 import { getIronSession, IronSession, SessionOptions } from "iron-session";
 import { cookies } from "next/headers";
-import { config } from "./config";
-import { Room, User } from "./types";
+import { Room, User } from "../types";
 
 interface SessionData {
   userUUID: User["uuid"];

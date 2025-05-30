@@ -19,7 +19,7 @@ const ColorSchemeSwitcher: React.FC = () => {
     }
     return DEFAULT_THEME;
   };
-  const [theme, setTheme] = useState<ColorScheme>(getInitialTheme());
+  const [theme, setTheme] = useState<ColorScheme | null>(null);
 
   const toggleTheme = () => {
     const rootClasses = document.documentElement.classList;
