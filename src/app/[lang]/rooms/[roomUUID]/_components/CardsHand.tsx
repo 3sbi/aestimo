@@ -1,8 +1,8 @@
 "use client";
 
 import { VoteCard } from "@/backend/types";
-import { api } from "@/lib/api";
-import { cn } from "@/lib/utils";
+import { api } from "@/utils/api";
+import { cn } from "@/utils/cn";
 import React, { useState } from "react";
 
 type Props = {

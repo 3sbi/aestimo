@@ -1,6 +1,6 @@
 import React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 const Input = React.forwardRef<
   HTMLInputElement,
@@ -25,3 +25,4 @@ const Input = React.forwardRef<
 Input.displayName = "Input";
 
 export { Input };
+

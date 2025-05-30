@@ -1,6 +1,7 @@
 "use client";
 
 import { ClientRoom } from "@/backend/types";
+import { Button } from "@/components/Button";
 import { CheckIcon, Link2Icon } from "lucide-react";
 import { useState } from "react";
 import styles from "./Header.module.css";
@@ -19,7 +20,8 @@ const Header: React.FC<Props> = ({ i18n, room }) => {
   async function onClickInvite() {
     setClicked(true);
     try {
-      await navigator.clipboard.writeText(`${window.location.href}/join`);
+      const url = `${window.location.origin}/rooms/${room.uuid}/join`;
+      await navigator.clipboard.writeText(url);
       setTimeout(() => {
         setClicked(false);
       }, 500);
@@ -37,14 +39,9 @@ const Header: React.FC<Props> = ({ i18n, room }) => {
           {i18n.round}:{room.round}
         </div>
         <div>
-          <button
-            className="btn"
-            style={{ padding: "8px" }}
-            onClick={onClickInvite}
-            title={i18n.copy}
-          >
+          <Button onClick={onClickInvite} title={i18n.copy}>
             {clicked ? <CheckIcon /> : <Link2Icon />}
-          </button>
+          </Button>
         </div>
       </header>
     </>
@@ -52,3 +49,4 @@ const Header: React.FC<Props> = ({ i18n, room }) => {
 };
 
 export { Header };
+

@@ -20,7 +20,7 @@ const UsersList: React.FC<{ usersList: ClientUser[] }> = ({ usersList }) => {
             title={user.name}
           >
             <h2 className={styles.username} title={user.name}>
-              {user.name}
+              <span className="truncate">{user.name}</span>
             </h2>
             {children}
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ClientRoom, ClientUser, User, VoteCard } from "@/backend/types";
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import CardsHand from "./CardsHand";
 import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";

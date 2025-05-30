@@ -1,10 +1,11 @@
 "use client";
 
 import type { i18nConfig, I18nLocale } from "@/i18n/get-dictionary";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, LanguagesIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styles from "./LocaleSwitcher.module.css";
+import { Button } from "../Button";
 
 type Props = {
   i18nConfig: typeof i18nConfig;
@@ -26,7 +27,7 @@ const LocaleSwitcher: React.FC<Props> = ({ languageNames, i18nConfig }) => {
 
   const currentLanguage = getCurrentLanguage();
   const modalRef = useRef<HTMLDivElement>(null);
-  const btnRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -59,31 +60,29 @@ const LocaleSwitcher: React.FC<Props> = ({ languageNames, i18nConfig }) => {
   }
 
   return (
-    <div className={styles.langSwitch}>
-      <div
+    <div className={styles.langSwitcher}>
+      <Button
+        variant="secondary"
+        size="icon"
         ref={btnRef}
-        className={styles.langSwitchBtn}
+        className={styles.langSwitcherBtn}
         onClick={() => setOpened(!opened)}
-        title={
-          languageNames[currentLanguage] ??
-          languageNames[i18nConfig.defaultLocale]
-        }
+        title={languageNames[currentLanguage ?? i18nConfig.defaultLocale]}
       >
-        {currentLanguage.toUpperCase()}
-      </div>
+        <LanguagesIcon size={18} />
+      </Button>
       {opened && (
         <div className={styles.langOptionsPopup} ref={modalRef}>
           {i18nConfig.locales.map((option: I18nLocale) => {
-            const title = option.toUpperCase();
             return (
               <span
-                title={title}
+                title={languageNames[option]}
                 className={styles.langOption}
                 key={option}
                 onClick={() => onChange(option)}
               >
                 {languageNames[option]}
-                {option === currentLanguage && <CheckIcon />}
+                {option === currentLanguage && <CheckIcon size={12} />}
               </span>
             );
           })}

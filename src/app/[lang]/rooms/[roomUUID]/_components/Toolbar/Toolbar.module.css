@@ -1,22 +1,8 @@
-.toolbarWrapper {
-  box-shadow: var(--box-shadow);
-  padding: 8px 8px 0;
-  border-width: 1px;
-  border-bottom-width: 0px;
-  border-top-left-radius: var(--radius);
-  border-top-right-radius: var(--radius);
-  width: min-content;
-  border-color: var(--secondary-border);
-  background-color: var(--secondary);
-  margin: 0px auto;
-  min-width: 800px;
-}
-
 .toolbar {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin: auto;
+  margin: 0px auto;
   background: var(--card);
   color: var(--card-foreground);
   border-top-left-radius: var(--radius);
@@ -25,7 +11,8 @@
   border-bottom-width: 0px;
   box-shadow: var(--box-shadow);
   padding: 24px;
-  width: 100%;
+  width: min-content;
+  min-width: 800px;
 }
 
 .toolbar button {

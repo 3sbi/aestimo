@@ -1,7 +1,31 @@
-.languageSwitcher {
+.langSwitcher {
+  display: flex;
+  position: relative;
 }
 
-.languageOption {
+.langOption {
   display: flex;
   align-items: center;
+  gap: 4px;
+  padding: 4px;
+}
+
+.langOption:hover {
+  cursor: pointer;
+  border-radius: var(--radius);
+  background-color: var(--accent);
+}
+
+.langOptionsPopup {
+  position: absolute;
+  top: -80px;
+  left: -60px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  border-radius: var(--radius);
+  border-width: 1px;
+  padding: 4px;
+  box-shadow: var(--box-shadow);
 }

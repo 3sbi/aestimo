@@ -1,11 +1,13 @@
 import React from "react";
+import styles from "./Button.module.css";
 
 interface Props
   extends React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  variant: "primary" | "outline";
+  variant?: "primary" | "secondary" | "destructive";
+  size?: "default" | "icon";
   children: React.ReactNode;
   style?: React.CSSProperties;
   type?: "button" | "submit" | "reset" | undefined;
@@ -13,22 +15,14 @@ interface Props
   className?: string | undefined;
 }
 
-const Button: React.FC<Props> = ({ variant, children, className, ...rest }) => {
-  const classNames: string[] = ["btn"];
-
-  switch (variant) {
-    case "outline": {
-      classNames.push("outline");
-      break;
-    }
-    default:
-    case "primary":
-      classNames.push("primary");
-  }
-
-  if (className) {
-    classNames.push(className);
-  }
+const Button: React.FC<Props> = ({
+  variant = "primary",
+  size = "default",
+  children,
+  className,
+  ...rest
+}) => {
+  const classNames: string[] = [styles.btn, styles[variant], styles[size]];
 
   return (
     <button className={classNames.join(" ")} {...rest}>

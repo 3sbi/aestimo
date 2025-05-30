@@ -1,70 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --radius: 0.75rem;
-  --background: hsl(0, 0%, 98%);
-  --foreground: hsl(0, 0%, 15%);
-  --muted: hsl(240 4.8% 95.9%);
-  --muted-foreground: hsl(240 3.8% 46.1%);
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(240 10% 3.9%);
+  --background: hsl(240 9% 98%);
+  --foreground: hsl(0 0% 20%);
   --card: hsl(0 0% 100%);
-  --card-foreground: hsl(240 10% 3.9%);
-  --border: hsl(146, 20%, 90%);
-  --input: hsl(240 5.9% 90%);
-  --accent: hsl(240 4.8% 95.9%);
-  --accent-foreground: hsl(240 5.9% 10%);
-  --destructive: hsl(0 84.2% 60.2%);
-  --destructive-foreground: hsl(0 0% 98%);
-
-  --secondary: hsl(147, 64%, 95%);
-  --secondary-border: hsl(146, 61%, 89%);
-  --secondary-foreground: hsl(145, 80%, 10%);
-
-  /* button */
-  --primary: hsl(146, 76%, 36%);
-  --primary-dark: hsl(146, 80%, 30%);
-  --primary-foreground: hsl(355.7 100% 97.3%);
-
-  --primary-border: hsl(146, 80%, 28%);
-  --primary-hover: hsl(146, 79%, 42%);
-  --ring: hsl(142 76% 36%);
-  --box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.03),
-    0px 2px 30px 0px rgba(0, 0, 0, 0.08), 0px 0px 1px 0px rgba(0, 0, 0, 0.3);
+  --card-foreground: hsl(0 0% 20%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 20%);
+  --primary: hsl(140 53% 43%);
+  --primary-hover: hsl(140 53% 48%);
+  --primary-active: hsl(140 53% 41%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(0 0% 98%);
+  --secondary-foreground: hsl(0 0% 20%);
+  --muted: hsl(50 27% 82%);
+  --muted-foreground: hsl(0 0% 43%);
+  --accent: hsl(146 87% 88%);
+  --accent-foreground: hsl(0 0% 20%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(0 0% 83.1373%);
+  --input: hsl(0 0% 83.1373%);
+  --ring: hsl(140 53% 43%);
+  --radius: 0.5rem;
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
-:root.dark {
-  --background: hsl(0, 0%, 10%);
-  --foreground: hsl(0, 0%, 63%);
-  
-  --muted: hsl(0 0% 15%);
-  --muted-foreground: 240 5% 64.9%;
-
-  --popover: hsl(0 0% 9%);
-  --popover-foreground: hsl(0, 0%, 63%);
-  
-  --card: hsl(0 0% 18%);
-  --card-foreground: hsl(0, 0%, 63%);
-  
-  --border: hsl(240 4% 16%);
-  
-  --input: hsl(240 4% 16%);
-  
-  --primary: hsl(142 70% 45%);
-  --primary-foreground: hsl(145 80% 10%);
-
-  --secondary-border: hsla(135, 70%, 16%, 1);
-  --secondary-foreground: hsl(0 0% 98%);
-  --secondary: hsla(135, 70%, 23%, 1);
-
-  --accent: hsl(12 6.5% 15.1%);
-  --accent-foreground: hsl(0 0% 98%);
-  --destructive: hsl(0 63% 31%);
-  --destructive-foreground: hsl(0 86% 97%);
-  --ring: hsl(142.4 71.8% 29.2%);
-  --box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.06),
-    0px 2px 30px 0px rgba(0, 0, 0, 0.22),
-    inset 0px 0px 1px 0px hsla(0, 0%, 100%, 0.15);
+.dark {
+  --background: hsl(220 15% 12%);
+  --foreground: hsl(0 0% 90%);
+  --card: hsl(197 7% 20%);
+  --card-foreground: hsl(0 0% 90%);
+  --popover: hsl(197 7% 20%);
+  --popover-foreground: hsl(0 0% 90%);
+  --primary: hsl(144 48% 40%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(143.8 61.2% 20.2%);
+  --secondary-foreground: hsl(0 0% 90%);
+  --muted: hsl(0 0% 27%);
+  --muted-foreground: hsl(0 0% 64%);
+  --accent: hsl(144 47.0588% 20%);
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(0 0% 27%);
+  --input: hsl(0 0% 27%);
+  --ring: hsl(144 48% 40%);
+  --radius: 0.5rem;
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
 * {
@@ -74,7 +79,7 @@
 }
 
 html {
-  font: normal 16px/24px var(--font-geist-sans);
+  font: normal 16px/24px var(--font-geist);
 }
 
 body {
@@ -88,39 +93,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-.btn {
-  display: inline-flex;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  gap: 0.5rem;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  white-space: nowrap;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  color: var(--primary-foreground);
-  background-color: var(--primary);
-  cursor: pointer;
-  border: 2px solid var(--primary-border);
-}
-
-.btn:hover {
-  background-color: var(--primary-hover);
-}
-
-.btn:active {
-  background-color: var(--primary-dark);
-}
-
 .card {
-  background: var(--card);
+  background-color: var(--card);
   color: var(--card-foreground);
   border-radius: var(--radius);
   border-width: 1px;

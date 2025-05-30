@@ -11,8 +11,8 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
@@ -30,11 +30,11 @@ export default async function RootLayout(props: Readonly<Props>) {
   return (
     <html
       lang={lang ?? i18nConfig.defaultLocale}
-      className={`${geistSans.variable} antialiased`}
+      className={`${geist.variable} antialiased`}
     >
       <body>
         {props.children}
-        <div className="flex gap-1 absolute right-0 bottom-0">
+        <div className="flex gap-1 absolute right-2 bottom-2">
           <LocaleSwitcher
             i18nConfig={i18nConfig}
             languageNames={getLanguageNames()}

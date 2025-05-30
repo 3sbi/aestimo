@@ -1,18 +1,22 @@
 "use client";
 
+import { Button } from "@/components/Button";
 import { MoonIcon, SunIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type ColorScheme = "dark" | "light";
 const DEFAULT_THEME: ColorScheme = "dark";
 
 const ColorSchemeSwitcher: React.FC = () => {
   const getInitialTheme = (): ColorScheme => {
-    const savedTheme = localStorage.getItem("theme") ?? "light";
-    if (savedTheme === "light" || savedTheme === "dark") {
-      return savedTheme;
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("theme") ?? "light";
+      if (savedTheme === "light" || savedTheme === "dark") {
+        document.documentElement.classList.add(savedTheme);
+        return savedTheme;
+      }
+      document.documentElement.classList.add(DEFAULT_THEME);
     }
-    document.documentElement.classList.add(DEFAULT_THEME);
     return DEFAULT_THEME;
   };
   const [theme, setTheme] = useState<ColorScheme>(getInitialTheme());
@@ -27,10 +31,14 @@ const ColorSchemeSwitcher: React.FC = () => {
     setTheme(newTheme);
   };
 
+  useEffect(() => {
+    setTheme(getInitialTheme());
+  }, []);
+
   return (
-    <button onClick={toggleTheme}>
-      {theme === "dark" ? <MoonIcon /> : <SunIcon />}
-    </button>
+    <Button variant="secondary" size="icon" onClick={toggleTheme}>
+      {theme === "dark" ? <MoonIcon size={18} /> : <SunIcon size={18} />}
+    </Button>
   );
 };
 
