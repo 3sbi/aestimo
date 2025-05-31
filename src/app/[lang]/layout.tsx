@@ -1,12 +1,6 @@
 import "server-only";
 
-import { ColorSchemeSwitcher } from "@/components/ColorSchemeSwitcher";
-import LocaleSwitcher from "@/components/LocaleSwitcher";
-import {
-  getLanguageNames,
-  i18nConfig,
-  I18nLocale,
-} from "@/i18n/get-dictionary";
+import { i18nConfig, I18nLocale } from "@/i18n/get-dictionary";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
@@ -32,16 +26,7 @@ export default async function RootLayout(props: Readonly<Props>) {
       lang={lang ?? i18nConfig.defaultLocale}
       className={`${geist.variable} antialiased`}
     >
-      <body>
-        {props.children}
-        <div className="flex gap-1 absolute right-2 bottom-2">
-          <LocaleSwitcher
-            i18nConfig={i18nConfig}
-            languageNames={getLanguageNames()}
-          />
-          <ColorSchemeSwitcher />
-        </div>
-      </body>
+      <body>{props.children}</body>
     </html>
   );
 }

@@ -24,6 +24,10 @@ const Button: React.FC<Props> = ({
 }) => {
   const classNames: string[] = [styles.btn, styles[variant], styles[size]];
 
+  if (className) {
+    classNames.push(className);
+  }
+
   return (
     <button className={classNames.join(" ")} {...rest}>
       {children}

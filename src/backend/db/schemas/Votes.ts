@@ -1,5 +1,5 @@
 import { integer, json, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
-import { VoteCard } from "../../types";
+import { VoteCard } from "../../../types";
 import { roomsTable } from "./Rooms";
 import { usersTable } from "./Users";
 

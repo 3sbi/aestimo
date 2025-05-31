@@ -1,5 +1,5 @@
 {
-  "id": "25ba73e4-7200-4681-85bb-d63d64559a6c",
+  "id": "14184872-d623-4dc4-951d-01b9d67bfbab",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -34,9 +34,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "vote_type_id": {
-          "name": "vote_type_id",
-          "type": "integer",
+        "vote_values": {
+          "name": "vote_values",
+          "type": "json",
           "primaryKey": false,
           "notNull": true
         },
@@ -77,21 +77,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "rooms_vote_type_id_vote_types_id_fk": {
-          "name": "rooms_vote_type_id_vote_types_id_fk",
-          "tableFrom": "rooms",
-          "tableTo": "vote_types",
-          "columnsFrom": [
-            "vote_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "rooms_uuid_unique": {
@@ -170,7 +156,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -250,7 +236,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "votes_user_id_users_id_fk": {
@@ -263,61 +249,10 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.vote_types": {
-      "name": "vote_types",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "values": {
-          "name": "values",
-          "type": "json",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "custom": {
-          "name": "custom",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

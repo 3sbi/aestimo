@@ -33,5 +33,10 @@
       "delete": "Delete",
       "history": "History"
     }
+  },
+
+  "not-found": {
+    "header": "Room was not found",
+    "link": "Create a new room"
   }
 }

@@ -1,13 +1,7 @@
-import {
-  roomsTable,
-  usersTable,
-  voteTypesTable,
-  votesTable,
-} from "@/backend/db";
+import { roomsTable, usersTable, votesTable } from "@/backend/db";
 
 export type Room = typeof roomsTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
-export type VoteType = typeof voteTypesTable.$inferSelect;
 export type Vote = typeof votesTable.$inferSelect;
 export type VoteCard = { color: string; value: string };
 

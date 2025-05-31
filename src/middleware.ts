@@ -3,7 +3,7 @@ import Negotiator from "negotiator";
 import { NextRequest, NextResponse } from "next/server";
 import { i18nConfig } from "./i18n/get-dictionary";
 
-const LOCALE_HEADER_KEY = "x-locale";
+export const LOCALE_HEADER_KEY = "x-locale";
 
 function getLocale(request: NextRequest): string {
   const negotiatorHeaders: Record<string, string> = {};

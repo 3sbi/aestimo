@@ -1,7 +1,9 @@
+import { VoteCard } from "@/types";
 import { sql } from "drizzle-orm";
 import {
   boolean,
   integer,
+  json,
   pgEnum,
   pgTable,
   serial,
@@ -9,7 +11,6 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { voteTypesTable } from "./VoteTypes";
 
 export const statusEnum = pgEnum("room_status", ["started", "finished"]);
 
@@ -18,9 +19,7 @@ export const roomsTable = pgTable("rooms", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   name: varchar({ length: 255 }).notNull(),
-  votyTypeId: integer("vote_type_id")
-    .references(() => voteTypesTable.id, { onDelete: "cascade" })
-    .notNull(),
+  voteOptions: json("vote_values").$type<VoteCard[]>().notNull(),
   uuid: uuid()
     .unique()
     .notNull()

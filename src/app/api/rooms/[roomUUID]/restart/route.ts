@@ -12,6 +12,10 @@ export async function POST(
   try {
     const { roomUUID } = await params;
     const { userUUID } = await getSession();
+    if (!userUUID) {
+      return Response.json({ error: "User not found" }, { status: 404 });
+    }
+
     const isAdmin = await usersService.isAdmin(userUUID, roomUUID);
     if (!isAdmin) {
       return Response.json({ error: "Not admin" }, { status: 403 });

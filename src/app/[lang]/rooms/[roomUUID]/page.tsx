@@ -2,11 +2,17 @@ import "server-only";
 
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
-import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
+import {
+  getDictionary,
+  getLanguageNames,
+  i18nConfig,
+  I18nLocale,
+} from "@/i18n/get-dictionary";
+import { ClientUser } from "@/types";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import { RoomWrapper } from "./_components/RoomWrapper";
-import { ClientUser } from "@/types";
 
 type Props = {
   params: Promise<{ roomUUID: string }>;
@@ -21,6 +27,11 @@ export default async function Page({ params }: Props) {
   const dictionary = getDictionary(lang);
 
   const { userUUID } = session;
+
+  if (!userUUID) {
+    redirect(`/${lang}`, RedirectType.replace);
+  }
+
   const { user, room } = await usersService.checkIfUserExistsInRoom(
     roomUUID,
     userUUID
@@ -28,7 +39,7 @@ export default async function Page({ params }: Props) {
   if (!room) return notFound();
   if (!user) redirect(`/rooms/${roomUUID}/join`, RedirectType.replace);
 
-  const { values } = await roomsService.getVoteTypes(roomUUID);
+  const voteOptions = await roomsService.getVoteTypes(roomUUID);
   let usersList: ClientUser[] = await roomsService.getUsers(
     room.id,
     room.round
@@ -44,13 +55,21 @@ export default async function Page({ params }: Props) {
   }
 
   return (
-    <RoomWrapper
-      initialRoom={room}
-      initialUsersList={usersList}
-      cards={values}
-      user={{ id: user.id, role: user.role }}
-      i18n={dictionary.room}
-      initialSelectedIndex={index}
-    />
+    <>
+      <RoomWrapper
+        initialRoom={room}
+        initialUsersList={usersList}
+        voteOptions={voteOptions}
+        user={{ id: user.id, role: user.role }}
+        i18n={dictionary.room}
+        initialSelectedIndex={index}
+      />
+      <div className="flex gap-1 absolute right-2 bottom-2">
+        <LocaleSwitcher
+          i18nConfig={i18nConfig}
+          languageNames={getLanguageNames()}
+        />
+      </div>
+    </>
   );
 }

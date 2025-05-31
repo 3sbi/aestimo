@@ -12,6 +12,10 @@ export async function POST(
   const { roomUUID } = await params;
   const { userUUID } = await getSession();
 
+  if (!userUUID) {
+    return Response.json({ error: "User not found" }, { status: 404 });
+  }
+
   try {
     const req = await request.json();
     const { success, error, data } = CreateVoteDtoSchema.safeParse(req);
@@ -20,8 +24,8 @@ export async function POST(
       return Response.json({ error: error.message }, { status: 422 });
     }
 
-    const voteTypes = await roomsService.getVoteTypes(roomUUID);
-    const voteValue: VoteCard | undefined = voteTypes.values[data.voteIndex];
+    const voteOptions: VoteCard[] = await roomsService.getVoteTypes(roomUUID);
+    const voteValue: VoteCard | undefined = voteOptions[data.voteIndex];
 
     if (!voteValue) {
       return Response.json({ error: "Vote not found" }, { status: 404 });

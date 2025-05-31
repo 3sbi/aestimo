@@ -3,10 +3,10 @@
 import { VoteCard } from "@/types";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
-import React, { useState } from "react";
+import React from "react";
 
 type Props = {
-  cards: VoteCard[];
+  voteOptions: VoteCard[];
   roomUUID: string;
   userId: number;
   setVoted: (voted: boolean) => void;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const CardsHand: React.FC<Props> = ({
-  cards,
+  voteOptions,
   roomUUID,
   setVoted,
   selectedIndex,
@@ -39,8 +39,8 @@ const CardsHand: React.FC<Props> = ({
 
   return (
     <div className="flex justify-center items-center gap-4 flex-wrap m-auto">
-      {cards.map((card, index) => {
-        const { color, value } = card;
+      {voteOptions.map((voteOption, index) => {
+        const { color, value } = voteOption;
         const selected: boolean = index === selectedIndex;
         const style: React.CSSProperties = { backgroundColor: color };
         if (selected) {

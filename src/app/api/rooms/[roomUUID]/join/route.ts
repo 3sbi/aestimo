@@ -48,6 +48,7 @@ export async function POST(
     const joinedUser: ClientUser = {
       id: user.id,
       name: user.name,
+      role: user.role,
       voted: false,
     };
 

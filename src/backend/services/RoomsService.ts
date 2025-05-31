@@ -10,9 +10,8 @@ import {
   RoomRepository,
   UserRepository,
   VoteRepository,
-  VoteTypeRepository,
 } from "@/backend/repositories";
-import { ClientUser, Room, User, Vote, VoteCard, VoteType } from "@/types";
+import { ClientUser, Room, User, Vote, VoteCard } from "@/types";
 
 class RoomsService {
   async getOne(uuid: string): Promise<Room> {
@@ -25,11 +24,10 @@ class RoomsService {
 
   async createRoom(values: CreateRoomDto): Promise<{ room: Room; user: User }> {
     const { username, name, voteOptions } = values;
-    const voteType = await VoteTypeRepository.create(voteOptions);
 
     const room = await RoomRepository.create({
       name,
-      voteTypeId: voteType.id,
+      voteOptions,
     });
     if (!room) {
       throw new RoomNotFoundError();
@@ -70,13 +68,12 @@ class RoomsService {
     return usersList;
   }
 
-  async getVoteTypes(roomUUID: string): Promise<VoteType> {
+  async getVoteTypes(roomUUID: string): Promise<Room["voteOptions"]> {
     const room = await RoomRepository.getByUUID(roomUUID);
     if (!room) {
       throw new RoomNotFoundError();
     }
-    const voteType = await VoteTypeRepository.getById(room.votyTypeId);
-    return voteType;
+    return room.voteOptions;
   }
 
   async openCards(

@@ -13,13 +13,6 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "./Toolbar.module.css";
 
-type ButtonProps = {
-  label: string;
-  room: ClientRoom;
-  setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
-  setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
-};
-
 type ToolbarProps = {
   room: ClientRoom;
   i18n: {
@@ -129,3 +122,4 @@ const Toolbar: React.FC<ToolbarProps> = ({
 };
 
 export { Toolbar };
+

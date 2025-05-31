@@ -1,6 +1,6 @@
 import { db, roomsTable } from "@/backend/db";
+import { Room } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
-import { Room } from "../../types";
 
 class RoomRepository {
   static async getByUUID(uuid: string): Promise<Room | undefined> {
@@ -21,13 +21,13 @@ class RoomRepository {
 
   static async create(dto: {
     name: string;
-    voteTypeId: number;
+    voteOptions: Room["voteOptions"];
   }): Promise<Room | undefined> {
     const res = await db
       .insert(roomsTable)
       .values({
         name: dto.name,
-        votyTypeId: dto.voteTypeId,
+        voteOptions: dto.voteOptions,
         createdAt: sql`NOW()`,
         updatedAt: sql`NOW()`,
       })

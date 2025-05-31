@@ -6,8 +6,8 @@ import { cookies } from "next/headers";
 import { Room, User } from "../types";
 
 interface SessionData {
-  userUUID: User["uuid"];
-  roomUUID: Room["uuid"];
+  userUUID?: User["uuid"];
+  roomUUID?: Room["uuid"];
 }
 
 const sessionOptions: SessionOptions = {

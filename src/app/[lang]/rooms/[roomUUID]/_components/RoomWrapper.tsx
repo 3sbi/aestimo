@@ -21,7 +21,7 @@ type Props = {
   initialRoom: ClientRoom;
   initialUsersList: ClientUser[];
   initialSelectedIndex: number | null;
-  cards: VoteCard[];
+  voteOptions: VoteCard[];
   user: Pick<User, "id" | "role">;
   i18n: {
     header: {
@@ -42,7 +42,7 @@ export const RoomWrapper: React.FC<Props> = ({
   initialSelectedIndex,
   initialUsersList,
   i18n,
-  cards,
+  voteOptions,
   user,
 }) => {
   const [room, setRoom] = useState<ClientRoom>(initialRoom);
@@ -63,21 +63,23 @@ export const RoomWrapper: React.FC<Props> = ({
           return [...prev];
         });
       } else if (type === "reveal") {
-        const newUsersList: ClientUser[] = [];
-        for (const user of usersList) {
-          const vote = data.find((vote) => vote.userId === user.id)?.vote;
-          newUsersList.push({
-            ...user,
-            vote,
-            voted: true,
-          });
-        }
-        setUsersList(newUsersList);
+        setUsersList((prev) => {
+          const newUsersList: ClientUser[] = [];
+          for (const user of prev) {
+            const vote = data.find((vote) => vote.userId === user.id)?.vote;
+            newUsersList.push({
+              ...user,
+              vote,
+              voted: true,
+            });
+          }
+          return newUsersList;
+        });
       } else if (type === "restart") {
         setRoom(data.room);
         setUsersList(data.users);
       } else if (type === "join") {
-        setUsersList([...usersList, data]);
+        setUsersList((prev) => [...prev, data]);
       }
       toast.info(event.data);
     };
@@ -108,7 +110,7 @@ export const RoomWrapper: React.FC<Props> = ({
       <Header room={room} i18n={i18n.header} />
       <UsersList usersList={usersList} currentUserId={user.id} />
       <CardsHand
-        cards={cards}
+        voteOptions={voteOptions}
         roomUUID={room.uuid}
         userId={user.id}
         setVoted={setVoted}

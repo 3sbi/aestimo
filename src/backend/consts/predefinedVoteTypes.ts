@@ -1,11 +1,11 @@
 import "server-only";
 
-import { VoteType } from "@/types";
+import { Room } from "@/types";
 
 export type DefinedVoteType = {
   id: string;
-  name: VoteType["name"];
-  values: VoteType["values"];
+  name: string;
+  values: Room["voteOptions"];
 };
 
 export const PREDEFINED_VOTE_TYPES: DefinedVoteType[] = [

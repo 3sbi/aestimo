@@ -11,6 +11,9 @@ export async function POST(
   try {
     const { roomUUID } = await params;
     const { userUUID } = await getSession();
+    if (!userUUID) {
+      return Response.json({ error: "User not found" }, { status: 404 });
+    }
 
     const user = await usersService.getOne(userUUID);
     if (!user) {
