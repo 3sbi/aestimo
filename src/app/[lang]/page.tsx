@@ -1,17 +1,12 @@
 import "server-only";
 
+import { PREDEFINED_VOTE_TYPES } from "@/backend/consts/predefinedVoteTypes";
 import { usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
-import LocaleSwitcher from "@/components/LocaleSwitcher";
 import CreateRoomForm from "@/components/widgets/CreateRoomForm";
-import {
-  getDictionary,
-  getLanguageNames,
-  i18nConfig,
-  I18nLocale,
-} from "@/i18n/get-dictionary";
+import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
+import { Room, User } from "@/types";
 import { redirect, RedirectType } from "next/navigation";
-import { PREDEFINED_VOTE_TYPES } from "../../backend/consts/predefinedVoteTypes";
 
 type Props = {
   params: Promise<{ lang: I18nLocale }>;
@@ -24,11 +19,18 @@ export default async function Home(props: Props) {
   const { userUUID, roomUUID } = session;
 
   if (roomUUID && userUUID) {
-    const { user, room } = await usersService.checkIfUserExistsInRoom(
-      roomUUID,
-      userUUID
-    );
-
+    async function getData(
+      roomUUID: string,
+      userUUID: string
+    ): Promise<{ user?: User; room?: Room }> {
+      try {
+        return usersService.checkIfUserExistsInRoom(roomUUID, userUUID);
+      } catch (err) {
+        console.error(err);
+        return {};
+      }
+    }
+    const { user, room } = await getData(roomUUID, userUUID);
     if (user && room) {
       redirect(`/${lang}/rooms/${roomUUID}`, RedirectType.replace);
     }
@@ -40,12 +42,6 @@ export default async function Home(props: Props) {
         i18n={i18n.createRoomForm}
         predefinedVoteTypes={PREDEFINED_VOTE_TYPES}
       />
-      <div className="flex gap-1 absolute right-2 bottom-2">
-        <LocaleSwitcher
-          i18nConfig={i18nConfig}
-          languageNames={getLanguageNames()}
-        />
-      </div>
     </div>
   );
 }

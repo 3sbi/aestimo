@@ -6,6 +6,7 @@
 .langOption {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 4px;
   padding: 4px;
 }
@@ -18,6 +19,7 @@
 
 .langOptionsPopup {
   position: absolute;
+  width: 96px;
   top: -80px;
   left: -60px;
   display: flex;

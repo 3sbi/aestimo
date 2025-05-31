@@ -1,17 +1,15 @@
 "use client";
 
 import { Button } from "@/components/Button";
-import { ClientRoom } from "@/types";
+import type { Dictionary } from "@/i18n/get-dictionary";
+import type { ClientRoom } from "@/types";
 import { CheckIcon, Link2Icon } from "lucide-react";
 import { useState } from "react";
 import styles from "./Header.module.css";
 
 type Props = {
   room: ClientRoom;
-  i18n: {
-    round: string;
-    copy: string;
-  };
+  i18n: Dictionary["room"]["header"];
 };
 
 const Header: React.FC<Props> = ({ i18n, room }) => {

@@ -30,9 +30,10 @@ export async function POST(
       return Response.json({ error: "Not admin" }, { status: 403 });
     }
 
-    const result = await roomsService.openCards(roomUUID);
-    emitter.emit("reveal", { type: "reveal", data: result });
-    return Response.json(result);
+    const users = await roomsService.openCards(roomUUID);
+
+    emitter.emit("reveal", { type: "reveal", data: users });
+    return Response.json(users);
   } catch (err) {
     console.error(err);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {

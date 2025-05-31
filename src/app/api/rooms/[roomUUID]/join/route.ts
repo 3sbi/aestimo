@@ -21,7 +21,7 @@ export async function POST(
     });
 
     if (!success) {
-      console.log(error.message);
+      console.error(error.message);
       return Response.json({ success: false }, { status: 422 });
     }
     const res = await roomsService.joinRoom(data);

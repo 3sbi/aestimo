@@ -37,7 +37,7 @@
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
-.dark {
+:root.dark {
   --background: hsl(220 15% 12%);
   --foreground: hsl(0 0% 90%);
   --card: hsl(197 7% 20%);

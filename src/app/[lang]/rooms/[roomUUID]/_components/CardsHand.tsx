@@ -1,13 +1,13 @@
 "use client";
 
-import { VoteCard } from "@/types";
+import type { ClientRoom, VoteCard } from "@/types";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
 import React from "react";
 
 type Props = {
   voteOptions: VoteCard[];
-  roomUUID: string;
+  room: ClientRoom;
   userId: number;
   setVoted: (voted: boolean) => void;
   selectedIndex: number | null;
@@ -16,17 +16,19 @@ type Props = {
 
 const CardsHand: React.FC<Props> = ({
   voteOptions,
-  roomUUID,
+  room,
   setVoted,
   selectedIndex,
   setSelectedIndex,
 }) => {
-  const onClick = async (index: number) => {
-    if (index === selectedIndex) return;
+  const roundFinished: boolean = room.status === "finished";
 
+  const onClick = async (index: number) => {
+    if (roundFinished) return;
+    if (index === selectedIndex) return;
     try {
       const body = { voteIndex: index };
-      const res = await api.post(`/api/rooms/${roomUUID}/vote`, body);
+      const res = await api.post(`/api/rooms/${room.uuid}/vote`, body);
       const json: { success: boolean } = await res.json();
       if (res.ok && json.success) {
         setVoted(true);
@@ -45,14 +47,14 @@ const CardsHand: React.FC<Props> = ({
         const style: React.CSSProperties = { backgroundColor: color };
         if (selected) {
           style.borderColor = "var(--card-foreground)";
-          style.borderWidth = "2px";
         }
         return (
           <div
             key={value}
             className={cn(
               "px-6 py-8 border-2 rounded-lg cursor-pointer font-bold text-4xl shadow-md transition text-black",
-              selected ? "-translate-y-4" : ""
+              selected ? "-translate-y-4 border-2" : "",
+              roundFinished ? "opacity-60 cursor-not-allowed" : ""
             )}
             title={value}
             style={style}

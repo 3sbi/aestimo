@@ -32,13 +32,15 @@ button.btn.primary:active {
 }
 
 button.btn.secondary {
-  background-color: var(--secondary);
   color: var(--secondary-foreground);
+  border: 1px solid var(--border);
 }
 
 button.btn.icon {
   padding: 0.5rem;
   aspect-ratio: 1/1;
+  min-width: 14px;
+  min-height: 14px;
 }
 
 button.btn.destructive {

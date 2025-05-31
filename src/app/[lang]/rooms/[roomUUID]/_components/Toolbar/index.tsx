@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/Button";
-import { ClientRoom, ClientUser } from "@/types";
+import type { Dictionary } from "@/i18n/get-dictionary";
+import type { ClientRoom, ClientUser } from "@/types";
 import { api } from "@/utils/api";
 import {
   ArrowRightCircleIcon,
@@ -15,12 +16,7 @@ import styles from "./Toolbar.module.css";
 
 type ToolbarProps = {
   room: ClientRoom;
-  i18n: {
-    reveal: string;
-    next: string;
-    restart: string;
-    delete: string;
-  };
+  i18n: Dictionary["room"]["toolbar"];
   setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
   setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
@@ -43,6 +39,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
       const res = await api.post(`/api/rooms/${room.uuid}/reveal`);
       const json: ClientUser[] = await res.json();
       setUsersList(json);
+      setRoom((prev) => {
+        prev.status = "finished";
+        return prev;
+      });
     } catch (err) {
       console.error(err);
     }
@@ -53,7 +53,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
     if (loading) return;
     setLoading(true);
     try {
-      const res = await api.post(`/api/rooms/${room.uuid}`, {});
+      const res = await api.post(`/api/rooms/${room.uuid}/next`, {});
       const json: { room: ClientRoom } = await res.json();
       setRoom(json.room);
       setSelectedIndex(null);
@@ -122,4 +122,3 @@ const Toolbar: React.FC<ToolbarProps> = ({
 };
 
 export { Toolbar };
-

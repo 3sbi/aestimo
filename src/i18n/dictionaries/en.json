@@ -32,11 +32,20 @@
       "restart": "Restart round",
       "delete": "Delete",
       "history": "History"
+    },
+    "usersList": {
+      "you": "you",
+      "admin": "Admin",
+      "kick": "Kick"
     }
   },
 
   "not-found": {
-    "header": "Room was not found",
-    "link": "Create a new room"
+    "no-room": {
+      "header": "Room was not found",
+      "button": "Create a new room"
+    },
+    "header": "Not found",
+    "button": "Return to app"
   }
 }

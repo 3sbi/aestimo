@@ -2,29 +2,21 @@ import "server-only";
 
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
-import LocaleSwitcher from "@/components/LocaleSwitcher";
+import type { I18nLocale } from "@/i18n/get-dictionary";
 import {
-  getDictionary,
-  getLanguageNames,
-  i18nConfig,
-  I18nLocale,
+  getDictionary
 } from "@/i18n/get-dictionary";
-import { ClientUser } from "@/types";
-import { cookies } from "next/headers";
+import { ClientUser, Room, User } from "@/types";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import { RoomWrapper } from "./_components/RoomWrapper";
 
 type Props = {
-  params: Promise<{ roomUUID: string }>;
+  params: Promise<{ roomUUID: string; lang: I18nLocale }>;
 };
 
 export default async function Page({ params }: Props) {
-  const { roomUUID } = await params;
-  const cookieStore = await cookies();
+  const { roomUUID, lang } = await params;
   const session = await getSession();
-
-  const lang: I18nLocale = cookieStore.get("lang")?.value as I18nLocale;
-  const dictionary = getDictionary(lang);
 
   const { userUUID } = session;
 
@@ -32,28 +24,37 @@ export default async function Page({ params }: Props) {
     redirect(`/${lang}`, RedirectType.replace);
   }
 
-  const { user, room } = await usersService.checkIfUserExistsInRoom(
-    roomUUID,
-    userUUID
-  );
-  if (!room) return notFound();
-  if (!user) redirect(`/rooms/${roomUUID}/join`, RedirectType.replace);
+  async function getData(
+    userUUID: string
+  ): Promise<{ user?: User; room?: Room }> {
+    try {
+      return usersService.checkIfUserExistsInRoom(roomUUID, userUUID);
+    } catch (err) {
+      console.error(err);
+      return {};
+    }
+  }
+
+  const { user, room } = await getData(userUUID);
+
+  if (!room) {
+    return notFound();
+  }
+
+  if (!user) {
+    redirect(`/rooms/${roomUUID}/join`, RedirectType.replace);
+  }
 
   const voteOptions = await roomsService.getVoteTypes(roomUUID);
-  let usersList: ClientUser[] = await roomsService.getUsers(
+  const showVotes: boolean = room.status === "finished";
+  const usersList: ClientUser[] = await roomsService.getUsers(
     room.id,
-    room.round
+    room.round,
+    showVotes
   );
   const index = await usersService.getVoteIndex(user.id, room.id, room.round);
 
-  if (room.status === "finished") {
-    const votes = await roomsService.getVotes(room.id, room.round);
-    usersList = usersList.map((user) => {
-      const vote = votes.find((vote) => vote.userId === user.id)?.vote;
-      return { ...user, vote, voted: true };
-    });
-  }
-
+  const dictionary = getDictionary(lang);
   return (
     <>
       <RoomWrapper
@@ -64,12 +65,6 @@ export default async function Page({ params }: Props) {
         i18n={dictionary.room}
         initialSelectedIndex={index}
       />
-      <div className="flex gap-1 absolute right-2 bottom-2">
-        <LocaleSwitcher
-          i18nConfig={i18nConfig}
-          languageNames={getLanguageNames()}
-        />
-      </div>
     </>
   );
 }

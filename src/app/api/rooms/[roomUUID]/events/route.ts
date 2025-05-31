@@ -1,7 +1,9 @@
 import emitter from "@/backend/eventEmitter";
+import { getSession } from "@/backend/session";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
+  const session = await getSession();
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     start(controller) {
@@ -9,21 +11,25 @@ export async function GET(req: NextRequest) {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
       };
 
+      const deleteSendEvent = async (data: Record<string, string>) => {
+        session.destroy();
+        sendEvent(data);
+      };
+
       emitter.on("join", sendEvent);
       emitter.on("restart", sendEvent);
       emitter.on("reveal", sendEvent);
       emitter.on("vote", sendEvent);
-
-      const keepAlive = setInterval(() => {
-        controller.enqueue(encoder.encode(": keep-alive\n\n"));
-      }, 10000);
+      emitter.on("next", sendEvent);
+      emitter.on("delete", deleteSendEvent);
 
       req.signal?.addEventListener("abort", () => {
-        clearInterval(keepAlive);
         emitter.off("join", sendEvent);
         emitter.off("restart", sendEvent);
         emitter.off("reveal", sendEvent);
         emitter.off("vote", sendEvent);
+        emitter.on("next", sendEvent);
+        emitter.off("delete", deleteSendEvent);
         controller.close();
       });
     },

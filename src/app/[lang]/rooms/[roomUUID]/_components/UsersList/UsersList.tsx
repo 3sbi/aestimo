@@ -1,14 +1,20 @@
 "use client";
 
-import { ClientUser } from "@/types";
+import type { Dictionary } from "@/i18n/get-dictionary";
+import type { ClientUser } from "@/types";
+import { CrownIcon } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 import styles from "./UsersList.module.css";
-import { CrownIcon } from "lucide-react";
 
-const UsersList: React.FC<{
+type Props = {
   usersList: ClientUser[];
   currentUserId: number;
-}> = ({ usersList, currentUserId }) => {
+  i18n: Dictionary["room"]["usersList"];
+  isAdmin: boolean;
+};
+
+const UsersList: React.FC<Props> = ({ usersList, currentUserId, isAdmin }) => {
   return (
     <div className={styles.userCardList}>
       {usersList.map((user) => {
@@ -27,9 +33,14 @@ const UsersList: React.FC<{
               <span className="truncate">{user.name}</span>
               {user.id === currentUserId && <span>(You)</span>}
               {user.role === "admin" && (
-                <div className="absolute -top-5" title={"admin"}>
+                <div title={"admin"}>
                   <CrownIcon width={20} />
                 </div>
+              )}
+              {isAdmin && user.id !== currentUserId && (
+                <button>
+                  <Image src="/kick.svg" width={6} height={6} alt="kick" />
+                </button>
               )}
             </h2>
             {children}
@@ -40,4 +51,5 @@ const UsersList: React.FC<{
   );
 };
 
-export default UsersList;
+export { UsersList };
+

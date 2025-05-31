@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const { success, error, data } = CreateRoomDtoSchema.safeParse(req);
 
     if (!success) {
-      console.log(error);
+      console.error(error);
       return Response.json({ error: error.message }, { status: 422 });
     }
 

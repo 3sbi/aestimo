@@ -1,8 +1,0 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 32"
-    xml:space="preserve">
-    <line stroke-width="2px" shape-rendering="optimizeQuality" vector-effect="non-scaling-stroke" stroke-linecap="round"
-        stroke-miterlimit="10" x1="1" y1="0" x2="128" y2="0">
-    </line>
-    <path shape-rendering="optimizeQuality" stroke-width="1px" stroke-linecap="round" stroke-miterlimit="10"
-        vector-effect="non-scaling-stroke" d="M0,0c5.9,0,10.7,4.8,10.7,10.7v10.7c0,5.9,4.8,10.7,10.7,10.7H128V0"></path>
-</svg>

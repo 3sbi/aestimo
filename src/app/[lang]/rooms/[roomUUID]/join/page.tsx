@@ -1,11 +1,11 @@
 import "server-only";
 
+import { UserRepository } from "@/backend/repositories";
 import { getSession } from "@/backend/session";
 import JoinRoomForm from "@/components/widgets/JoinRoomForm";
 import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
 import { Room, User } from "@/types";
 import { redirect, RedirectType } from "next/navigation";
-import { UserRepository } from "../../../../../backend/repositories";
 
 type Props = {
   params: Promise<{ roomUUID: string; lang: I18nLocale }>;

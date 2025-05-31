@@ -1,12 +1,13 @@
 "use client";
 
+import type { Dictionary } from "@/i18n/get-dictionary";
 import type { ClientRoom, ClientUser, User, VoteCard } from "@/types";
 import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import CardsHand from "./CardsHand";
 import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
-import UsersList from "./UsersList";
+import { UsersList } from "./UsersList";
 
 type EventData =
   | { type: "vote"; data: ClientUser }
@@ -23,18 +24,7 @@ type Props = {
   initialSelectedIndex: number | null;
   voteOptions: VoteCard[];
   user: Pick<User, "id" | "role">;
-  i18n: {
-    header: {
-      round: string;
-      copy: string;
-    };
-    toolbar: {
-      next: string;
-      reveal: string;
-      restart: string;
-      delete: string;
-    };
-  };
+  i18n: Dictionary["room"];
 };
 
 export const RoomWrapper: React.FC<Props> = ({
@@ -95,7 +85,7 @@ export const RoomWrapper: React.FC<Props> = ({
 
   const setVoted = (voted: boolean) => {
     setUsersList((prev) => {
-      const index = prev.findIndex((user) => user.id === user.id);
+      const index = prev.findIndex((u) => u.id === user.id);
       if (index !== -1) {
         prev[index].voted = voted;
       }
@@ -108,10 +98,15 @@ export const RoomWrapper: React.FC<Props> = ({
     <div className="room">
       <Toaster />
       <Header room={room} i18n={i18n.header} />
-      <UsersList usersList={usersList} currentUserId={user.id} />
+      <UsersList
+        usersList={usersList}
+        currentUserId={user.id}
+        i18n={i18n.usersList}
+        isAdmin={isAdmin}
+      />
       <CardsHand
         voteOptions={voteOptions}
-        roomUUID={room.uuid}
+        room={room}
         userId={user.id}
         setVoted={setVoted}
         selectedIndex={selectedIndex}

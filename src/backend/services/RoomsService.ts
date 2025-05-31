@@ -56,14 +56,27 @@ class RoomsService {
     return { room, user };
   }
 
-  async getUsers(roomId: number, round: number): Promise<ClientUser[]> {
+  async getUsers(
+    roomId: number,
+    round: number,
+    addVotes: boolean
+  ): Promise<ClientUser[]> {
     const users = await UserRepository.getAllByRoomId(roomId);
     const usersList: ClientUser[] = [];
     const votes = await VoteRepository.getAllRoundVotes(roomId, round);
     for (const user of users) {
-      const voted: boolean =
-        votes.find((vote) => vote.userId === user.id) !== undefined;
-      usersList.push({ id: user.id, name: user.name, role: user.role, voted });
+      const vote = votes.find((vote) => vote.userId === user.id);
+      const voted = vote !== undefined;
+      const clientUser: ClientUser = {
+        id: user.id,
+        name: user.name,
+        role: user.role,
+        voted,
+      };
+      if (addVotes) {
+        clientUser.vote = vote?.option;
+      }
+      usersList.push(clientUser);
     }
     return usersList;
   }
@@ -76,15 +89,12 @@ class RoomsService {
     return room.voteOptions;
   }
 
-  async openCards(
-    roomUUID: string
-  ): Promise<{ userId: number; name: string | null; vote: VoteCard }[]> {
+  async openCards(roomUUID: string): Promise<ClientUser[]> {
     const room = await RoomRepository.update(roomUUID, { status: "finished" });
     if (!room) {
       throw new RoomNotFoundError();
     }
-    const votes = await VoteRepository.getAllRoundVotes(room.id, room.round);
-    return votes;
+    return this.getUsers(room.id, room.round, true);
   }
 
   /* for finished round */
@@ -112,32 +122,24 @@ class RoomsService {
     const existingVote = await VoteRepository.getOne(room.id, room.round);
     if (existingVote) {
       const vote = await VoteRepository.update(existingVote.id, value);
-      if (!vote) {
-        throw new VoteNotFoundError();
-      }
+      if (!vote) throw new VoteNotFoundError();
       return vote;
     }
     const vote = await VoteRepository.create(room.id, userId, value);
-    if (!vote) {
-      throw new VoteNotFoundError();
-    }
+    if (!vote) throw new VoteNotFoundError();
     return vote;
   }
 
   async restart(uuid: string): Promise<Room> {
     const room = await RoomRepository.update(uuid, { status: "started" });
-    if (!room) {
-      throw new RoomNotFoundError();
-    }
+    if (!room) throw new RoomNotFoundError();
     await VoteRepository.deleteAll(room.id, room.round);
     return room;
   }
 
   async changeRoomPrivacy(uuid: string, newPrivate: boolean) {
     const room = await RoomRepository.update(uuid, { private: newPrivate });
-    if (!room) {
-      throw new RoomNotFoundError();
-    }
+    if (!room) throw new RoomNotFoundError();
     return room;
   }
 

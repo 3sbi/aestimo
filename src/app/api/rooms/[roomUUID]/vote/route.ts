@@ -20,7 +20,7 @@ export async function POST(
     const req = await request.json();
     const { success, error, data } = CreateVoteDtoSchema.safeParse(req);
     if (!success || !data) {
-      console.log(error);
+      console.error(error);
       return Response.json({ error: error.message }, { status: 422 });
     }
 
@@ -46,7 +46,6 @@ export async function POST(
     };
 
     emitter.emit("vote", { type: "vote", data: votedUser });
-    console.log(vote);
     return Response.json({ success: !!vote });
   } catch (err) {
     console.error(err);

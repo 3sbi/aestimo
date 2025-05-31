@@ -38,12 +38,12 @@ class VoteRepository {
   static async getAllRoundVotes(
     roomId: number,
     round: number
-  ): Promise<{ userId: number; name: string | null; vote: VoteCard }[]> {
+  ): Promise<{ userId: number; userName: string | null; option: VoteCard }[]> {
     const votes = await db
       .select({
         userId: votesTable.userId,
-        name: usersTable.name,
-        vote: votesTable.value,
+        userName: usersTable.name,
+        option: votesTable.value,
       })
       .from(votesTable)
       .where(and(eq(votesTable.roomId, roomId), eq(votesTable.round, round)))
