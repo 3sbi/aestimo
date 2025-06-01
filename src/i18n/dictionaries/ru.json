@@ -8,12 +8,14 @@
   },
 
   "joinRoomForm": {
+    "header": "Присоединиться к существующей комнате",
     "uuid": "UUID",
     "username": "Имя",
     "join": "Присоединиться"
   },
 
   "createRoomForm": {
+    "header": "Создать новую комнату",
     "username": "Имя",
     "roomName": "Название комнаты",
     "checkboxes": "Опции",

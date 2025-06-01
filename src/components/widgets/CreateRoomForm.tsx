@@ -1,22 +1,18 @@
 "use client";
 
+import type { DefinedVoteType } from "@/backend/consts/predefinedVoteTypes";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { DefinedVoteType } from "../../backend/consts/predefinedVoteTypes";
 
 type Response = { roomUUID: string };
 
 type Props = {
-  i18n: {
-    username: string;
-    roomName: string;
-    checkboxes: string;
-    create: string;
-  };
+  i18n: Dictionary["createRoomForm"];
   predefinedVoteTypes: DefinedVoteType[];
 };
 
@@ -61,8 +57,8 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   };
 
   return (
-    <form className="flex flex-col justify-between">
-      <div>
+    <form className="flex flex-col px-6 pb-6 pt-3 grow">
+      <div className="grow">
         <Input
           type="text"
           name="name"
@@ -111,4 +107,4 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   );
 };
 
-export default CreateRoomForm;
+export { CreateRoomForm };

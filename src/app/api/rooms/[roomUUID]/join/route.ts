@@ -2,7 +2,7 @@ import "server-only";
 
 import { JoinRoomDtoSchema } from "@/backend/dtos/JoinRoomDtoSchema";
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import emitter from "@/backend/eventEmitter";
+import { sseStore } from "@/backend/eventEmitter";
 import { roomsService } from "@/backend/services";
 import { getSession } from "@/backend/session";
 import { ClientUser } from "@/types";
@@ -51,8 +51,8 @@ export async function POST(
       role: user.role,
       voted: false,
     };
+    sseStore.broadcast(roomUUID, { type: "join", data: joinedUser });
 
-    emitter.emit("join", { type: "join", data: joinedUser });
     return Response.json({ success: true });
   } catch (err) {
     console.error(err);

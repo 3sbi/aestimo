@@ -1,22 +1,22 @@
 import { CreateVoteDtoSchema } from "@/backend/dtos/CreateVoteDtoSchema";
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
+import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
 import { ClientUser, Vote, VoteCard } from "@/types";
-import emitter from "@/backend/eventEmitter";
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ roomUUID: string }> }
 ) {
-  const { roomUUID } = await params;
-  const { userUUID } = await getSession();
-
-  if (!userUUID) {
-    return Response.json({ error: "User not found" }, { status: 404 });
-  }
-
   try {
+    const { roomUUID } = await params;
+    const { userUUID } = await getSession();
+
+    if (!userUUID) {
+      throw new UserNotFoundError();
+    }
+
     const req = await request.json();
     const { success, error, data } = CreateVoteDtoSchema.safeParse(req);
     if (!success || !data) {
@@ -45,7 +45,7 @@ export async function POST(
       voted: true,
     };
 
-    emitter.emit("vote", { type: "vote", data: votedUser });
+    sseStore.broadcast(roomUUID, { type: "vote", data: votedUser }, user.uuid);
     return Response.json({ success: !!vote });
   } catch (err) {
     console.error(err);

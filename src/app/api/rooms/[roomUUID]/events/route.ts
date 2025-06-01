@@ -1,35 +1,34 @@
-import emitter from "@/backend/eventEmitter";
+import { UserNotFoundError } from "@/backend/errors";
+import type { SseClient } from "@/backend/eventEmitter";
+import { sseStore } from "@/backend/eventEmitter";
 import { getSession } from "@/backend/session";
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ roomUUID: string }> }
+) {
+  const { roomUUID } = await params;
   const session = await getSession();
+  const userUUID = session.userUUID;
+  if (!userUUID) {
+    throw new UserNotFoundError();
+  }
+
+  if (roomUUID !== session.roomUUID) {
+    return Response.json({ error: "Not allowed" }, { status: 403 });
+  }
+
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     start(controller) {
-      const sendEvent = (data: Record<string, string>) => {
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+      const send = (data: string) => {
+        controller.enqueue(encoder.encode(data));
       };
-
-      const deleteSendEvent = async (data: Record<string, string>) => {
-        session.destroy();
-        sendEvent(data);
-      };
-
-      emitter.on("join", sendEvent);
-      emitter.on("restart", sendEvent);
-      emitter.on("reveal", sendEvent);
-      emitter.on("vote", sendEvent);
-      emitter.on("next", sendEvent);
-      emitter.on("delete", deleteSendEvent);
-
+      const client: SseClient = { roomUUID, UUID: userUUID, send };
+      sseStore.addClient(client);
       req.signal?.addEventListener("abort", () => {
-        emitter.off("join", sendEvent);
-        emitter.off("restart", sendEvent);
-        emitter.off("reveal", sendEvent);
-        emitter.off("vote", sendEvent);
-        emitter.on("next", sendEvent);
-        emitter.off("delete", deleteSendEvent);
+        sseStore.removeClient(client);
         controller.close();
       });
     },

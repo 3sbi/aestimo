@@ -31,6 +31,11 @@ button.btn.primary:active {
   background-color: var(--primary-active);
 }
 
+button.btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
 button.btn.secondary {
   color: var(--secondary-foreground);
   border: 1px solid var(--border);

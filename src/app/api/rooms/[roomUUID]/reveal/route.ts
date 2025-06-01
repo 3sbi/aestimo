@@ -1,5 +1,5 @@
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import emitter from "@/backend/eventEmitter";
+import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
 
 // only admin can hit this endpoint
@@ -9,14 +9,13 @@ export async function POST(
 ) {
   try {
     const { roomUUID } = await params;
-    const isAdmin = usersService.isAdmin();
-    if (!isAdmin) {
+    const { isAdmin, userUUID } = await usersService.isAdmin();
+    if (isAdmin === false) {
       return Response.json({ error: "Not admin" }, { status: 403 });
     }
 
     const users = await roomsService.openCards(roomUUID);
-
-    emitter.emit("reveal", { type: "reveal", data: users });
+    sseStore.broadcast(roomUUID, { type: "reveal", data: users }, userUUID);
     return Response.json(users);
   } catch (err) {
     console.error(err);

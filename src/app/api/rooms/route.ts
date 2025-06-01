@@ -15,16 +15,13 @@ export async function POST(request: Request) {
       return Response.json({ error: error.message }, { status: 422 });
     }
 
-    const res = await roomsService.createRoom(data);
-    if (res === null) {
-      return Response.json({ error: "Something went wrong" }, { status: 422 });
-    }
+    const { room, user } = await roomsService.createRoom(data);
     const session = await getSession();
-    session.userUUID = res.user.uuid;
-    session.roomUUID = res.room.uuid;
+    session.userUUID = user.uuid;
+    session.roomUUID = room.uuid;
     await session.save();
 
-    return Response.json({ roomUUID: res.room.uuid });
+    return Response.json({ roomUUID: room.uuid });
   } catch (err) {
     console.error(err);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {

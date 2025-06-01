@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ import { useState } from "react";
 type Response = { success: boolean };
 
 type Props = {
-  i18n: { username: string; join: string };
+  i18n: Dictionary["joinRoomForm"];
   roomUUID: string;
 };
 
@@ -32,14 +33,16 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomUUID }) => {
   };
 
   return (
-    <form>
-      <Input
-        id="username"
-        type="text"
-        label={i18n.username}
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+    <form className="flex flex-col px-6 pb-6 pt-3 grow">
+      <div className="grow">
+        <Input
+          id="username"
+          type="text"
+          label={i18n.username}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
       <Button
         variant="primary"
         type="button"
@@ -56,4 +59,4 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomUUID }) => {
   );
 };
 
-export default JoinRoomForm;
+export { JoinRoomForm };

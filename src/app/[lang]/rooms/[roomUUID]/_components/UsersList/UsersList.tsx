@@ -3,21 +3,27 @@
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { ClientUser } from "@/types";
 import { CrownIcon } from "lucide-react";
-import Image from "next/image";
 import React from "react";
+import { KickButton } from "./KickButton";
 import styles from "./UsersList.module.css";
 
 type Props = {
-  usersList: ClientUser[];
+  players: ClientUser[];
+  setPlayers: (value: React.SetStateAction<ClientUser[]>) => void;
   currentUserId: number;
   i18n: Dictionary["room"]["usersList"];
   isAdmin: boolean;
 };
 
-const UsersList: React.FC<Props> = ({ usersList, currentUserId, isAdmin }) => {
+const UsersList: React.FC<Props> = ({
+  players,
+  setPlayers,
+  currentUserId,
+  isAdmin,
+}) => {
   return (
     <div className={styles.userCardList}>
-      {usersList.map((user) => {
+      {players.map((user) => {
         let children = <div>{user.voted ? "🗳️" : "🤔"}</div>;
         if (user.vote) {
           children = <div>{user.vote.value}</div>;
@@ -38,9 +44,7 @@ const UsersList: React.FC<Props> = ({ usersList, currentUserId, isAdmin }) => {
                 </div>
               )}
               {isAdmin && user.id !== currentUserId && (
-                <button>
-                  <Image src="/kick.svg" width={6} height={6} alt="kick" />
-                </button>
+                <KickButton userId={user.id} setPlayers={setPlayers} />
               )}
             </h2>
             {children}
@@ -52,4 +56,3 @@ const UsersList: React.FC<Props> = ({ usersList, currentUserId, isAdmin }) => {
 };
 
 export { UsersList };
-

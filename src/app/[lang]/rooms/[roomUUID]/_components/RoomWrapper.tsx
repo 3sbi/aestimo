@@ -36,7 +36,7 @@ export const RoomWrapper: React.FC<Props> = ({
   user,
 }) => {
   const [room, setRoom] = useState<ClientRoom>(initialRoom);
-  const [usersList, setUsersList] = useState<ClientUser[]>(initialUsersList);
+  const [players, setPlayers] = useState<ClientUser[]>(initialUsersList);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(
     initialSelectedIndex
   );
@@ -47,13 +47,13 @@ export const RoomWrapper: React.FC<Props> = ({
     eventSource.onmessage = (event) => {
       const { type, data }: EventData = JSON.parse(event.data);
       if (type === "vote") {
-        setUsersList((prev) => {
+        setPlayers((prev) => {
           const index = prev.findIndex((user) => user.id === data.id);
           prev[index].voted = true;
           return [...prev];
         });
       } else if (type === "reveal") {
-        setUsersList((prev) => {
+        setPlayers((prev) => {
           const newUsersList: ClientUser[] = [];
           for (const user of prev) {
             const vote = data.find((vote) => vote.userId === user.id)?.vote;
@@ -67,9 +67,9 @@ export const RoomWrapper: React.FC<Props> = ({
         });
       } else if (type === "restart") {
         setRoom(data.room);
-        setUsersList(data.users);
+        setPlayers(data.users);
       } else if (type === "join") {
-        setUsersList((prev) => [...prev, data]);
+        setPlayers((prev) => [...prev, data]);
       }
       toast.info(event.data);
     };
@@ -84,7 +84,7 @@ export const RoomWrapper: React.FC<Props> = ({
   }, [room.uuid]);
 
   const setVoted = (voted: boolean) => {
-    setUsersList((prev) => {
+    setPlayers((prev) => {
       const index = prev.findIndex((u) => u.id === user.id);
       if (index !== -1) {
         prev[index].voted = voted;
@@ -99,7 +99,8 @@ export const RoomWrapper: React.FC<Props> = ({
       <Toaster />
       <Header room={room} i18n={i18n.header} />
       <UsersList
-        usersList={usersList}
+        players={players}
+        setPlayers={setPlayers}
         currentUserId={user.id}
         i18n={i18n.usersList}
         isAdmin={isAdmin}
@@ -118,7 +119,7 @@ export const RoomWrapper: React.FC<Props> = ({
           i18n={i18n.toolbar}
           room={room}
           setRoom={setRoom}
-          setUsersList={setUsersList}
+          setPlayers={setPlayers}
           setSelectedIndex={setSelectedIndex}
         />
       )}

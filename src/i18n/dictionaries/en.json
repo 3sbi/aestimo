@@ -8,12 +8,14 @@
   },
 
   "joinRoomForm": {
+    "header": "Join existing room",
     "uuid": "UUID",
     "username": "Your name",
     "join": "Join"
   },
 
   "createRoomForm": {
+    "header": "Create new room",
     "username": "Your name",
     "roomName": "Room name",
     "checkboxes": "Options",

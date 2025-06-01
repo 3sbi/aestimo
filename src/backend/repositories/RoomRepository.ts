@@ -15,7 +15,7 @@ class RoomRepository {
 
   static async getById(id: number): Promise<Room | undefined> {
     const res = await db.select().from(roomsTable).where(eq(roomsTable.id, id));
-    const room = res[0];
+    const room = res.pop();
     return room;
   }
 
@@ -32,7 +32,7 @@ class RoomRepository {
         updatedAt: sql`NOW()`,
       })
       .returning();
-    const room = res[0];
+    const room = res.pop();
     return room;
   }
 
@@ -48,7 +48,7 @@ class RoomRepository {
       })
       .where(eq(roomsTable.uuid, uuid))
       .returning();
-    const room = res[0];
+    const room = res.pop();
     return room;
   }
 

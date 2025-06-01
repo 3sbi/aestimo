@@ -3,9 +3,7 @@ import "server-only";
 import { roomsService, usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
 import type { I18nLocale } from "@/i18n/get-dictionary";
-import {
-  getDictionary
-} from "@/i18n/get-dictionary";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { ClientUser, Room, User } from "@/types";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import { RoomWrapper } from "./_components/RoomWrapper";
@@ -27,7 +25,11 @@ export default async function Page({ params }: Props) {
     userUUID: string
   ): Promise<{ user?: User; room?: Room }> {
     try {
-      return usersService.checkIfUserExistsInRoom(roomUUID, userUUID);
+      const result = await usersService.checkIfUserExistsInRoom(
+        roomUUID,
+        userUUID
+      );
+      return result;
     } catch (err) {
       console.error(err);
       return {};

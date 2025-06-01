@@ -4,6 +4,7 @@ import { CreateRoomDto, JoinRoomDto } from "@/backend/dtos";
 import {
   RoomIsPrivateError,
   RoomNotFoundError,
+  UserNotFoundError,
   VoteNotFoundError,
 } from "@/backend/errors";
 import {
@@ -38,6 +39,10 @@ class RoomsService {
       name: username,
       role: "admin",
     });
+
+    if (!user) {
+      throw new UserNotFoundError();
+    }
 
     return { room, user };
   }

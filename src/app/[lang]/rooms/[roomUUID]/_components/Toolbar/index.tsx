@@ -18,7 +18,7 @@ type ToolbarProps = {
   room: ClientRoom;
   i18n: Dictionary["room"]["toolbar"];
   setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
-  setUsersList: React.Dispatch<React.SetStateAction<ClientUser[]>>;
+  setPlayers: React.Dispatch<React.SetStateAction<ClientUser[]>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
@@ -26,7 +26,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   room,
   i18n,
   setRoom,
-  setUsersList,
+  setPlayers,
   setSelectedIndex,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
     try {
       const res = await api.post(`/api/rooms/${room.uuid}/reveal`);
       const json: ClientUser[] = await res.json();
-      setUsersList(json);
+      setPlayers(json);
       setRoom((prev) => {
         prev.status = "finished";
         return prev;
@@ -70,7 +70,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       const res = await api.post(`/api/rooms/${room.uuid}/restart`);
       const data: { room: ClientRoom; users: ClientUser[] } = await res.json();
       setRoom(data.room);
-      setUsersList(data.users);
+      setPlayers(data.users);
       setSelectedIndex(null);
     } catch (err) {
       console.error(err);

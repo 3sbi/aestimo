@@ -10,15 +10,15 @@ import { RoomNotFoundError, UserNotFoundError } from "../errors";
 import { getSession } from "../session";
 
 class UsersService {
-  async getOne(userUUID: User["uuid"]): Promise<User> {
-    const data = await UserRepository.getByUUID(userUUID);
-    if (!data || !data.users) {
+  async getOne(id: User["id"]): Promise<User> {
+    const user = await UserRepository.getById(id);
+    if (!user) {
       throw new UserNotFoundError();
     }
-    return data.users;
+    return user;
   }
 
-  async isAdmin(): Promise<boolean> {
+  async isAdmin(): Promise<{ isAdmin: boolean; userUUID: string }> {
     const { userUUID, roomUUID } = await getSession();
     if (typeof roomUUID !== "string") {
       throw new RoomNotFoundError();
@@ -33,7 +33,7 @@ class UsersService {
     const user = data.users;
     const isAdmin: boolean =
       user.role === "admin" && roomUUID === data.rooms?.uuid;
-    return isAdmin;
+    return { isAdmin, userUUID };
   }
 
   async checkIfUserExistsInRoom(
@@ -67,8 +67,13 @@ class UsersService {
     return index;
   }
 
-  async kick(id: User["uuid"]) {
-    UserRepository.kick(id);
+  /* basically soft-delete */
+  async kick(id: User["id"]): Promise<User> {
+    const user = await UserRepository.kick(id);
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+    return user;
   }
 }
 

@@ -1,5 +1,5 @@
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import emitter from "@/backend/eventEmitter";
+import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
 import { ClientRoom } from "@/types";
 
@@ -10,8 +10,8 @@ export async function POST(
 ) {
   try {
     const { roomUUID } = await params;
-    const isAdmin = usersService.isAdmin();
-    if (!isAdmin) {
+    const { isAdmin, userUUID } = await usersService.isAdmin();
+    if (isAdmin === false) {
       return Response.json({ error: "Not admin" }, { status: 403 });
     }
 
@@ -30,9 +30,8 @@ export async function POST(
       status: updatedRoom.status,
     };
 
-    const data = { room: clientRoom, users };
-
-    emitter.emit("restart", { type: "restart", data });
+    const data = { type: "restart", data: { room: clientRoom, users } };
+    sseStore.broadcast(roomUUID, data, userUUID);
     return Response.json(data);
   } catch (err) {
     console.error(err);
