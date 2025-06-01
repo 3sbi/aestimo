@@ -1,6 +1,7 @@
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
+import { ClientRoom } from "@/types";
 import { NextRequest } from "next/server";
 
 export async function POST(
@@ -15,7 +16,18 @@ export async function POST(
     }
 
     const room = await roomsService.goToNextRound(roomUUID);
-    sseStore.broadcast(roomUUID, { type: "next-round", data: room }, userUUID);
+    const clientRoom: ClientRoom = {
+      name: room.name,
+      private: room.private,
+      round: room.round,
+      status: room.status,
+      uuid: room.uuid,
+    };
+    sseStore.broadcast(
+      roomUUID,
+      { type: "next-round", data: clientRoom },
+      userUUID
+    );
 
     return Response.json({ room });
   } catch (err) {

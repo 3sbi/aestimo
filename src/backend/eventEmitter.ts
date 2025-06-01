@@ -4,6 +4,15 @@ export type SseClient = {
   send: (data: string) => void;
 };
 
+export type EventType =
+  | "join"
+  | "next-round"
+  | "restart"
+  | "reveal"
+  | "kick"
+  | "delete-room"
+  | "vote";
+
 class SseStore {
   clients: SseClient[] = [];
 
@@ -23,7 +32,7 @@ class SseStore {
    */
   broadcast(
     roomUUID: string,
-    data: { type: string; data: Record<string, unknown> | Array<unknown> },
+    data: { type: EventType; data?: Record<string, unknown> | Array<unknown> },
     initiatorUUID?: string
   ) {
     const payload = `data: ${JSON.stringify(data)}\n\n`;

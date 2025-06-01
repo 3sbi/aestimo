@@ -30,7 +30,10 @@ export async function POST(
       status: updatedRoom.status,
     };
 
-    const data = { type: "restart", data: { room: clientRoom, users } };
+    const data = {
+      type: "restart",
+      data: { room: clientRoom, users },
+    } as const;
     sseStore.broadcast(roomUUID, data, userUUID);
     return Response.json(data);
   } catch (err) {

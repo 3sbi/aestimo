@@ -32,7 +32,7 @@ export async function DELETE(
     const data = {
       type: "kick",
       data: { success: !!kickedUser },
-    };
+    } as const;
     sseStore.broadcast(roomUUID, data, userUUID);
     return Response.json({ success: !!user });
   } catch (err) {

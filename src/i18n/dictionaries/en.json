@@ -39,6 +39,10 @@
       "you": "you",
       "admin": "Admin",
       "kick": "Kick"
+    },
+    "toast": {
+      "disconnect": "Something went wrong with server-sent events, disconnected :(",
+      "unknown-event": "Unknown event"
     }
   },
 

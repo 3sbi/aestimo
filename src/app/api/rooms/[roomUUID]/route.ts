@@ -13,10 +13,7 @@ export async function DELETE(
     const success = roomsService.delete(roomUUID);
     const session = await getSession();
     session.destroy();
-    sseStore.broadcast(roomUUID, {
-      type: "delete-room",
-      data: { success, roomUUID },
-    });
+    sseStore.broadcast(roomUUID, { type: "delete-room" });
 
     return Response.json({ success });
   } catch (err) {
