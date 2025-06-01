@@ -1,5 +1,5 @@
 {
-  "id": "0f135c98-3079-49a0-a01f-7feef57a5c60",
+  "id": "e2fbbbe1-5855-4292-969f-6009d3854b75",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -142,6 +142,19 @@
           "primaryKey": false,
           "notNull": true,
           "default": "gen_random_uuid()"
+        },
+        "kicked": {
+          "name": "kicked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "connected": {
+          "name": "connected",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},

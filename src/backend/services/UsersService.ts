@@ -7,28 +7,33 @@ import {
 } from "@/backend/repositories";
 import { Room, User } from "@/types";
 import { RoomNotFoundError, UserNotFoundError } from "../errors";
+import { getSession } from "../session";
 
 class UsersService {
   async getOne(userUUID: User["uuid"]): Promise<User> {
-    const res = await UserRepository.getByUUID(userUUID);
-    if (!res || !res.users) {
+    const data = await UserRepository.getByUUID(userUUID);
+    if (!data || !data.users) {
       throw new UserNotFoundError();
     }
-    return res.users;
+    return data.users;
   }
 
-  async isAdmin(
-    userUUID: User["uuid"],
-    roomUUID: Room["uuid"]
-  ): Promise<boolean> {
-    const res = await UserRepository.getByUUID(userUUID);
-    if (!res || !res.users) {
+  async isAdmin(): Promise<boolean> {
+    const { userUUID, roomUUID } = await getSession();
+    if (typeof roomUUID !== "string") {
+      throw new RoomNotFoundError();
+    }
+    if (typeof userUUID !== "string") {
       throw new UserNotFoundError();
     }
-    return (
-      (await this.getOne(userUUID)).role === "admin" &&
-      roomUUID === res.rooms?.uuid
-    );
+    const data = await UserRepository.getByUUID(userUUID);
+    if (!data || !data.users) {
+      throw new UserNotFoundError();
+    }
+    const user = data.users;
+    const isAdmin: boolean =
+      user.role === "admin" && roomUUID === data.rooms?.uuid;
+    return isAdmin;
   }
 
   async checkIfUserExistsInRoom(
@@ -60,6 +65,10 @@ class UsersService {
       return null;
     }
     return index;
+  }
+
+  async kick(id: User["uuid"]) {
+    UserRepository.kick(id);
   }
 }
 

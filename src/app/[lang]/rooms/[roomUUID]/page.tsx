@@ -17,7 +17,6 @@ type Props = {
 export default async function Page({ params }: Props) {
   const { roomUUID, lang } = await params;
   const session = await getSession();
-
   const { userUUID } = session;
 
   if (!userUUID) {

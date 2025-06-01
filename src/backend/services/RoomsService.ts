@@ -86,6 +86,7 @@ class RoomsService {
     if (!room) {
       throw new RoomNotFoundError();
     }
+
     return room.voteOptions;
   }
 
@@ -94,6 +95,7 @@ class RoomsService {
     if (!room) {
       throw new RoomNotFoundError();
     }
+
     return this.getUsers(room.id, room.round, true);
   }
 
@@ -122,24 +124,32 @@ class RoomsService {
     const existingVote = await VoteRepository.getOne(room.id, room.round);
     if (existingVote) {
       const vote = await VoteRepository.update(existingVote.id, value);
-      if (!vote) throw new VoteNotFoundError();
+      if (!vote) {
+        throw new VoteNotFoundError();
+      }
       return vote;
     }
     const vote = await VoteRepository.create(room.id, userId, value);
-    if (!vote) throw new VoteNotFoundError();
+    if (!vote) {
+      throw new VoteNotFoundError();
+    }
     return vote;
   }
 
   async restart(uuid: string): Promise<Room> {
     const room = await RoomRepository.update(uuid, { status: "started" });
-    if (!room) throw new RoomNotFoundError();
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
     await VoteRepository.deleteAll(room.id, room.round);
     return room;
   }
 
   async changeRoomPrivacy(uuid: string, newPrivate: boolean) {
     const room = await RoomRepository.update(uuid, { private: newPrivate });
-    if (!room) throw new RoomNotFoundError();
+    if (!room) {
+      throw new RoomNotFoundError();
+    }
     return room;
   }
 

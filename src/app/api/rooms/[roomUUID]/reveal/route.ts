@@ -1,7 +1,6 @@
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import emitter from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
-import { getSession } from "@/backend/session";
 
 // only admin can hit this endpoint
 export async function POST(
@@ -10,22 +9,7 @@ export async function POST(
 ) {
   try {
     const { roomUUID } = await params;
-    const { userUUID } = await getSession();
-    if (!userUUID) {
-      return Response.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const user = await usersService.getOne(userUUID);
-    if (!user) {
-      return Response.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const room = await roomsService.getOne(roomUUID);
-    if (!room) {
-      return Response.json({ error: "Room not found" }, { status: 404 });
-    }
-
-    const isAdmin = user.role === "admin" && room.uuid === roomUUID;
+    const isAdmin = usersService.isAdmin();
     if (!isAdmin) {
       return Response.json({ error: "Not admin" }, { status: 403 });
     }

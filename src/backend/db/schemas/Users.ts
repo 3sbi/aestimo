@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   integer,
   pgEnum,
   pgTable,
@@ -25,4 +26,6 @@ export const usersTable = pgTable("users", {
     .unique()
     .notNull()
     .default(sql`gen_random_uuid()`),
+  kicked: boolean("kicked").notNull().default(false),
+  connected: boolean("connected").notNull(),
 });
