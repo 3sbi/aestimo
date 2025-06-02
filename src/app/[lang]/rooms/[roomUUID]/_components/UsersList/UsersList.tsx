@@ -8,22 +8,22 @@ import { KickButton } from "./KickButton";
 import styles from "./UsersList.module.css";
 
 type Props = {
-  players: ClientUser[];
-  setPlayers: (value: React.SetStateAction<ClientUser[]>) => void;
+  users: ClientUser[];
+  setUsers: (value: React.SetStateAction<ClientUser[]>) => void;
   currentUserId: number;
   i18n: Dictionary["room"]["usersList"];
   isAdmin: boolean;
 };
 
 const UsersList: React.FC<Props> = ({
-  players,
-  setPlayers,
+  users,
+  setUsers,
   currentUserId,
   isAdmin,
 }) => {
   return (
     <div className={styles.userCardList}>
-      {players.map((user) => {
+      {users.map((user) => {
         let children = <div>{user.voted ? "🗳️" : "🤔"}</div>;
         if (user.vote) {
           children = <div>{user.vote.value}</div>;
@@ -43,10 +43,10 @@ const UsersList: React.FC<Props> = ({
                   <CrownIcon width={20} />
                 </div>
               )}
-              {isAdmin && user.id !== currentUserId && (
-                <KickButton userId={user.id} setPlayers={setPlayers} />
-              )}
             </h2>
+            {isAdmin && user.id !== currentUserId && (
+              <KickButton userId={user.id} setUsers={setUsers} />
+            )}
             {children}
           </div>
         );

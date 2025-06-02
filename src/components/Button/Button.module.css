@@ -32,13 +32,13 @@ button.btn.primary:active {
 }
 
 button.btn:disabled {
-  opacity: 0.8;
   cursor: not-allowed;
 }
 
 button.btn.secondary {
   color: var(--secondary-foreground);
   border: 1px solid var(--border);
+  background-color: var(--secondary);
 }
 
 button.btn.icon {
@@ -46,6 +46,11 @@ button.btn.icon {
   aspect-ratio: 1/1;
   min-width: 14px;
   min-height: 14px;
+}
+
+button.btn.loading {
+  opacity: 0.8;
+  cursor: default;
 }
 
 button.btn.destructive {

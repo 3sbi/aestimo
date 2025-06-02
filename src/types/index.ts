@@ -16,11 +16,11 @@ export type ClientUser = {
   name: User["name"];
   voted: boolean;
   role: User["role"];
-  vote?: VoteCard;
+  vote?: VoteCard | null;
 };
 
-export type WSMessage =
-  | { type: "vote"; userId: number; vote: string }
-  | { type: "reveal" }
-  | { type: "join"; userId: number }
-  | { type: "leave"; userId: number };
+export type ClientVote = {
+  userId: number;
+  userName: string | null;
+  option: VoteCard;
+};

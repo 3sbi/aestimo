@@ -19,7 +19,11 @@ export default async function Page(props: Props) {
     const user: User | undefined = res?.users;
     const room: Room | undefined | null = res?.rooms;
 
-    if (session.userUUID === user?.uuid && session.roomUUID === room?.uuid) {
+    if (
+      session.userUUID === user?.uuid &&
+      roomUUID === session.roomUUID &&
+      roomUUID === room?.uuid
+    ) {
       redirect(`/rooms/${roomUUID}`, RedirectType.replace);
     }
   }

@@ -1,7 +1,7 @@
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
-import { ClientRoom } from "@/types";
+import { ClientRoom, Room } from "@/types";
 
 // only admin can hit this endpoint
 export async function POST(
@@ -15,25 +15,18 @@ export async function POST(
       return Response.json({ error: "Not admin" }, { status: 403 });
     }
 
-    const updatedRoom = await roomsService.restart(roomUUID);
+    const updatedRoom: Room = await roomsService.restart(roomUUID);
     const users = await roomsService.getUsers(
       updatedRoom.id,
       updatedRoom.round,
       false
     );
-
-    const clientRoom: ClientRoom = {
-      uuid: updatedRoom.uuid,
-      name: updatedRoom.name,
-      private: updatedRoom.private,
-      round: updatedRoom.round,
-      status: updatedRoom.status,
-    };
-
+    const room: ClientRoom = roomsService.convertToClientRoom(updatedRoom);
     const data = {
       type: "restart",
-      data: { room: clientRoom, users },
+      data: { room, users },
     } as const;
+
     sseStore.broadcast(roomUUID, data, userUUID);
     return Response.json(data);
   } catch (err) {

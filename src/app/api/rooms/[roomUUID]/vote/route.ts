@@ -31,7 +31,7 @@ export async function POST(
       return Response.json({ error: "Vote not found" }, { status: 404 });
     }
 
-    const { room, user } = await usersService.checkIfUserExistsInRoom(
+    const { user, room } = await usersService.checkIfUserExistsInRoom(
       roomUUID,
       userUUID
     );

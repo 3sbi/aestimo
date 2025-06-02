@@ -1,7 +1,6 @@
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
-import { ClientRoom } from "@/types";
 import { NextRequest } from "next/server";
 
 export async function POST(
@@ -15,21 +14,15 @@ export async function POST(
       return Response.json({ error: "Not admin" }, { status: 403 });
     }
 
-    const room = await roomsService.goToNextRound(roomUUID);
-    const clientRoom: ClientRoom = {
-      name: room.name,
-      private: room.private,
-      round: room.round,
-      status: room.status,
-      uuid: room.uuid,
-    };
+    const { room, roundHistory } = await roomsService.goToNextRound(roomUUID);
+
     sseStore.broadcast(
       roomUUID,
-      { type: "next-round", data: clientRoom },
+      { type: "next-round", data: { room, roundHistory } },
       userUUID
     );
 
-    return Response.json({ room });
+    return Response.json({ room, roundHistory });
   } catch (err) {
     console.error(err);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {

@@ -8,6 +8,7 @@ import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Switch } from "../Switch";
 
 type Response = { roomUUID: string };
 
@@ -21,6 +22,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
+  const [privateRoom, setPrivateRoom] = useState<boolean>(true);
   const [voteTypeId, setVoteTypeIdId] = useState<string>(
     predefinedVoteTypes[0].id
   );
@@ -41,6 +43,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
           name,
           username,
           voteOptions: options?.values,
+          private: privateRoom,
         };
 
         const res = await api.post("/api/rooms", values);
@@ -57,53 +60,69 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   };
 
   return (
-    <form className="flex flex-col px-6 pb-6 pt-3 grow">
-      <div className="grow">
-        <Input
-          type="text"
-          name="name"
-          label={i18n.roomName}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Input
-          type="text"
-          name="username"
-          label={i18n.username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <fieldset className="flex flex-col gap-1">
-          <legend>{i18n.checkboxes}</legend>
-          {predefinedVoteTypes.map((option) => (
-            <div className="flex gap-2" key={option.id}>
-              <input
-                type="radio"
-                id={option.id}
-                name="voteType"
-                value={option.id}
-                checked={option.id === voteTypeId}
-                onChange={(e) => {
-                  const id = e.target.value;
-                  setVoteTypeIdId(id);
-                }}
-              />
-              <label htmlFor={option.id}>{getLabel(option)}</label>
-            </div>
-          ))}
-        </fieldset>
+    <div>
+      <div className="px-6 py-3">
+        <h1 className="text-center font-semibold text-lg">{i18n.header}</h1>
       </div>
-      <Button
-        variant="primary"
-        className="mt-4"
-        onClick={onFinish}
-        type="button"
-        disabled={loading}
-      >
-        {loading && (
-          <Loader2Icon className="animate-spin" width={20} height={20} />
-        )}
-        {i18n.create}
-      </Button>
-    </form>
+      <hr className="w-full" />
+      <form className="flex flex-col px-6 pb-6 pt-3 grow">
+        <div className="grow">
+          <Input
+            type="text"
+            name="name"
+            label={i18n.roomName}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            type="text"
+            name="username"
+            label={i18n.username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <div className="flex items-center gap-2 mb-3">
+            <Switch
+              id="private"
+              onCheckedChange={(value) => {
+                setPrivateRoom(value);
+              }}
+              checked={privateRoom}
+            />
+            <label htmlFor="private">{i18n.private}</label>
+          </div>
+          <fieldset className="flex flex-col gap-1">
+            <legend className="font-semibold mb-1">{i18n.checkboxes}</legend>
+            {predefinedVoteTypes.map((option) => (
+              <div className="flex gap-2" key={option.id}>
+                <input
+                  type="radio"
+                  id={option.id}
+                  name="voteType"
+                  value={option.id}
+                  checked={option.id === voteTypeId}
+                  onChange={(e) => {
+                    const id = e.target.value;
+                    setVoteTypeIdId(id);
+                  }}
+                />
+                <label htmlFor={option.id}>{getLabel(option)}</label>
+              </div>
+            ))}
+          </fieldset>
+        </div>
+        <Button
+          variant="primary"
+          className="mt-4"
+          onClick={onFinish}
+          type="button"
+          disabled={loading}
+        >
+          {loading && (
+            <Loader2Icon className="animate-spin" width={20} height={20} />
+          )}
+          {i18n.create}
+        </Button>
+      </form>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import { db, usersTable, votesTable } from "@/backend/db";
-import type { Vote, VoteCard } from "@/types";
+import type { ClientVote, Vote, VoteCard } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 
 class VoteRepository {
@@ -38,7 +38,7 @@ class VoteRepository {
   static async getAllRoundVotes(
     roomId: number,
     round: number
-  ): Promise<{ userId: number; userName: string | null; option: VoteCard }[]> {
+  ): Promise<ClientVote[]> {
     const votes = await db
       .select({
         userId: votesTable.userId,
@@ -47,6 +47,22 @@ class VoteRepository {
       })
       .from(votesTable)
       .where(and(eq(votesTable.roomId, roomId), eq(votesTable.round, round)))
+      .leftJoin(usersTable, eq(votesTable.userId, usersTable.id));
+    return votes;
+  }
+
+  static async getAllVotes(
+    roomId: number
+  ): Promise<Array<ClientVote & { round: number }>> {
+    const votes = await db
+      .select({
+        userId: votesTable.userId,
+        userName: usersTable.name,
+        option: votesTable.value,
+        round: votesTable.round,
+      })
+      .from(votesTable)
+      .where(eq(votesTable.roomId, roomId))
       .leftJoin(usersTable, eq(votesTable.userId, usersTable.id));
     return votes;
   }
