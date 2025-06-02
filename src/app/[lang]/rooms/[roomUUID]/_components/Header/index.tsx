@@ -3,19 +3,19 @@
 import { Button } from "@/components/Button";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { ClientRoom, ClientUser, ClientVote } from "@/types";
+import { api } from "@/utils/api";
 import { LogOutIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import styles from "./Header.module.css";
 import { InviteButton } from "./InviteButton";
 import { VotesHistory } from "./VotesHistory";
-import { api } from "@/utils/api";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 type Props = {
   room: ClientRoom;
   i18n: Dictionary["room"]["header"];
   votesHistory: Record<ClientRoom["round"], ClientVote[]>;
-  user: ClientUser;
+  user: Pick<ClientUser, "id" | "role">;
 };
 
 const Header: React.FC<Props> = ({ i18n, room, votesHistory, user }) => {

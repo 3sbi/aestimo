@@ -167,13 +167,22 @@ class RoomsService {
   async addVote(room: Room, userId: number, value: VoteCard): Promise<Vote> {
     const existingVote = await VoteRepository.getOne(room.id, room.round);
     if (existingVote) {
-      const vote = await VoteRepository.update(existingVote.id, value);
+      const vote = await VoteRepository.update(
+        existingVote.id,
+        value,
+        room.round
+      );
       if (!vote) {
         throw new VoteNotFoundError();
       }
       return vote;
     }
-    const vote = await VoteRepository.create(room.id, userId, value);
+    const vote = await VoteRepository.create(
+      room.id,
+      userId,
+      value,
+      room.round
+    );
     if (!vote) {
       throw new VoteNotFoundError();
     }
@@ -206,7 +215,9 @@ class RoomsService {
 
   async getPublicRooms(): Promise<ClientRoom[]> {
     const rooms = await RoomRepository.getAll();
-    const clientRooms: ClientRoom[] = rooms.map(this.convertToClientRoom);
+    const clientRooms: ClientRoom[] = rooms
+      .filter((room) => !room.private)
+      .map(this.convertToClientRoom);
     return clientRooms;
   }
 }

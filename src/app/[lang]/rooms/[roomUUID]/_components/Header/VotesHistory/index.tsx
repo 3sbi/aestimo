@@ -11,13 +11,13 @@ type Props = {
 const VotesHistory: React.FC<Props> = ({ i18n, votesHistory }) => {
   return (
     <div className={styles.votesHistory}>
-      {Object.keys(votesHistory).map((round) => (
+      {Object.entries(votesHistory).map(([round, votes]) => (
         <div className={styles.roundItem} key={round}>
           <h4 className="font-semibold text-xl">
             {i18n.round} {round}
           </h4>
           <div className={styles.roundItemVotes}>
-            {votesHistory[Number(round)].map((vote) => (
+            {votes.map((vote) => (
               <Tooltip key={vote.userId}>
                 <TooltipTrigger>
                   <div

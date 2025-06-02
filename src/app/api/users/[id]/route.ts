@@ -31,9 +31,12 @@ export async function DELETE(
     const kickedUser = await usersService.kick(id);
     const data = {
       type: "kick",
-      data: { success: !!kickedUser },
+      data: { userId: kickedUser.id },
     } as const;
     sseStore.broadcast(roomUUID, data, userUUID);
+    if (isMyself) {
+      session.destroy();
+    }
     return Response.json({ success: !!user });
   } catch (err) {
     console.error(err);

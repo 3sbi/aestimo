@@ -38,3 +38,20 @@
   justify-content: center;
   align-items: center;
 }
+
+.userCard button.kickButton {
+  display: none;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  width: 32px;
+  padding: 4px;
+  position: absolute;
+  top: 18px;
+  right: 4px;
+}
+
+.userCard:hover button.kickButton {
+  display: block;
+  color: var(--destructive);
+}

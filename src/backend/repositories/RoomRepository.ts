@@ -4,10 +4,7 @@ import { and, eq, sql } from "drizzle-orm";
 
 class RoomRepository {
   static async getAll(): Promise<Room[]> {
-    const result = await db
-      .select()
-      .from(roomsTable)
-      .where(eq(roomsTable.private, false));
+    const result = await db.select().from(roomsTable);
     return result;
   }
 
@@ -15,7 +12,7 @@ class RoomRepository {
     const result = await db
       .select()
       .from(roomsTable)
-      .where(and(eq(roomsTable.uuid, uuid), eq(roomsTable.private, false)));
+      .where(and(eq(roomsTable.uuid, uuid)));
 
     const room = result.pop();
     return room;

@@ -14,5 +14,5 @@ export const votesTable = pgTable("votes", {
   userId: integer("user_id")
     .references(() => usersTable.id, { onDelete: "cascade" })
     .notNull(),
-  round: integer("round").notNull().default(1),
+  round: integer("round").notNull(),
 });

@@ -34,7 +34,7 @@ CREATE TABLE "votes" (
 	"value" json NOT NULL,
 	"room_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
-	"round" integer DEFAULT 1 NOT NULL
+	"round" integer NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "users" ADD CONSTRAINT "users_room_id_rooms_id_fk" FOREIGN KEY ("room_id") REFERENCES "public"."rooms"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

@@ -120,6 +120,9 @@ export const RoomWrapper: React.FC<Props> = ({
         case "kick": {
           const { userId } = eventPayload.data;
           setUsers((users) => users.filter((p) => p.id !== userId));
+          if (user.id === userId) {
+            router.replace("/");
+          }
           break;
         }
         case "delete-room": {
@@ -155,7 +158,7 @@ export const RoomWrapper: React.FC<Props> = ({
     return () => {
       eventSource.close();
     };
-  }, [room.uuid, room.round, router, i18n, disconnected]);
+  }, [room.uuid, room.round, router, user.id, i18n, disconnected]);
 
   const setVoted = (voted: boolean) => {
     setUsers((prev) => {
@@ -171,7 +174,12 @@ export const RoomWrapper: React.FC<Props> = ({
   return (
     <div className="room">
       <Toaster richColors />
-      <Header room={room} i18n={i18n.header} votesHistory={votesHistory} />
+      <Header
+        room={room}
+        i18n={i18n.header}
+        votesHistory={votesHistory}
+        user={user}
+      />
       <UsersList
         users={users}
         setUsers={setUsers}

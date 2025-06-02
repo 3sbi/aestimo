@@ -20,6 +20,7 @@ const UsersList: React.FC<Props> = ({
   setUsers,
   currentUserId,
   isAdmin,
+  i18n,
 }) => {
   return (
     <div className={styles.userCardList}>
@@ -45,7 +46,11 @@ const UsersList: React.FC<Props> = ({
               )}
             </h2>
             {isAdmin && user.id !== currentUserId && (
-              <KickButton userId={user.id} setUsers={setUsers} />
+              <KickButton
+                userId={user.id}
+                setUsers={setUsers}
+                title={i18n.kick}
+              />
             )}
             {children}
           </div>
@@ -56,3 +61,4 @@ const UsersList: React.FC<Props> = ({
 };
 
 export { UsersList };
+

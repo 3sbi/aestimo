@@ -5,7 +5,7 @@ import { getSession } from "@/backend/session";
 import { JoinRoomForm } from "@/components/widgets/JoinRoomForm";
 import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
 import { Room, User } from "@/types";
-import { redirect, RedirectType } from "next/navigation";
+import { notFound, redirect, RedirectType } from "next/navigation";
 
 type Props = {
   params: Promise<{ roomUUID: string; lang: I18nLocale }>;
@@ -18,6 +18,10 @@ export default async function Page(props: Props) {
     const res = await UserRepository.getByUUID(session.userUUID);
     const user: User | undefined = res?.users;
     const room: Room | undefined | null = res?.rooms;
+
+    if (room?.private) {
+      return notFound();
+    }
 
     if (
       session.userUUID === user?.uuid &&

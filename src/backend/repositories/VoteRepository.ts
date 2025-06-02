@@ -11,11 +11,12 @@ class VoteRepository {
     return vote.pop();
   }
 
-  static async update(id: number, value: VoteCard) {
+  static async update(id: number, value: VoteCard, round: number) {
     const vote = await db
       .update(votesTable)
       .set({
         value,
+        round,
         updatedAt: sql`NOW()`,
       })
       .where(eq(votesTable.id, id))
@@ -26,11 +27,12 @@ class VoteRepository {
   static async create(
     roomId: number,
     userId: number,
-    value: VoteCard
+    value: VoteCard,
+    round: number
   ): Promise<Vote | undefined> {
     const vote = await db
       .insert(votesTable)
-      .values({ roomId, userId, value })
+      .values({ roomId, userId, value, round })
       .returning();
     return vote.pop();
   }
