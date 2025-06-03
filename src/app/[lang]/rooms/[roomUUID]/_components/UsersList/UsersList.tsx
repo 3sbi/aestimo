@@ -9,7 +9,7 @@ import styles from "./UsersList.module.css";
 
 type Props = {
   users: ClientUser[];
-  setUsers: (value: React.SetStateAction<ClientUser[]>) => void;
+  kickUser: (userId: number) => void;
   currentUserId: number;
   i18n: Dictionary["room"]["usersList"];
   isAdmin: boolean;
@@ -17,7 +17,7 @@ type Props = {
 
 const UsersList: React.FC<Props> = ({
   users,
-  setUsers,
+  kickUser,
   currentUserId,
   isAdmin,
   i18n,
@@ -48,7 +48,7 @@ const UsersList: React.FC<Props> = ({
             {isAdmin && user.id !== currentUserId && (
               <KickButton
                 userId={user.id}
-                setUsers={setUsers}
+                kickUser={kickUser}
                 title={i18n.kick}
               />
             )}

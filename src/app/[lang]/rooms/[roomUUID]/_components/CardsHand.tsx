@@ -8,8 +8,7 @@ import React from "react";
 type Props = {
   voteOptions: VoteCard[];
   room: ClientRoom;
-  userId: number;
-  setVoted: (voted: boolean) => void;
+  setVoted: () => void;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
@@ -31,7 +30,7 @@ const CardsHand: React.FC<Props> = ({
       const res = await api.post(`/api/rooms/${room.uuid}/vote`, body);
       const json: { success: boolean } = await res.json();
       if (res.ok && json.success) {
-        setVoted(true);
+        setVoted();
         setSelectedIndex(index);
       }
     } catch (err) {

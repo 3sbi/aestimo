@@ -1,17 +1,16 @@
 "use client";
 import { Button } from "@/components/Button";
-import { ClientUser } from "@/types";
 import { api } from "@/utils/api";
 import React, { useState } from "react";
 import styles from "./UsersList.module.css";
 
 type Props = {
   userId: number;
-  setUsers: (value: React.SetStateAction<ClientUser[]>) => void;
+  kickUser: (userId: number) => void;
   title: string;
 };
 
-const KickButton: React.FC<Props> = ({ userId, setUsers, title }) => {
+const KickButton: React.FC<Props> = ({ userId, kickUser, title }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   async function onClick() {
@@ -20,7 +19,7 @@ const KickButton: React.FC<Props> = ({ userId, setUsers, title }) => {
       const res = await api.delete(`/api/users/${userId}`);
       const json: { success: boolean } = await res.json();
       if (json.success && res.ok) {
-        setUsers((prev) => prev.filter((user) => user.id !== userId));
+        kickUser(userId);
       }
     } catch (err) {
       console.error(err);
@@ -47,3 +46,4 @@ const KickButton: React.FC<Props> = ({ userId, setUsers, title }) => {
 };
 
 export { KickButton };
+
