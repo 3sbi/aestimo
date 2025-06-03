@@ -17,7 +17,8 @@
   align-items: center;
   font-size: 3rem; /* (48px) */
   line-height: 1;
-  max-width: 160px;
+  max-width: 120px;
+  width: 120px;
   position: relative;
 }
 

@@ -142,13 +142,13 @@ class RoomsService {
 
   async goToNextRound(
     uuid: string
-  ): Promise<{ room: ClientRoom; roundHistory: ClientVote[] }> {
+  ): Promise<{ room: ClientRoom; prevRoundVotes: ClientVote[] }> {
     const item = await RoomRepository.getByUUID(uuid);
     if (!item) {
       throw new RoomNotFoundError();
     }
     const currentRound: number = item.round;
-    const roundHistory = await VoteRepository.getAllRoundVotes(
+    const prevRoundVotes = await VoteRepository.getAllRoundVotes(
       item.id,
       currentRound
     );
@@ -161,11 +161,15 @@ class RoomsService {
     }
 
     const clientRoom: ClientRoom = this.convertToClientRoom(room);
-    return { room: clientRoom, roundHistory };
+    return { room: clientRoom, prevRoundVotes };
   }
 
   async addVote(room: Room, userId: number, value: VoteCard): Promise<Vote> {
-    const existingVote = await VoteRepository.getOne(room.id, room.round);
+    const existingVote = await VoteRepository.getOne(
+      room.id,
+      room.round,
+      userId
+    );
     if (existingVote) {
       const vote = await VoteRepository.update(
         existingVote.id,

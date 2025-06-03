@@ -21,7 +21,7 @@ type EventData =
   | { type: "join"; data: ClientUser }
   | {
       type: "next-round";
-      data: { room: ClientRoom; roundVoteHistory: ClientVote[] };
+      data: { room: ClientRoom; prevRoundVotes: ClientVote[] };
     }
   | { type: "restart"; data: { room: ClientRoom; users: ClientUser[] } }
   | {
@@ -73,10 +73,10 @@ export const RoomWrapper: React.FC<Props> = ({
           break;
         }
         case "next-round": {
-          const { room: newRoom, roundVoteHistory } = eventPayload.data;
+          const { room: newRoom, prevRoundVotes } = eventPayload.data;
           setVotesHistory((prev) => {
-            prev[room.round] = roundVoteHistory;
-            return { ...prev };
+            prev[room.round] = prevRoundVotes;
+            return structuredClone(prev);
           });
           setRoom(newRoom);
           setUsers((prev) => {

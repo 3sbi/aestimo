@@ -14,15 +14,9 @@ export async function POST(
       return Response.json({ error: "Not admin" }, { status: 403 });
     }
 
-    const { room, roundHistory } = await roomsService.goToNextRound(roomUUID);
-
-    sseStore.broadcast(
-      roomUUID,
-      { type: "next-round", data: { room, roundHistory } },
-      userUUID
-    );
-
-    return Response.json({ room, roundHistory });
+    const data = await roomsService.goToNextRound(roomUUID);
+    sseStore.broadcast(roomUUID, { type: "next-round", data }, userUUID);
+    return Response.json(data);
   } catch (err) {
     console.error(err);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {

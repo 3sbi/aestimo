@@ -38,7 +38,7 @@ const UsersList: React.FC<Props> = ({
           >
             <h2 className={styles.username} title={user.name}>
               <span className="truncate">{user.name}</span>
-              {user.id === currentUserId && <span>(You)</span>}
+              {user.id === currentUserId && <span>({i18n.you})</span>}
               {user.role === "admin" && (
                 <div title={"admin"}>
                   <CrownIcon width={20} />
@@ -61,4 +61,3 @@ const UsersList: React.FC<Props> = ({
 };
 
 export { UsersList };
-

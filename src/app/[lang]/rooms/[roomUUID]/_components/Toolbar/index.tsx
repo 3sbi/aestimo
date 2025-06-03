@@ -60,12 +60,20 @@ const Toolbar: React.FC<ToolbarProps> = ({
     setLoadingButton("next");
     try {
       const res = await api.post(`/api/rooms/${room.uuid}/next`, {});
-      const json: { room: ClientRoom; roundHistory: ClientVote[] } =
+      const json: { room: ClientRoom; prevRoundVotes: ClientVote[] } =
         await res.json();
       setRoom(json.room);
       setVotesHistory((prev) => {
-        prev[room.round] = json.roundHistory;
+        prev[room.round] = json.prevRoundVotes;
         return { ...prev };
+      });
+      setUsers((prev) => {
+        return prev.map((user) => ({
+          id: user.id,
+          name: user.name,
+          role: user.role,
+          voted: false,
+        }));
       });
       setSelectedIndex(null);
     } catch (err) {
@@ -133,4 +141,3 @@ const Toolbar: React.FC<ToolbarProps> = ({
 };
 
 export { Toolbar };
-

@@ -22,7 +22,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-  const [privateRoom, setPrivateRoom] = useState<boolean>(true);
+  const [privateRoom, setPrivateRoom] = useState<boolean>(false);
   const [voteTypeId, setVoteTypeIdId] = useState<string>(
     predefinedVoteTypes[0].id
   );

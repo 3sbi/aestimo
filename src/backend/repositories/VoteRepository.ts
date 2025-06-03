@@ -3,11 +3,17 @@ import type { ClientVote, Vote, VoteCard } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 
 class VoteRepository {
-  static async getOne(roomId: number, round: number) {
+  static async getOne(roomId: number, round: number, userId: number) {
     const vote = await db
       .select()
       .from(votesTable)
-      .where(and(eq(votesTable.roomId, roomId), eq(votesTable.round, round)));
+      .where(
+        and(
+          eq(votesTable.roomId, roomId),
+          eq(votesTable.round, round),
+          eq(votesTable.userId, userId)
+        )
+      );
     return vote.pop();
   }
 

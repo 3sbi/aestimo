@@ -53,6 +53,7 @@ export default async function Page({ params }: Props) {
     room.round,
     showVotes
   );
+
   const votesHistory: Record<Vote["round"], ClientVote[]> =
     await roomsService.getVotesHistory(room.id, room.round);
   const index = await usersService.getVoteIndex(user.id, room.id, room.round);
