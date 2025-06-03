@@ -2,6 +2,7 @@ import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
 import { ClientRoom, Room } from "@/types";
+import { RestartEvent } from "@/types/EventData";
 
 // only admin can hit this endpoint
 export async function POST(
@@ -22,13 +23,9 @@ export async function POST(
       false
     );
     const room: ClientRoom = roomsService.convertToClientRoom(updatedRoom);
-    const data = {
-      type: "restart",
-      data: { room, users },
-    } as const;
-
+    const data: RestartEvent = { type: "restart", data: { room, users } };
     sseStore.broadcast(roomUUID, data, userUUID);
-    return Response.json(data);
+    return Response.json(data["data"]);
   } catch (err) {
     console.error(err);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {

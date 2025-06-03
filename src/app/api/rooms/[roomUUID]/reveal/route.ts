@@ -1,6 +1,7 @@
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
+import { RevealEvent } from "@/types/EventData";
 
 // only admin can hit this endpoint
 export async function POST(
@@ -15,8 +16,9 @@ export async function POST(
     }
 
     const users = await roomsService.openCards(roomUUID);
-    sseStore.broadcast(roomUUID, { type: "reveal", data: users }, userUUID);
-    return Response.json(users);
+    const data: RevealEvent = { type: "reveal", data: users };
+    sseStore.broadcast(roomUUID, data, userUUID);
+    return Response.json(data["data"]);
   } catch (err) {
     console.error(err);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {

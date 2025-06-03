@@ -9,6 +9,12 @@ import type {
   Vote,
   VoteCard,
 } from "@/types";
+import type {
+  Event,
+  NextRoundEvent,
+  RestartEvent,
+  RevealEvent,
+} from "@/types/EventData";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
@@ -16,21 +22,6 @@ import CardsHand from "./CardsHand";
 import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
 import { UsersList } from "./UsersList";
-
-type EventData =
-  | { type: "join"; data: ClientUser }
-  | {
-      type: "next-round";
-      data: { room: ClientRoom; prevRoundVotes: ClientVote[] };
-    }
-  | { type: "restart"; data: { room: ClientRoom; users: ClientUser[] } }
-  | {
-      type: "reveal";
-      data: ClientVote[];
-    }
-  | { type: "kick"; data: { userId: number } }
-  | { type: "delete-room" }
-  | { type: "vote"; data: ClientUser };
 
 type Props = {
   initialRoom: ClientRoom;
@@ -61,11 +52,44 @@ export const RoomWrapper: React.FC<Props> = ({
   );
   const [disconnected, setDisconnected] = useState<boolean>(false);
 
+  const goToNextRound = (data: NextRoundEvent["data"]) => {
+    const { room: newRoom, prevRoundVotes } = data;
+    setVotesHistory((prev) => {
+      prev[room.round] = prevRoundVotes;
+      return structuredClone(prev);
+    });
+    setRoom(newRoom);
+    setUsers((prev) => {
+      prev = prev.map(({ id, name, role }) => ({
+        id,
+        name,
+        role,
+        voted: false,
+      }));
+      return prev;
+    });
+    setSelectedIndex(null);
+  };
+
+  const restartRound = (data: RestartEvent["data"]) => {
+    setRoom(data.room);
+    setUsers(data.users);
+    setSelectedIndex(null);
+  };
+
+  const revealVotes = (data: RevealEvent["data"]) => {
+    setUsers(data);
+    setRoom((prev) => {
+      prev.status = "finished";
+      return prev;
+    });
+  };
+
   useEffect(() => {
     const eventSource = new EventSource(`/api/rooms/${room.uuid}/events`);
 
     eventSource.onmessage = (event) => {
-      const eventPayload: EventData = JSON.parse(event.data);
+      const eventPayload: Event = JSON.parse(event.data);
       switch (eventPayload.type) {
         case "join": {
           const newUser = eventPayload.data;
@@ -73,28 +97,11 @@ export const RoomWrapper: React.FC<Props> = ({
           break;
         }
         case "next-round": {
-          const { room: newRoom, prevRoundVotes } = eventPayload.data;
-          setVotesHistory((prev) => {
-            prev[room.round] = prevRoundVotes;
-            return structuredClone(prev);
-          });
-          setRoom(newRoom);
-          setUsers((prev) => {
-            prev = prev.map(({ id, name, role }) => ({
-              id,
-              name,
-              role,
-              vote: null,
-              voted: false,
-            }));
-            return prev;
-          });
+          goToNextRound(eventPayload.data);
           break;
         }
         case "restart": {
-          const { room, users } = eventPayload.data;
-          setRoom(room);
-          setUsers(users);
+          restartRound(eventPayload.data);
           break;
         }
         case "reveal": {
@@ -103,18 +110,7 @@ export const RoomWrapper: React.FC<Props> = ({
             prev.status = "finished";
             return prev;
           });
-          setUsers((prev) => {
-            const newUsersList: ClientUser[] = [];
-            for (const user of prev) {
-              const vote = data.find((vote) => vote.userId === user.id)?.option;
-              newUsersList.push({
-                ...user,
-                vote,
-                voted: true,
-              });
-            }
-            return newUsersList;
-          });
+
           break;
         }
         case "kick": {
@@ -158,7 +154,15 @@ export const RoomWrapper: React.FC<Props> = ({
     return () => {
       eventSource.close();
     };
-  }, [room.uuid, room.round, router, user.id, i18n, disconnected]);
+  }, [
+    room.uuid,
+    room.round,
+    router,
+    user.id,
+    i18n,
+    disconnected,
+    goToNextRound,
+  ]);
 
   const setVoted = (voted: boolean) => {
     setUsers((prev) => {
@@ -200,10 +204,9 @@ export const RoomWrapper: React.FC<Props> = ({
         <Toolbar
           i18n={i18n.toolbar}
           room={room}
-          setRoom={setRoom}
-          setUsers={setUsers}
-          setSelectedIndex={setSelectedIndex}
-          setVotesHistory={setVotesHistory}
+          revealVotes={revealVotes}
+          restartRound={restartRound}
+          goToNextRound={goToNextRound}
         />
       )}
     </div>

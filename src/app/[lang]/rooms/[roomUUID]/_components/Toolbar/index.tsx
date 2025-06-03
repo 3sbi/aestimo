@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/Button";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import type { ClientRoom, ClientUser, ClientVote } from "@/types";
+import type { ClientRoom, ClientUser } from "@/types";
+import type { NextRoundEvent, RestartEvent } from "@/types/EventData";
 import { api } from "@/utils/api";
 import {
   ArrowRightCircleIcon,
@@ -17,21 +18,17 @@ import styles from "./Toolbar.module.css";
 type ToolbarProps = {
   room: ClientRoom;
   i18n: Dictionary["room"]["toolbar"];
-  setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
-  setUsers: React.Dispatch<React.SetStateAction<ClientUser[]>>;
-  setVotesHistory: React.Dispatch<
-    React.SetStateAction<Record<number, ClientVote[]>>
-  >;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  revealVotes: (data: ClientUser[]) => void;
+  restartRound: (data: RestartEvent["data"]) => void;
+  goToNextRound: (data: NextRoundEvent["data"]) => void;
 };
 
 const Toolbar: React.FC<ToolbarProps> = ({
   room,
   i18n,
-  setRoom,
-  setUsers,
-  setVotesHistory,
-  setSelectedIndex,
+  revealVotes,
+  restartRound,
+  goToNextRound,
 }) => {
   const [loadingButton, setLoadingButton] = useState<
     "reveal" | "next" | "restart" | "delete" | null
@@ -43,54 +40,34 @@ const Toolbar: React.FC<ToolbarProps> = ({
     setLoadingButton("reveal");
     try {
       const res = await api.post(`/api/rooms/${room.uuid}/reveal`);
-      const json: ClientUser[] = await res.json();
-      setUsers(json);
-      setRoom((prev) => {
-        prev.status = "finished";
-        return prev;
-      });
+      const data: ClientUser[] = await res.json();
+      revealVotes(data);
     } catch (err) {
       console.error(err);
     }
     setLoadingButton(null);
   }
 
-  const onClickNextRound = async () => {
+  async function onClickNextRound() {
     if (loadingButton) return;
     setLoadingButton("next");
     try {
       const res = await api.post(`/api/rooms/${room.uuid}/next`, {});
-      const json: { room: ClientRoom; prevRoundVotes: ClientVote[] } =
-        await res.json();
-      setRoom(json.room);
-      setVotesHistory((prev) => {
-        prev[room.round] = json.prevRoundVotes;
-        return { ...prev };
-      });
-      setUsers((prev) => {
-        return prev.map((user) => ({
-          id: user.id,
-          name: user.name,
-          role: user.role,
-          voted: false,
-        }));
-      });
-      setSelectedIndex(null);
+      const data: NextRoundEvent["data"] = await res.json();
+      goToNextRound(data);
     } catch (err) {
       console.error(err);
     }
     setLoadingButton(null);
-  };
+  }
 
   async function onClickRestart() {
     if (loadingButton) return;
     setLoadingButton("restart");
     try {
       const res = await api.post(`/api/rooms/${room.uuid}/restart`);
-      const data: { room: ClientRoom; users: ClientUser[] } = await res.json();
-      setRoom(data.room);
-      setUsers(data.users);
-      setSelectedIndex(null);
+      const data: RestartEvent["data"] = await res.json();
+      restartRound(data);
     } catch (err) {
       console.error(err);
     }
