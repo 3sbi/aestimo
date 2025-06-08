@@ -50,6 +50,10 @@
       "disconnected": "Something went wrong with server-sent events :(",
       "reconnected": "Reconnected to server-sent events :)",
       "unknown-event": "Unknown event"
+    },
+    "historyDrawer": {
+      "header":"History",
+      "round": "Round"
     }
   },
 

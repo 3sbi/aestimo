@@ -1,7 +1,4 @@
 .roomHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background: var(--card);
   color: var(--card-foreground);
   border-width: 1px;
@@ -12,4 +9,7 @@
   min-width: 600px;
   width: min-content;
   margin: 0px auto;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }

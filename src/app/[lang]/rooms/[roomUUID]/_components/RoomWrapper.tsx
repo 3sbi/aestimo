@@ -22,6 +22,7 @@ import CardsHand from "./CardsHand";
 import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
 import { UsersList } from "./UsersList";
+import { HistoryDrawer } from "./HistoryDrawer";
 
 type Props = {
   initialRoom: ClientRoom;
@@ -165,12 +166,7 @@ export const RoomWrapper: React.FC<Props> = ({
   return (
     <div className="room">
       <Toaster richColors />
-      <Header
-        room={room}
-        i18n={i18n.header}
-        votesHistory={votesHistory}
-        user={user}
-      />
+      <Header room={room} i18n={i18n.header} user={user} />
       <UsersList
         users={users}
         kickUser={kickUser}
@@ -195,6 +191,8 @@ export const RoomWrapper: React.FC<Props> = ({
           goToNextRound={goToNextRound}
         />
       )}
+
+      <HistoryDrawer i18n={i18n.historyDrawer} votesHistory={votesHistory} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 .userCardList {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 20px 8px;
   margin: auto;
 }
 

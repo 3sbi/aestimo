@@ -43,7 +43,7 @@ export default async function RootLayout(props: Readonly<Props>) {
           themes={["light", "dark"]}
         >
           {props.children}
-          <div className="flex gap-1 absolute right-2 bottom-2">
+          <div className="flex flex-col gap-1 absolute left-2 bottom-2">
             <LocaleSwitcher
               i18nConfig={i18nConfig}
               languageNames={getLanguageNames()}

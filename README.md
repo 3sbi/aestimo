@@ -1,4 +1,4 @@
-# planpoker.net
+# Planpoker - self-hosted planning poker web app
 
 ## Getting Started
 
