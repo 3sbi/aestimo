@@ -57,8 +57,3 @@ button.deleteButton {
   top: 0px;
   right: 0px;
 }
-
-button.deleteButton:hover svg,
-button.paintButton:hover svg {
-  filter: invert(100%);
-}

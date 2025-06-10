@@ -1,14 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import styles from "./ColorPicker.module.css";
+import { PRESET_COLORS } from "./colors";
 
-const presetColors: string[] = [
-  "#9ec8fe",
-  "#a3dff2",
-  "#9dd49a",
-  "#f4dd94",
-  "#f39893",
-];
 
 type Props = {
   opened: boolean;
@@ -49,7 +43,7 @@ const ColorPicker: React.FC<Props> = ({
       <HexColorPicker color={color} onChange={onChange} />
       <div className="flex items-center gap-3 p-1">
         <div className="flex gap-1">
-          {presetColors.map((color) => (
+          {PRESET_COLORS.map((color) => (
             <div
               key={color}
               className={styles.predefinedColor}

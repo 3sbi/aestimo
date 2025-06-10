@@ -5,6 +5,7 @@ import { VoteCard } from "@/types";
 import { PaintBucketIcon, PlusCircleIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { ColorPicker } from "../ColorPicker";
+import { getRandomPresetColor } from "../ColorPicker/colors";
 import styles from "./VoteTypeCreator.module.css";
 
 export type CustomVoteCard = VoteCard & { id: number };
@@ -29,7 +30,7 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
             ...cards,
             {
               id: cards.length + 1,
-              color: "#ffffff",
+              color: getRandomPresetColor(),
               value: `${cards.length + 1}`,
             },
           ])
@@ -102,3 +103,4 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
 };
 
 export { VoteTypeCreator };
+

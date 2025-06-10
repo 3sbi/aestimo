@@ -11,6 +11,7 @@ import { useState } from "react";
 import { SmallVoteCard } from "../../SmallVoteCard";
 import { Switch } from "../../Switch";
 import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
+import { getRandomPresetColor } from "./ColorPicker/colors";
 
 type Response = { roomUUID: string };
 
@@ -29,7 +30,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
     predefinedVoteTypes[0].id
   );
   const [customVoteType, setCustomVoteType] = useState<CustomVoteCard[]>([
-    { id: 1, value: "1", color: "#ffffff" },
+    { id: 1, value: "1", color: getRandomPresetColor() },
   ]);
 
   const getLabel = (option: DefinedVoteType): React.JSX.Element => {
