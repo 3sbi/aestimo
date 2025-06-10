@@ -1,0 +1,14 @@
+.smallVoteCard {
+  border-width: 1px;
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 4px;
+  background-color: transparent;
+  color: black;
+  max-width: 80px;
+  min-width: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}

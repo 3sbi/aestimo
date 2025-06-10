@@ -34,9 +34,11 @@ export async function DELETE(
       data: { userId: kickedUser.id },
     } as const;
     sseStore.broadcast(roomUUID, data, userUUID);
+
     if (isMyself) {
       session.destroy();
     }
+
     return Response.json({ success: !!user });
   } catch (err) {
     console.error(err);

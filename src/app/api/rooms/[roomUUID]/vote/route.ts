@@ -37,12 +37,14 @@ export async function POST(
     );
 
     const vote: Vote = await roomsService.addVote(room, user.id, voteValue);
-
+    const connected: boolean =
+      sseStore.clients.find((u) => u.UUID === user.uuid) !== undefined;
     const votedUser: ClientUser = {
       id: user.id,
       name: user.name,
       role: user.role,
       voted: true,
+      connected,
     };
 
     sseStore.broadcast(roomUUID, { type: "vote", data: votedUser }, user.uuid);

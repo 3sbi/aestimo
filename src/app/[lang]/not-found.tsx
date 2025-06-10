@@ -18,7 +18,7 @@ export default async function NotFound() {
     return i18nConfig.defaultLocale;
   };
   const lang = await getLocale();
-  const i18n = getDictionary(lang)["not-found"]["no-room"];
+  const i18n = getDictionary(lang)["pages"]["not-found"]["no-room"];
   return (
     <div className="flex flex-col items-center justify-center grow gap-4">
       <h1 className="font-bold text-2xl">404 - {i18n.header}</h1>

@@ -1,0 +1,64 @@
+.voteCard {
+  border-width: 1px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  padding: 24px 8px;
+  background-color: transparent;
+  color: black;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.voteCard input {
+  width: min-content;
+  text-align: center;
+  border: 0px;
+}
+
+.voteCard input:focus {
+  outline: 0px;
+}
+
+.voteCard input:active {
+  border: 0px;
+  outline: none;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px;
+  border-width: 1px;
+  border-radius: var(--radius);
+  height: 100%;
+}
+
+button.paintButton,
+button.deleteButton {
+  border-radius: var(--radius);
+  padding: 4px;
+  cursor: pointer;
+}
+
+button.paintButton {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+button.deleteButton {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+button.deleteButton:hover svg,
+button.paintButton:hover svg {
+  filter: invert(100%);
+}

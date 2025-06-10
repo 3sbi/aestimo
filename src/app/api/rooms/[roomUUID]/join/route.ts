@@ -50,6 +50,7 @@ export async function POST(
       name: user.name,
       role: user.role,
       voted: false,
+      connected: true,
     };
     sseStore.broadcast(roomUUID, { type: "join", data: joinedUser });
 

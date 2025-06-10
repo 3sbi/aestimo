@@ -8,12 +8,14 @@ import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Switch } from "../Switch";
+import { SmallVoteCard } from "../../SmallVoteCard";
+import { Switch } from "../../Switch";
+import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
 
 type Response = { roomUUID: string };
 
 type Props = {
-  i18n: Dictionary["createRoomForm"];
+  i18n: Dictionary["pages"]["home"]["createRoomForm"];
   predefinedVoteTypes: DefinedVoteType[];
 };
 
@@ -23,26 +25,39 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [privateRoom, setPrivateRoom] = useState<boolean>(false);
-  const [voteTypeId, setVoteTypeIdId] = useState<string>(
+  const [voteTypeId, setVoteTypeId] = useState<string>(
     predefinedVoteTypes[0].id
   );
+  const [customVoteType, setCustomVoteType] = useState<CustomVoteCard[]>([
+    { id: 1, value: "1", color: "#ffffff" },
+  ]);
 
-  const getLabel = (option: DefinedVoteType): string => {
-    return `${option.name} (${option.values.map((o) => o.value).join(", ")})`;
+  const getLabel = (option: DefinedVoteType): React.JSX.Element => {
+    return (
+      <>
+        <b className="min-w-32">{option.name}</b>
+        <div className="flex gap-0.5 flex-wrap">
+          {option.values.map((card) => (
+            <SmallVoteCard key={card.value} {...card} />
+          ))}
+        </div>
+      </>
+    );
   };
 
   const onFinish = async () => {
     setLoading(true);
     try {
-      const options = predefinedVoteTypes.find(
-        (option) => option.id === voteTypeId
-      );
+      const voteOptions =
+        voteTypeId === "custom"
+          ? customVoteType
+          : predefinedVoteTypes.find(({ id }) => id === voteTypeId)?.values;
 
-      if (options) {
+      if (voteOptions) {
         const values = {
           name,
           username,
-          voteOptions: options?.values,
+          voteOptions,
           private: privateRoom,
         };
 
@@ -82,17 +97,15 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
           <div className="flex items-center gap-2 mb-3">
             <Switch
               id="private"
-              onCheckedChange={(value) => {
-                setPrivateRoom(value);
-              }}
+              onCheckedChange={(value) => setPrivateRoom(value)}
               checked={privateRoom}
             />
             <label htmlFor="private">{i18n.private}</label>
           </div>
-          <fieldset className="flex flex-col gap-1">
-            <legend className="font-semibold mb-1">{i18n.checkboxes}</legend>
+          <fieldset className="flex flex-col gap-4 mt-8 mb-8">
+            <legend className="font-semibold mb-3">{i18n.checkboxes}</legend>
             {predefinedVoteTypes.map((option) => (
-              <div className="flex gap-2" key={option.id}>
+              <div className="flex gap-2 items-center" key={option.id}>
                 <input
                   type="radio"
                   id={option.id}
@@ -101,12 +114,51 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
                   checked={option.id === voteTypeId}
                   onChange={(e) => {
                     const id = e.target.value;
-                    setVoteTypeIdId(id);
+                    setVoteTypeId(id);
                   }}
                 />
-                <label htmlFor={option.id}>{getLabel(option)}</label>
+                <label
+                  className="flex items-center gap-1 w-full"
+                  htmlFor={option.id}
+                >
+                  {getLabel(option)}
+                </label>
               </div>
             ))}
+            <div className="flex flex-col">
+              <div className="flex gap-2">
+                <input
+                  type="radio"
+                  id="custom"
+                  name="voteType"
+                  value="custom"
+                  checked={voteTypeId === "custom"}
+                  onChange={(e) => {
+                    const id = e.target.value;
+                    setVoteTypeId(id);
+                  }}
+                />
+                <label
+                  className="flex items-center gap-1 w-full"
+                  htmlFor="custom"
+                >
+                  <b className="min-w-32">Custom</b>
+                  <div className="flex gap-0.5 flex-wrap">
+                    {customVoteType.map((card) => (
+                      <SmallVoteCard key={card.id} {...card} />
+                    ))}
+                  </div>
+                </label>
+              </div>
+
+              {voteTypeId === "custom" && (
+                <VoteTypeCreator
+                  cards={customVoteType}
+                  onChange={(newCards) => setCustomVoteType(newCards)}
+                  i18n={i18n.customVoteCard}
+                />
+              )}
+            </div>
           </fieldset>
         </div>
         <Button

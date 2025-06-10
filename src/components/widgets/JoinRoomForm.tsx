@@ -11,7 +11,7 @@ import { useState } from "react";
 type Response = { success: boolean };
 
 type Props = {
-  i18n: Dictionary["joinRoomForm"];
+  i18n: Dictionary["pages"]["home"]["joinRoomForm"];
   roomUUID: string;
 };
 

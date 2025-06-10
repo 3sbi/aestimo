@@ -16,6 +16,7 @@ export type ClientUser = {
   name: User["name"];
   voted: boolean;
   role: User["role"];
+  connected: boolean;
   vote?: VoteCard | null;
 };
 

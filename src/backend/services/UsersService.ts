@@ -18,7 +18,15 @@ class UsersService {
     return user;
   }
 
-  async isAdmin(): Promise<{ isAdmin: boolean; userUUID: string }> {
+  async getOneByUUID(uuid: User["uuid"]): Promise<User> {
+    const user = await UserRepository.getByUUID(uuid);
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+    return user.users;
+  }
+
+  async isAdmin(): Promise<{ isAdmin: boolean; userUUID: User["uuid"] }> {
     const { userUUID, roomUUID } = await getSession();
     if (typeof roomUUID !== "string") {
       throw new RoomNotFoundError();

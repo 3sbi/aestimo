@@ -9,7 +9,7 @@ import styles from "./PublicRoomsList.module.css";
 
 type Props = {
   lang: I18nLocale;
-  i18n: Dictionary["joinList"];
+  i18n: Dictionary["pages"]["home"]["joinRoomForm"];
 };
 
 const PublicRoomsList: React.FC<Props> = async ({ lang, i18n }) => {
@@ -24,7 +24,7 @@ const PublicRoomsList: React.FC<Props> = async ({ lang, i18n }) => {
       <ul className="flex flex-col">
         {roomsToJoin.map((room) => (
           <Link href={`/${lang}/rooms/${room.uuid}/join`} key={room.uuid}>
-            <li  className={styles.roomItem}>
+            <li className={styles.roomItem}>
               <div className={styles.icon}>
                 <DoorClosedIcon />
                 <DoorOpenIcon />
@@ -39,3 +39,4 @@ const PublicRoomsList: React.FC<Props> = async ({ lang, i18n }) => {
 };
 
 export { PublicRoomsList };
+

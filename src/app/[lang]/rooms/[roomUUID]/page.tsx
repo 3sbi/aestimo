@@ -5,12 +5,20 @@ import { getSession } from "@/backend/session";
 import type { I18nLocale } from "@/i18n/get-dictionary";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { ClientUser, ClientVote, Room, User, Vote } from "@/types";
+import { Metadata } from "next";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import { RoomWrapper } from "./_components/RoomWrapper";
 
 type Props = {
   params: Promise<{ roomUUID: string; lang: I18nLocale }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { roomUUID } = await params;
+  const room = await roomsService.getOne(roomUUID);
+
+  return { title: room.name };
+}
 
 export default async function Page({ params }: Props) {
   const { roomUUID, lang } = await params;
@@ -58,11 +66,11 @@ export default async function Page({ params }: Props) {
     await roomsService.getVotesHistory(room.id, room.round);
   const index = await usersService.getVoteIndex(user.id, room.id, room.round);
 
-  const dictionary = getDictionary(lang);
+  const i18n = getDictionary(lang).pages.room;
   return (
     <>
       <RoomWrapper
-        i18n={dictionary.room}
+        i18n={i18n}
         user={{ id: user.id, role: user.role }}
         voteOptions={voteOptions}
         initialRoom={room}

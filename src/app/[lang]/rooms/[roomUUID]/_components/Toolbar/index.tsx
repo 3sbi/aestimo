@@ -17,7 +17,7 @@ import styles from "./Toolbar.module.css";
 
 type ToolbarProps = {
   room: ClientRoom;
-  i18n: Dictionary["room"]["toolbar"];
+  i18n: Dictionary["pages"]["room"]["toolbar"];
   revealVotes: (data: ClientUser[]) => void;
   restartRound: (data: RestartEvent["data"]) => void;
   goToNextRound: (data: NextRoundEvent["data"]) => void;

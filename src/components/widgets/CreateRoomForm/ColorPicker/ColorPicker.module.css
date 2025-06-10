@@ -1,0 +1,27 @@
+.colorPickerWrapper {
+  position: absolute;
+  top: 0px;
+  background-color: var(--card);
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  z-index: 10;
+}
+
+.colorPickerWrapper .predefinedColor {
+  width: 16px;
+  height: 16px;
+  border-width: 1px;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.colorPickerWrapper .colorInput {
+  height: 20px;
+  border-width: 1px;
+  border: 1px solid var(--border);
+  max-width: 80px;
+  text-align: center;
+  border-radius: 2px;
+  color: var(--card-foreground);
+}

@@ -2,7 +2,11 @@ import "server-only";
 
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { getLanguageNames, i18nConfig } from "@/i18n/get-dictionary";
+import {
+  getDictionary,
+  getLanguageNames,
+  i18nConfig,
+} from "@/i18n/get-dictionary";
 import { LOCALE_HEADER_KEY } from "@/middleware";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
@@ -15,9 +19,20 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "planpoker.net",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const lang: string =
+    headersList.get(LOCALE_HEADER_KEY) ?? i18nConfig.defaultLocale;
+  const dictionary = getDictionary(lang);
+
+  return {
+    title: {
+      template: "%s | Aestimo",
+      default: "Aestimo",
+    },
+    description: dictionary.metadata.description,
+  };
+}
 
 type Props = {
   children: React.ReactNode;

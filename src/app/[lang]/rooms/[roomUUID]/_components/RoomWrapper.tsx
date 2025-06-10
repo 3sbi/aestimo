@@ -30,7 +30,7 @@ type Props = {
   initialSelectedIndex: number | null;
   voteOptions: VoteCard[];
   user: Pick<User, "id" | "role">;
-  i18n: Dictionary["room"];
+  i18n: Dictionary["pages"]["room"];
   initialVotesHistory: Record<Vote["round"], ClientVote[]>;
 };
 
@@ -62,10 +62,11 @@ export const RoomWrapper: React.FC<Props> = ({
       });
       setRoom(newRoom);
       setUsers((prev) => {
-        prev = prev.map(({ id, name, role }) => ({
+        prev = prev.map(({ id, name, role, connected }) => ({
           id,
           name,
           role,
+          connected,
           voted: false,
         }));
         return prev;
@@ -131,6 +132,22 @@ export const RoomWrapper: React.FC<Props> = ({
             router.replace("/");
           }
           break;
+        }
+        case "reconnect": {
+          const { userId } = eventPayload.data;
+          setUsers((prev) => {
+            const index = prev.findIndex((u) => u.id === userId);
+            prev[index].connected = true;
+            return [...prev];
+          });
+        }
+        case "disconnect": {
+          const { userId } = eventPayload.data;
+          setUsers((prev) => {
+            const index = prev.findIndex((u) => u.id === userId);
+            prev[index].connected = false;
+            return [...prev];
+          });
         }
         case "delete-room": {
           router.replace("/");

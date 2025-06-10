@@ -21,6 +21,7 @@ import {
   Vote,
   VoteCard,
 } from "@/types";
+import { sseStore } from "../eventEmitter";
 
 class RoomsService {
   convertToClientRoom(room: Room): ClientRoom {
@@ -28,7 +29,7 @@ class RoomsService {
     return { name, private: room.private, round, status, uuid };
   }
 
-  private async getOne(uuid: string): Promise<Room> {
+  async getOne(uuid: string): Promise<Room> {
     const room = await RoomRepository.getByUUID(uuid);
     if (!room) {
       throw new RoomNotFoundError();
@@ -84,11 +85,14 @@ class RoomsService {
     for (const user of users) {
       const vote = votes.find((vote) => vote.userId === user.id);
       const voted = vote !== undefined;
+      const connected: boolean =
+        sseStore.clients.find((u) => u.UUID === user.uuid) !== undefined;
       const clientUser: ClientUser = {
         id: user.id,
         name: user.name,
         role: user.role,
         voted,
+        connected,
       };
       if (addVotes) {
         clientUser.vote = vote?.option;

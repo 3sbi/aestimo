@@ -19,7 +19,7 @@ class UserRepository {
   }
 
   static async getByUUID(
-    uuid: string
+    uuid: User["uuid"]
   ): Promise<{ users: User; rooms: Room | null } | undefined> {
     const res = await db
       .select()
@@ -30,7 +30,7 @@ class UserRepository {
     return data;
   }
 
-  static async getById(id: number): Promise<User | undefined> {
+  static async getById(id: User["id"]): Promise<User | undefined> {
     const res = await db
       .select()
       .from(usersTable)
@@ -39,14 +39,14 @@ class UserRepository {
     return user;
   }
 
-  static async getAllByRoomId(roomId: number): Promise<User[]> {
+  static async getAllByRoomId(roomId: Room["id"]): Promise<User[]> {
     return db
       .select()
       .from(usersTable)
       .where(and(eq(usersTable.roomId, roomId), eq(usersTable.kicked, false)));
   }
 
-  static async kick(id: number): Promise<User | undefined> {
+  static async kick(id: User["id"]): Promise<User | undefined> {
     const res = await db
       .update(usersTable)
       .set({ kicked: true })

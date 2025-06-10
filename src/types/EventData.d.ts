@@ -18,5 +18,7 @@ export type Event =
   | RestartEvent
   | RevealEvent
   | { type: "kick"; data: { userId: number } }
+  | { type: "reconnect"; data: { userId: number } }
+  | { type: "disconnect"; data: { userId: number } }
   | { type: "delete-room" }
   | { type: "vote"; data: ClientUser };

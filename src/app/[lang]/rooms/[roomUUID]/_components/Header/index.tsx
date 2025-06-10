@@ -12,7 +12,7 @@ import { InviteButton } from "./InviteButton";
 
 type Props = {
   room: ClientRoom;
-  i18n: Dictionary["room"]["header"];
+  i18n: Dictionary["pages"]["room"]["header"];
   user: Pick<ClientUser, "id" | "role">;
 };
 

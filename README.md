@@ -1,8 +1,8 @@
-# Planpoker - self-hosted planning poker web app
+# Aestimo - self-hosted planning poker web app
 
 ## Getting Started
 
-To run this app quickly use Docker with :
+To run this app quickly use [Docker](https://www.docker.com/):
 
 ```bash
 $ cp .env.example .env

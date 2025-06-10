@@ -3,9 +3,10 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import type { ClientRoom, ClientVote } from "@/types";
 import { ChevronLeftIcon } from "lucide-react";
 import styles from "./HistoryDrawer.module.css";
+import { SmallVoteCard } from "@/components/SmallVoteCard";
 
 type Props = {
-  i18n: Dictionary["room"]["historyDrawer"];
+  i18n: Dictionary["pages"]["room"]["historyDrawer"];
   votesHistory: Record<ClientRoom["round"], ClientVote[]>;
 };
 
@@ -27,13 +28,7 @@ const HistoryDrawer: React.FC<Props> = ({ i18n, votesHistory }) => {
                   {votes.map((vote) => (
                     <Tooltip key={vote.userId}>
                       <TooltipTrigger>
-                        <div
-                          key={vote.userId}
-                          className={styles.card}
-                          style={{ backgroundColor: vote.option.color }}
-                        >
-                          {vote.option.value}
-                        </div>
+                        <SmallVoteCard {...vote.option} />
                       </TooltipTrigger>
                       <TooltipContent>{vote.userName}</TooltipContent>
                     </Tooltip>

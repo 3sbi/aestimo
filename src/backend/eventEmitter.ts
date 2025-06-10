@@ -1,17 +1,12 @@
+import { Room, User } from "@/types";
+import { Event } from "@/types/EventData";
+
 export type SseClient = {
-  roomUUID: string;
-  UUID: string;
+  UUID: User["uuid"];
+  id: User["id"];
+  roomUUID: Room["uuid"];
   send: (data: string) => void;
 };
-
-export type EventType =
-  | "join"
-  | "next-round"
-  | "restart"
-  | "reveal"
-  | "kick"
-  | "delete-room"
-  | "vote";
 
 class SseStore {
   clients: SseClient[] = [];
@@ -30,16 +25,12 @@ class SseStore {
    * that are in the same room as event emitter source
    *
    */
-  broadcast(
-    roomUUID: string,
-    data: { type: EventType; data?: Record<string, unknown> | Array<unknown> },
-    initiatorUUID?: string
-  ) {
+  broadcast(roomUUID: string, data: Event, initiatorUUID?: string) {
     const payload = `data: ${JSON.stringify(data)}\n\n`;
-    this.clients
-      .filter((c) => c.roomUUID === roomUUID)
-      .filter((c) => c.UUID !== initiatorUUID)
-      .forEach((c) => c.send(payload));
+    const clientsInRoom = this.clients.filter(
+      (client) => client.roomUUID === roomUUID && client.UUID !== initiatorUUID
+    );
+    clientsInRoom.forEach((client) => client.send(payload));
   }
 }
 

@@ -1,68 +1,72 @@
 {
   "language": "English",
-
-  "confirmModal": {
-    "title": "Are you sure you want to leave?",
-    "confirm": "Confirm",
-    "cancel": "Cancel"
+  "metadata": {
+    "description": "Aestimo is a self-hosted web app for your team's planning poker"
   },
 
-  "joinRoomForm": {
-    "header": "Join existing room",
-    "uuid": "UUID",
-    "username": "Your name",
-    "join": "Join"
-  },
+  "pages": {
+    "home": {
+      "tabs": {
+        "create": "Create",
+        "join": "Join"
+      },
+      "joinRoomForm": {
+        "header": "Join existing room",
+        "uuid": "UUID",
+        "username": "Your name",
+        "join": "Join"
+      },
 
-  "createRoomForm": {
-    "header": "Create new room",
-    "username": "Your name",
-    "roomName": "Room name",
-    "private": "Private room",
-    "checkboxes": "Vote options",
-    "create": "Create"
-  },
+      "createRoomForm": {
+        "header": "Create new room",
+        "username": "Your name",
+        "roomName": "Room name",
+        "private": "Private room",
+        "checkboxes": "Vote options",
+        "customVoteCard": {
+          "color": "Change background color",
+          "delete": "Delete"
+        },
+        "create": "Create"
+      }
+    },
 
-  "joinList": {
-    "or": "OR",
-    "header": "Join existing room"
-  },
+    "room": {
+      "header": {
+        "round": "Round",
+        "copy": "Copy join URL",
+        "leave": "Leave"
+      },
+      "toolbar": {
+        "next": "Next round",
+        "reveal": "Reveal",
+        "restart": "Restart round",
+        "delete": "Delete",
+        "history": "History"
+      },
+      "usersList": {
+        "you": "you",
+        "admin": "Admin",
+        "kick": "Kick"
+      },
+      "toast": {
+        "disconnected": "Something went wrong with server-sent events :(",
+        "reconnected": "Reconnected to server-sent events :)",
+        "unknown-event": "Unknown event"
+      },
+      "historyDrawer": {
+        "header": "History",
+        "round": "Round"
+      }
+    },
 
-  "room": {
-    "header": {
-      "round": "Round",
-      "copy": "Copy join URL",
-      "leave": "Leave"
-    },
-    "toolbar": {
-      "next": "Next round",
-      "reveal": "Reveal",
-      "restart": "Restart round",
-      "delete": "Delete",
-      "history": "History"
-    },
-    "usersList": {
-      "you": "you",
-      "admin": "Admin",
-      "kick": "Kick"
-    },
-    "toast": {
-      "disconnected": "Something went wrong with server-sent events :(",
-      "reconnected": "Reconnected to server-sent events :)",
-      "unknown-event": "Unknown event"
-    },
-    "historyDrawer": {
-      "header":"History",
-      "round": "Round"
+    "not-found": {
+      "no-room": {
+        "header": "Room was not found",
+        "button": "Create a new room"
+      },
+      "header": "Not found",
+      "button": "Return to app"
     }
-  },
-
-  "not-found": {
-    "no-room": {
-      "header": "Room was not found",
-      "button": "Create a new room"
-    },
-    "header": "Not found",
-    "button": "Return to app"
   }
 }

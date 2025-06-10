@@ -11,7 +11,7 @@ type Props = {
   users: ClientUser[];
   kickUser: (userId: number) => void;
   currentUserId: number;
-  i18n: Dictionary["room"]["usersList"];
+  i18n: Dictionary["pages"]["room"]["usersList"];
   isAdmin: boolean;
 };
 
@@ -28,6 +28,7 @@ const UsersList: React.FC<Props> = ({
         const isCurrentUser = user.id === currentUserId;
         const userIsAdmin = user.role === "admin";
         let children = <div>{user.voted ? "🗳️" : "🤔"}</div>;
+
         if (user.vote) {
           children = <div>{user.vote.value}</div>;
         }
@@ -35,6 +36,13 @@ const UsersList: React.FC<Props> = ({
         const style: React.CSSProperties = {};
         if (user.vote) {
           style.backgroundColor = user.vote.color;
+        }
+
+        if (!user.connected) {
+          style.opacity = "0.8";
+          if (!user.voted) {
+            children = <div>💀</div>;
+          }
         }
 
         return (
