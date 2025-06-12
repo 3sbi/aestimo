@@ -3,7 +3,7 @@ import "server-only";
 import { UserRepository } from "@/backend/repositories";
 import { getSession } from "@/backend/session";
 import { JoinRoomForm } from "@/components/widgets/JoinRoomForm";
-import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
+import { getDictionary, I18nLocale } from "@/i18n/getDictionary";
 import { Room, User } from "@/types";
 import { notFound, redirect, RedirectType } from "next/navigation";
 

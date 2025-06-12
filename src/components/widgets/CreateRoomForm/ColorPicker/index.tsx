@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import styles from "./ColorPicker.module.css";
 import { PRESET_COLORS } from "./colors";
-
 
 type Props = {
   opened: boolean;
@@ -35,7 +34,7 @@ const ColorPicker: React.FC<Props> = ({
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, [opened, ref]);
+  }, [opened, ref, setClose]);
 
   if (!opened) return <></>;
   return (

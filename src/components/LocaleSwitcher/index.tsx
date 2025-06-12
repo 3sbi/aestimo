@@ -1,11 +1,11 @@
 "use client";
 
-import type { i18nConfig, I18nLocale } from "@/i18n/get-dictionary";
+import type { i18nConfig, I18nLocale } from "@/i18n/getDictionary";
 import { CheckIcon, LanguagesIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import styles from "./LocaleSwitcher.module.css";
 import { Button } from "../Button";
+import styles from "./LocaleSwitcher.module.css";
 
 type Props = {
   i18nConfig: typeof i18nConfig;

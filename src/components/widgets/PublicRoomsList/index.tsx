@@ -1,7 +1,7 @@
 import "server-only";
 
 import { roomsService } from "@/backend/services";
-import { Dictionary, I18nLocale } from "@/i18n/get-dictionary";
+import { Dictionary, I18nLocale } from "@/i18n/getDictionary";
 import { ClientRoom } from "@/types";
 import { DoorClosedIcon, DoorOpenIcon } from "lucide-react";
 import Link from "next/link";

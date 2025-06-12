@@ -5,11 +5,11 @@ import { usersService } from "@/backend/services";
 import { getSession } from "@/backend/session";
 import { CreateRoomForm } from "@/components/widgets/CreateRoomForm/CreateRoomForm";
 import { PublicRoomsList } from "@/components/widgets/PublicRoomsList";
-import { getDictionary, I18nLocale } from "@/i18n/get-dictionary";
+import { getDictionary, I18nLocale } from "@/i18n/getDictionary";
 import { Room, User } from "@/types";
-import { redirect, RedirectType } from "next/navigation";
-import Link from "next/link";
 import { cn } from "@/utils/cn";
+import Link from "next/link";
+import { redirect, RedirectType } from "next/navigation";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 

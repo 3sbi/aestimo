@@ -1,6 +1,6 @@
 "use client";
 
-import { Dictionary } from "@/i18n/get-dictionary";
+import { Dictionary } from "@/i18n/getDictionary";
 import { VoteCard } from "@/types";
 import { PaintBucketIcon, PlusCircleIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
@@ -103,4 +103,3 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
 };
 
 export { VoteTypeCreator };
-

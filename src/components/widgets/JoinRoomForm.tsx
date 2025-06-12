@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
-import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";

@@ -1,9 +1,9 @@
+import { SmallVoteCard } from "@/components/SmallVoteCard";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
-import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientVote } from "@/types";
 import { ChevronLeftIcon } from "lucide-react";
 import styles from "./HistoryDrawer.module.css";
-import { SmallVoteCard } from "@/components/SmallVoteCard";
 
 type Props = {
   i18n: Dictionary["pages"]["room"]["historyDrawer"];
@@ -43,3 +43,4 @@ const HistoryDrawer: React.FC<Props> = ({ i18n, votesHistory }) => {
 };
 
 export { HistoryDrawer };
+

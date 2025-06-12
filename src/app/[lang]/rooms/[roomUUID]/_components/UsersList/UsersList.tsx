@@ -1,6 +1,6 @@
 "use client";
 
-import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientUser } from "@/types";
 import { CrownIcon } from "lucide-react";
 import React from "react";
@@ -81,3 +81,4 @@ const UsersList: React.FC<Props> = ({
 };
 
 export { UsersList };
+

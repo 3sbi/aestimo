@@ -1,7 +1,7 @@
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { NextRequest, NextResponse } from "next/server";
-import { i18nConfig } from "./i18n/get-dictionary";
+import { i18nConfig } from "./i18n/getDictionary";
 
 export const LOCALE_HEADER_KEY = "x-locale";
 

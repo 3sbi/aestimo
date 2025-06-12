@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/Button";
-import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
 import { api } from "@/utils/api";
 import { LogOutIcon } from "lucide-react";
@@ -56,3 +56,4 @@ const Header: React.FC<Props> = ({ i18n, room, user }) => {
 };
 
 export { Header };
+

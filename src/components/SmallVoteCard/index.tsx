@@ -12,6 +12,7 @@ const SmallVoteCard: React.FC<VoteCard> = ({ color, value }) => {
   }
 
   const textColor = getContrastYIQ(color);
+
   return (
     <div
       title={value}

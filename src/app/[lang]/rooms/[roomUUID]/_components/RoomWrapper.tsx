@@ -1,6 +1,6 @@
 "use client";
 
-import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import type {
   ClientRoom,
   ClientUser,
@@ -20,9 +20,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import CardsHand from "./CardsHand";
 import { Header } from "./Header";
+import { HistoryDrawer } from "./HistoryDrawer";
 import { Toolbar } from "./Toolbar";
 import { UsersList } from "./UsersList";
-import { HistoryDrawer } from "./HistoryDrawer";
 
 type Props = {
   initialRoom: ClientRoom;

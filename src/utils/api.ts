@@ -1,3 +1,4 @@
+// API for easier API calls on the client
 class API {
   private async request(
     method: "GET" | "POST" | "PATCH" | "DELETE",

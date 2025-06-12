@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/Button";
-import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
 import type { NextRoundEvent, RestartEvent } from "@/types/EventData";
 import { api } from "@/utils/api";
@@ -118,3 +118,4 @@ const Toolbar: React.FC<ToolbarProps> = ({
 };
 
 export { Toolbar };
+

@@ -6,7 +6,7 @@ import {
   getDictionary,
   getLanguageNames,
   i18nConfig,
-} from "@/i18n/get-dictionary";
+} from "@/i18n/getDictionary";
 import { LOCALE_HEADER_KEY } from "@/middleware";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";

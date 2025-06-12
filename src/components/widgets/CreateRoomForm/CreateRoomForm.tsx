@@ -3,15 +3,15 @@
 import type { DefinedVoteType } from "@/backend/consts/predefinedVoteTypes";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
-import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SmallVoteCard } from "../../SmallVoteCard";
 import { Switch } from "../../Switch";
-import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
 import { getRandomPresetColor } from "./ColorPicker/colors";
+import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
 
 type Response = { roomUUID: string };
 

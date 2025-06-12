@@ -1,7 +1,7 @@
 import "server-only";
 
 import { Button } from "@/components/Button";
-import { getDictionary, i18nConfig, I18nLocale } from "@/i18n/get-dictionary";
+import { getDictionary, i18nConfig, I18nLocale } from "@/i18n/getDictionary";
 import { LOCALE_HEADER_KEY } from "@/middleware";
 import { headers } from "next/headers";
 import Link from "next/link";
