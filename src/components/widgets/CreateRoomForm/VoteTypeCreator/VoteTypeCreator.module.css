@@ -2,6 +2,7 @@
   border-width: 1px;
   border-radius: var(--radius);
   font-weight: 600;
+  min-width: 60px;
   padding: 24px 8px;
   background-color: transparent;
   color: black;
@@ -33,10 +34,15 @@
   justify-content: center;
   cursor: pointer;
   font-weight: 600;
-  padding: 4px;
+  padding: 24px 8px;
+  min-width: 60px;
+  height: 74px;
   border-width: 1px;
   border-radius: var(--radius);
-  height: 100%;
+}
+
+.addButton:hover {
+  color: var(--primary);
 }
 
 button.paintButton,

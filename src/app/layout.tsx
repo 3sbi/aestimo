@@ -13,6 +13,8 @@ import { ThemeProvider } from "next-themes";
 import { Geist } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
+import { Button } from "@/components/Button";
+import { HelpCircleIcon } from "lucide-react";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -58,7 +60,7 @@ export default async function RootLayout(props: Readonly<Props>) {
           themes={["light", "dark"]}
         >
           {props.children}
-          <div className="flex flex-col gap-1 absolute left-2 bottom-2">
+          <div className="flex flex-col gap-1 fixed left-2 bottom-2">
             <LocaleSwitcher
               i18nConfig={i18nConfig}
               languageNames={getLanguageNames()}

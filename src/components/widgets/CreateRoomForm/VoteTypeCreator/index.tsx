@@ -36,7 +36,7 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
           ])
         }
       >
-        <PlusCircleIcon size={12} />
+        <PlusCircleIcon size={20} />
       </div>
     );
   }
@@ -95,7 +95,7 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
   }
 
   return (
-    <div className="flex gap-0.5 flex-wrap items-center">
+    <div className="flex gap-0.5 flex-wrap items-center mt-3">
       {cards.map(renderCard)}
       {renderAddButton()}
     </div>

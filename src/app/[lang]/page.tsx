@@ -53,7 +53,7 @@ export default async function Home(props: Props) {
   }
 
   return (
-    <div className="m-auto card relative max-w-[500px] flex flex-col">
+    <div className="m-auto card relative max-w-[500px] flex flex-col max-h-3/5 my-4">
       <div className="tabs">
         {Object.entries(i18n.tabs).map(([value, label]) => (
           <div className={cn("tab", value === tab ? "active" : "")} key={value}>
