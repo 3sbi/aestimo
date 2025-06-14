@@ -9,13 +9,17 @@ export type SseClient = {
 };
 
 class SseStore {
-  clients: SseClient[] = [];
+  private clients: SseClient[] = [];
 
-  addClient(client: SseClient) {
+  public addClient(client: SseClient) {
     this.clients.push(client);
   }
 
-  removeClient(client: SseClient) {
+  public isConnected(uuid: string): boolean {
+    return this.clients.find((u) => u.UUID === uuid) !== undefined;
+  }
+
+  public removeClient(client: SseClient) {
     const index = this.clients.indexOf(client);
     if (index !== -1) this.clients.splice(index, 1);
   }
@@ -25,7 +29,7 @@ class SseStore {
    * that are in the same room as event emitter source
    *
    */
-  broadcast(roomUUID: string, data: Event, initiatorUUID?: string) {
+  public broadcast(roomUUID: string, data: Event, initiatorUUID?: string) {
     const payload = `data: ${JSON.stringify(data)}\n\n`;
     const clientsInRoom = this.clients.filter(
       (client) => client.roomUUID === roomUUID && client.UUID !== initiatorUUID
@@ -37,3 +41,4 @@ class SseStore {
 const sseStore = new SseStore();
 
 export { sseStore };
+

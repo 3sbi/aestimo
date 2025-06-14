@@ -1,3 +1,8 @@
+import {
+  TransferAdminRightsDtoSchema,
+  UpdateUserDtoSchema,
+} from "@/backend/dtos";
+import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { usersService } from "@/backend/services";
@@ -5,8 +10,44 @@ import { getSession } from "@/backend/session";
 import { User } from "@/types";
 import { NextRequest } from "next/server";
 
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const req = await request.json();
+    const session = await getSession();
+    const { roomUUID } = session;
+    if (!roomUUID) {
+      throw new RoomNotFoundError();
+    }
+
+    const id = Number((await params).id);
+    if (Number.isNaN(id)) {
+      throw new UserNotFoundError();
+    }
+
+    const { success, data, error } = UpdateUserDtoSchema.safeParse(req);
+    if (!success) {
+      console.error(error);
+      throw new Error();
+    }
+
+    const updatedUser = await usersService.update(id, data);
+    const clientUser = ClientUserSchema.parse(updatedUser);
+
+    return Response.json({ user: clientUser });
+  } catch (err) {
+    console.error(err);
+    if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
+      return Response.json({ error: err.message }, { status: 404 });
+    }
+    return Response.json({ error: err }, { status: 500 });
+  }
+}
+
 export async function DELETE(
-  _: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -28,7 +69,32 @@ export async function DELETE(
       return Response.json({ error: "Not allowed" }, { status: 403 });
     }
 
-    const kickedUser = await usersService.kick(id);
+    if (isAdmin && isMyself) {
+      const req = await request.json();
+      const newAdminId = req.newAdminId;
+      const { success, data, error } = TransferAdminRightsDtoSchema.safeParse({
+        oldAdminId: id,
+        newAdminId,
+      });
+
+      if (!success) {
+        console.error(error);
+        return Response.json(
+          { error: "Failed to change room admin" },
+          { status: 422 }
+        );
+      }
+
+      const user = await usersService.transferAdminRights(data);
+      const event = {
+        type: "transfer-admin",
+        data: { newAdminId: user.id },
+      } as const;
+
+      sseStore.broadcast(roomUUID, event, userUUID);
+    }
+
+    const kickedUser = await usersService.leave(id);
     const data = {
       type: "kick",
       data: { userId: kickedUser.id },

@@ -1,4 +1,5 @@
-import { CreateVoteDtoSchema } from "@/backend/dtos/CreateVoteDtoSchema";
+import { CreateVoteDtoSchema } from "@/backend/dtos";
+import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { roomsService, usersService } from "@/backend/services";
@@ -37,15 +38,13 @@ export async function POST(
     );
 
     const vote: Vote = await roomsService.addVote(room, user.id, voteValue);
-    const connected: boolean =
-      sseStore.clients.find((u) => u.UUID === user.uuid) !== undefined;
-    const votedUser: ClientUser = {
-      id: user.id,
-      name: user.name,
-      role: user.role,
-      voted: true,
+    const connected: boolean = sseStore.isConnected(user.uuid);
+
+    const votedUser: ClientUser = ClientUserSchema.parse({
+      ...user,
       connected,
-    };
+      voted: true,
+    });
 
     sseStore.broadcast(roomUUID, { type: "vote", data: votedUser }, user.uuid);
     return Response.json({ success: !!vote });

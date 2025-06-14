@@ -13,8 +13,6 @@ import { ThemeProvider } from "next-themes";
 import { Geist } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
-import { Button } from "@/components/Button";
-import { HelpCircleIcon } from "lucide-react";
 
 const geist = Geist({
   variable: "--font-geist",

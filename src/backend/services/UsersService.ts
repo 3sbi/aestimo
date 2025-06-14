@@ -6,7 +6,9 @@ import {
   VoteRepository,
 } from "@/backend/repositories";
 import { Room, User } from "@/types";
+import { TransferAdminRightsDto } from "../dtos";
 import { RoomNotFoundError, UserNotFoundError } from "../errors";
+import { UserNotAdminError } from "../errors/Users";
 import { getSession } from "../session";
 
 class UsersService {
@@ -76,8 +78,44 @@ class UsersService {
   }
 
   /* basically soft-delete */
-  async kick(id: User["id"]): Promise<User> {
-    const user = await UserRepository.kick(id);
+  async leave(id: User["id"]): Promise<User> {
+    const user = await UserRepository.update(id, { deleted: false });
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+    return user;
+  }
+
+  async transferAdminRights(data: TransferAdminRightsDto): Promise<User> {
+    const { newAdminId, oldAdminId } = data;
+    const oldAdmin = await UserRepository.getById(oldAdminId);
+    const newAdmin = await UserRepository.getById(newAdminId);
+    if (!oldAdmin || !newAdmin) {
+      throw new UserNotFoundError();
+    }
+
+    if (oldAdmin?.roomId !== newAdmin?.roomId) {
+      // if user is from another room, it is basically not found, isn't it? =)
+      throw new UserNotFoundError();
+    }
+
+    if (oldAdmin.role !== "admin") {
+      throw new UserNotAdminError();
+    }
+
+    await UserRepository.update(oldAdmin.id, { role: "basic" });
+    const user = await UserRepository.update(newAdmin.id, { role: "admin" });
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+    return user;
+  }
+
+  async update(
+    id: User["id"],
+    data: Partial<Pick<User, "name">>
+  ): Promise<User> {
+    const user = await UserRepository.update(id, data);
     if (!user) {
       throw new UserNotFoundError();
     }

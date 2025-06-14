@@ -18,7 +18,13 @@ export type Event =
   | RestartEvent
   | RevealEvent
   | { type: "kick"; data: { userId: number } }
-  | { type: "reconnect"; data: { userId: number } }
-  | { type: "disconnect"; data: { userId: number } }
+  | {
+      type: "user-update";
+      data: {
+        userId: number;
+        update: Partial<Pick<ClientUser, "name" | "connected">>;
+      };
+    }
   | { type: "delete-room" }
-  | { type: "vote"; data: ClientUser };
+  | { type: "vote"; data: ClientUser }
+  | { type: "transfer-admin"; data: { newAdminId: number } };

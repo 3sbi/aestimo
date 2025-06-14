@@ -22,7 +22,7 @@ CREATE TABLE "users" (
 	"room_id" integer NOT NULL,
 	"role" "role" DEFAULT 'basic' NOT NULL,
 	"uuid" uuid DEFAULT gen_random_uuid() NOT NULL,
-	"kicked" boolean DEFAULT false NOT NULL,
+	"deleted" boolean DEFAULT false NOT NULL,
 	"connected" boolean NOT NULL,
 	CONSTRAINT "users_uuid_unique" UNIQUE("uuid")
 );

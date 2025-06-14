@@ -4,3 +4,10 @@ export class UserNotFoundError extends Error {
     this.name = "UserNotFoundError";
   }
 }
+
+export class UserNotAdminError extends Error {
+  constructor() {
+    super(`User not admin`);
+    this.name = "UserNotAdminError";
+  }
+}

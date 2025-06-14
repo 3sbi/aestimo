@@ -1,6 +1,7 @@
 import "server-only";
 
-import { JoinRoomDtoSchema } from "@/backend/dtos/JoinRoomDtoSchema";
+import { JoinRoomDtoSchema } from "@/backend/dtos";
+import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { sseStore } from "@/backend/eventEmitter";
 import { roomsService } from "@/backend/services";
@@ -45,13 +46,10 @@ export async function POST(
     session.roomUUID = room.uuid;
     await session.save();
 
-    const joinedUser: ClientUser = {
-      id: user.id,
-      name: user.name,
-      role: user.role,
+    const joinedUser: ClientUser = ClientUserSchema.parse({
+      ...user,
       voted: false,
-      connected: true,
-    };
+    });
     sseStore.broadcast(roomUUID, { type: "join", data: joinedUser });
 
     return Response.json({ success: true });

@@ -1,5 +1,5 @@
 {
-  "id": "e55e4cee-0d49-4453-be6c-0dfb11c12b7a",
+  "id": "610fe651-b8c6-4aa0-aaef-2a167c010e9a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -143,8 +143,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "kicked": {
-          "name": "kicked",
+        "deleted": {
+          "name": "deleted",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,

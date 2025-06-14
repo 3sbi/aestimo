@@ -26,6 +26,5 @@ export const usersTable = pgTable("users", {
     .unique()
     .notNull()
     .default(sql`gen_random_uuid()`),
-  kicked: boolean("kicked").notNull().default(false),
-  connected: boolean("connected").notNull(),
+  deleted: boolean("deleted").notNull().default(false),
 });

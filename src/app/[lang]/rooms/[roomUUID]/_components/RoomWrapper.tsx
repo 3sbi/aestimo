@@ -133,24 +133,27 @@ export const RoomWrapper: React.FC<Props> = ({
           }
           break;
         }
-        case "reconnect": {
-          const { userId } = eventPayload.data;
+        case "user-update": {
+          const { userId, update } = eventPayload.data;
           setUsers((prev) => {
             const index = prev.findIndex((u) => u.id === userId);
-            prev[index].connected = true;
-            return [...prev];
-          });
-        }
-        case "disconnect": {
-          const { userId } = eventPayload.data;
-          setUsers((prev) => {
-            const index = prev.findIndex((u) => u.id === userId);
-            prev[index].connected = false;
+            prev[index] = { ...prev[index], ...update };
             return [...prev];
           });
         }
         case "delete-room": {
           router.replace("/");
+          break;
+        }
+        case "transfer-admin": {
+          const { newAdminId } = eventPayload.data;
+          setUsers((prev) => {
+            return prev.map((user) => {
+              const isAdmin = user.id === newAdminId;
+              user.role = isAdmin ? "admin" : "basic";
+              return user;
+            });
+          });
           break;
         }
         case "vote": {
@@ -178,6 +181,12 @@ export const RoomWrapper: React.FC<Props> = ({
       eventSource.close();
     };
   }, [room.uuid, router, user.id, i18n, disconnected, goToNextRound]);
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", function (event) {
+      event.preventDefault();
+    });
+  }, []);
 
   const isAdmin: boolean = user.role === "admin";
   return (

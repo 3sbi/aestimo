@@ -1,4 +1,6 @@
 import { roomsTable, usersTable, votesTable } from "@/backend/db";
+import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
+import { z } from "zod";
 
 export type Room = typeof roomsTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
@@ -11,14 +13,7 @@ export type ClientRoom = Pick<
   "private" | "status" | "name" | "round" | "uuid"
 >;
 
-export type ClientUser = {
-  id: User["id"];
-  name: User["name"];
-  voted: boolean;
-  role: User["role"];
-  connected: boolean;
-  vote?: VoteCard | null;
-};
+export type ClientUser = z.infer<typeof ClientUserSchema>;
 
 export type ClientVote = {
   userId: number;

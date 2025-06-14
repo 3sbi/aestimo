@@ -9,7 +9,6 @@ class UserRepository {
       .insert(usersTable)
       .values({
         ...dto,
-        connected: true,
         createdAt: sql`NOW()`,
         updatedAt: sql`NOW()`,
       })
@@ -24,7 +23,7 @@ class UserRepository {
     const res = await db
       .select()
       .from(usersTable)
-      .where(and(eq(usersTable.uuid, uuid), eq(usersTable.kicked, false)))
+      .where(and(eq(usersTable.uuid, uuid), eq(usersTable.deleted, false)))
       .leftJoin(roomsTable, eq(usersTable.roomId, roomsTable.id));
     const data = res.pop();
     return data;
@@ -34,7 +33,7 @@ class UserRepository {
     const res = await db
       .select()
       .from(usersTable)
-      .where(and(eq(usersTable.id, id), eq(usersTable.kicked, false)));
+      .where(and(eq(usersTable.id, id), eq(usersTable.deleted, false)));
     const user = res.pop();
     return user;
   }
@@ -43,13 +42,19 @@ class UserRepository {
     return db
       .select()
       .from(usersTable)
-      .where(and(eq(usersTable.roomId, roomId), eq(usersTable.kicked, false)));
+      .where(and(eq(usersTable.roomId, roomId), eq(usersTable.deleted, false)));
   }
 
-  static async kick(id: User["id"]): Promise<User | undefined> {
+  static async update(
+    id: User["id"],
+    data: Partial<Pick<User, "name" | "role" | "deleted">>
+  ): Promise<User | undefined> {
     const res = await db
       .update(usersTable)
-      .set({ kicked: true })
+      .set({
+        ...data,
+        updatedAt: sql`NOW()`,
+      })
       .where(eq(usersTable.id, id))
       .returning();
     const user = res.pop();

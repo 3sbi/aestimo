@@ -29,16 +29,17 @@ export async function GET(
         controller.enqueue(encoder.encode(data));
       };
       const client: SseClient = { roomUUID, UUID: userUUID, id: user.id, send };
-      sseStore.broadcast(client.roomUUID, {
-        type: "reconnect",
-        data: { userId: user.id },
-      });
       sseStore.addClient(client);
+      sseStore.broadcast(client.roomUUID, {
+        type: "user-update",
+        data: { userId: user.id, update: { connected: true } },
+      });
+
       req.signal?.addEventListener("abort", () => {
         sseStore.removeClient(client);
         sseStore.broadcast(client.roomUUID, {
-          type: "disconnect",
-          data: { userId: client.id },
+          type: "user-update",
+          data: { userId: client.id, update: { connected: false } },
         });
         controller.close();
       });

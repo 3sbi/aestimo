@@ -22,6 +22,7 @@ import {
   VoteCard,
 } from "@/types";
 import { sseStore } from "../eventEmitter";
+import { ClientUserSchema } from "../dtos/ClientUserSchema";
 
 class RoomsService {
   convertToClientRoom(room: Room): ClientRoom {
@@ -85,15 +86,8 @@ class RoomsService {
     for (const user of users) {
       const vote = votes.find((vote) => vote.userId === user.id);
       const voted = vote !== undefined;
-      const connected: boolean =
-        sseStore.clients.find((u) => u.UUID === user.uuid) !== undefined;
-      const clientUser: ClientUser = {
-        id: user.id,
-        name: user.name,
-        role: user.role,
-        voted,
-        connected,
-      };
+      const connected: boolean = sseStore.isConnected(user.uuid);
+      const clientUser = ClientUserSchema.parse({ ...user, voted, connected });
       if (addVotes) {
         clientUser.vote = vote?.option;
       }

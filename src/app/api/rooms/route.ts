@@ -1,6 +1,6 @@
 import "server-only";
 
-import { CreateRoomDtoSchema } from "@/backend/dtos/CreateRoomDtoSchema";
+import { CreateRoomDtoSchema } from "@/backend/dtos";
 import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
 import { roomsService } from "@/backend/services";
 import { getSession } from "@/backend/session";
