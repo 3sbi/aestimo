@@ -35,7 +35,9 @@
       "header": {
         "round": "Round",
         "copy": "Copy join URL",
-        "leave": "Leave"
+        "select-new-admin": "Select a new admin:",
+        "leave": "Leave",
+        "cancel": "Cancel"
       },
       "toolbar": {
         "next": "Next round",

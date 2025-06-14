@@ -1,0 +1,20 @@
+.overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #0000001a;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.modal {
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  margin: auto 16px;
+  padding: 20px 12px;
+  border-width: 1px;
+  border-radius: var(--radius);
+}

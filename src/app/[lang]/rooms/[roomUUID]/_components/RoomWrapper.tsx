@@ -192,7 +192,7 @@ export const RoomWrapper: React.FC<Props> = ({
   return (
     <div className="room">
       <Toaster richColors />
-      <Header room={room} i18n={i18n.header} user={user} />
+      <Header users={users} room={room} i18n={i18n.header} user={user} />
       <UsersList
         users={users}
         kickUser={kickUser}
