@@ -1,5 +1,8 @@
 # Aestimo - self-hosted planning poker web app
 
+
+![screenshoot](./screenshots/room.png)
+
 ## Getting Started
 
 To run this app quickly use [Docker](https://www.docker.com/):
