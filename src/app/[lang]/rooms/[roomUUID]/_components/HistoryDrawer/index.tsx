@@ -16,7 +16,7 @@ const HistoryDrawer: React.FC<Props> = ({ i18n, votesHistory }) => {
       return (
         <div className={styles.empty}>
           <ArchiveIcon size={32} />
-          <p className="text-xs">{i18n.empty}</p>
+          <p className="text-sm">{i18n.empty}</p>
         </div>
       );
     }

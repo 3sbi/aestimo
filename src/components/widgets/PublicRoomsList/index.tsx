@@ -3,7 +3,7 @@ import "server-only";
 import { roomsService } from "@/backend/services";
 import { Dictionary, I18nLocale } from "@/i18n/getDictionary";
 import { ClientRoom } from "@/types";
-import { DoorClosedIcon, DoorOpenIcon } from "lucide-react";
+import { DoorClosedIcon, DoorOpenIcon, SearchXIcon } from "lucide-react";
 import Link from "next/link";
 import styles from "./PublicRoomsList.module.css";
 
@@ -15,12 +15,17 @@ type Props = {
 const PublicRoomsList: React.FC<Props> = async ({ lang, i18n }) => {
   const roomsToJoin: ClientRoom[] = await roomsService.getPublicRooms();
 
-  return (
-    <div>
-      <div className="px-6 py-3">
-        <h1 className="text-center font-semibold text-lg">{i18n.header}</h1>
-      </div>
-      <hr className="w-full" />
+  function renderRoomsList() {
+    if (roomsToJoin.length === 0) {
+      return (
+        <div className={styles.empty}>
+          <SearchXIcon size={32} />
+          <h5>{i18n.empty}</h5>
+        </div>
+      );
+    }
+
+    return (
       <ul className="flex flex-col">
         {roomsToJoin.map((room) => (
           <Link href={`/${lang}/rooms/${room.uuid}/join`} key={room.uuid}>
@@ -34,9 +39,18 @@ const PublicRoomsList: React.FC<Props> = async ({ lang, i18n }) => {
           </Link>
         ))}
       </ul>
+    );
+  }
+
+  return (
+    <div>
+      <div className="px-6 py-3">
+        <h1 className="text-center font-semibold text-lg">{i18n.header}</h1>
+      </div>
+      <hr className="w-full" />
+      {renderRoomsList()}
     </div>
   );
 };
 
 export { PublicRoomsList };
-

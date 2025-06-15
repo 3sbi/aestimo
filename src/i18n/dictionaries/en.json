@@ -14,7 +14,8 @@
         "header": "Join existing room",
         "uuid": "UUID",
         "username": "Your name",
-        "join": "Join"
+        "join": "Join",
+        "empty": "There are no rooms to join, create your own room"
       },
 
       "createRoomForm": {
@@ -44,12 +45,19 @@
         "reveal": "Reveal",
         "restart": "Restart round",
         "delete": "Delete",
+        "delete-modal": {
+          "header": "Are you sure?",
+          "help": "If you just want to leave the room yourself but keep it alive, give admin rights to one of the users. Once deleted, the room cannot be restored and all participants will be thrown back to the main screen.",
+          "delete": "Delete",
+          "cancel": "Cancel"
+        },
         "history": "History"
       },
       "usersList": {
         "you": "you",
         "admin": "Admin",
-        "kick": "Kick"
+        "kick": "Kick",
+        "disconnected": "Disconnected"
       },
       "toast": {
         "disconnected": "Something went wrong with server-sent events :(",

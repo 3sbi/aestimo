@@ -50,9 +50,7 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomUUID }) => {
         onClick={onFinish}
         disabled={loading}
       >
-        {loading && (
-          <Loader2Icon className="animate-spin" width={20} height={20} />
-        )}
+        {loading && <Loader2Icon className="animate-spin" size={20} />}
         {i18n.join}
       </Button>
     </form>

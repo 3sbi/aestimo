@@ -4,9 +4,14 @@
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 20;
   display: flex;
   justify-content: center;
   background-color: #0000001a;
+}
+
+:global(.dark) .overlay {
+  background-color: #ffffff42;
 }
 
 .modal {

@@ -18,7 +18,7 @@ const Header: React.FC<Props> = ({ i18n, room, user, users }) => {
   return (
     <header className={styles.roomHeader}>
       <h2 className="text-2xl truncate">{room.name}</h2>
-      <h2 className="font-semibold text-2xl justify-self-center truncate w-full">
+      <h2 className="font-semibold text-center text-2xl justify-self-center truncate w-full">
         {i18n.round} {room.round}
       </h2>
 

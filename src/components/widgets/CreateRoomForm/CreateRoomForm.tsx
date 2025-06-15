@@ -169,9 +169,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
           type="button"
           disabled={loading}
         >
-          {loading && (
-            <Loader2Icon className="animate-spin" width={20} height={20} />
-          )}
+          {loading && <Loader2Icon className="animate-spin" size={20} />}
           {i18n.create}
         </Button>
       </form>

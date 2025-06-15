@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ColorPicker } from "../ColorPicker";
 import { getRandomPresetColor } from "../ColorPicker/colors";
 import styles from "./VoteTypeCreator.module.css";
+import { getContrastYIQ } from "@/utils/colors";
 
 export type CustomVoteCard = VoteCard & { id: number };
 
@@ -43,11 +44,13 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
 
   function renderCard(card: CustomVoteCard, index: number) {
     const { id, color, value } = card;
+    const textColor = getContrastYIQ(color);
+
     return (
       <div
         className={styles.voteCard}
         key={id}
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: color, color: textColor }}
       >
         <input
           size={1}

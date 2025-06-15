@@ -5,14 +5,9 @@ import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
 import type { NextRoundEvent, RestartEvent } from "@/types/EventData";
 import { api } from "@/utils/api";
-import {
-  ArrowRightCircleIcon,
-  EyeIcon,
-  RotateCwIcon,
-  Trash2Icon,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ArrowRightCircleIcon, EyeIcon, RotateCwIcon } from "lucide-react";
 import React, { useState } from "react";
+import { DeleteButton } from "./DeleteButton";
 import styles from "./Toolbar.module.css";
 
 type ToolbarProps = {
@@ -31,9 +26,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
   goToNextRound,
 }) => {
   const [loadingButton, setLoadingButton] = useState<
-    "reveal" | "next" | "restart" | "delete" | null
+    "reveal" | "next" | "restart" | null
   >(null);
-  const router = useRouter();
 
   async function onClickReveal() {
     if (loadingButton) return;
@@ -74,20 +68,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
     setLoadingButton(null);
   }
 
-  async function onClickDelete() {
-    if (loadingButton) return;
-    setLoadingButton("delete");
-    try {
-      const res = await api.delete(`/api/rooms/${room.uuid}`);
-      if (res.ok) {
-        router.replace("/");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    setLoadingButton(null);
-  }
-
   return (
     <div className={styles.toolbar}>
       {room.status !== "finished" && (
@@ -109,10 +89,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
         {i18n.restart}
       </Button>
 
-      <Button onClick={onClickDelete} loading={loadingButton === "delete"}>
-        <Trash2Icon />
-        {i18n.delete}
-      </Button>
+      <DeleteButton room={room} i18n={i18n["delete-modal"]} />
     </div>
   );
 };

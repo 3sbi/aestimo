@@ -39,9 +39,9 @@ const UsersList: React.FC<Props> = ({
         }
 
         if (!user.connected) {
-          style.opacity = "0.8";
+          style.opacity = "0.6";
           if (!user.voted) {
-            children = <div>💀</div>;
+            children = <div title={i18n.disconnected}>💀</div>;
           }
         }
 
