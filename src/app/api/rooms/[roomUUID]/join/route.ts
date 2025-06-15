@@ -48,6 +48,7 @@ export async function POST(
 
     const joinedUser: ClientUser = ClientUserSchema.parse({
       ...user,
+      connected: true,
       voted: false,
     });
     sseStore.broadcast(roomUUID, { type: "join", data: joinedUser });

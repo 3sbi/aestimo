@@ -10,13 +10,14 @@ import {
 import { LOCALE_HEADER_KEY } from "@/middleware";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-import { Geist } from "next/font/google";
+import { Roboto } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 
-const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -46,7 +47,7 @@ export default async function RootLayout(props: Readonly<Props>) {
   return (
     <html
       lang={lang}
-      className={`${geist.variable} antialiased`}
+      className={`${roboto.variable} antialiased`}
       suppressHydrationWarning
     >
       <body>

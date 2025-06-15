@@ -19,11 +19,27 @@
 }
 
 .drawer .chevron {
-  margin: auto;
+  position: absolute;
+  left: 0;
+  width: min-content;
+  margin-top: auto;
+  height: min-content;
+  margin-bottom: auto;
+  top: 50%;
 }
 
 .drawer:hover .chevron {
-  display: none;
+  transform: rotate(180deg);
+}
+
+.drawer .empty {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: var(--muted-foreground);
 }
 
 .drawer .history {
@@ -58,5 +74,3 @@
   gap: 2px;
   width: 100%;
 }
-
-

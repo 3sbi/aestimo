@@ -34,7 +34,11 @@ export async function PATCH(
     }
 
     const updatedUser = await usersService.update(id, data);
-    const clientUser = ClientUserSchema.parse(updatedUser);
+    const connected = sseStore.isConnected(updatedUser.uuid);
+    const clientUser = ClientUserSchema.parse({
+      ...updatedUser,
+      connected,
+    });
 
     return Response.json({ user: clientUser });
   } catch (err) {

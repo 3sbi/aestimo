@@ -4,13 +4,14 @@
   position: fixed;
   left: 0;
   top: 0;
-  background-color: #0000001a;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  justify-content: center;
+  background-color: #0000001a;
 }
 
 .modal {
+  display: flex;
+  flex-direction: column;
   background-color: var(--popover);
   color: var(--popover-foreground);
   margin: auto 16px;

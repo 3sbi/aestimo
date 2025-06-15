@@ -118,4 +118,3 @@ const Toolbar: React.FC<ToolbarProps> = ({
 };
 
 export { Toolbar };
-

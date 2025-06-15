@@ -58,7 +58,8 @@
       },
       "historyDrawer": {
         "header": "History",
-        "round": "Round"
+        "round": "Round",
+        "empty": "Here will be the voting history for all rounds. No rounds have been completed yet."
       }
     },
 

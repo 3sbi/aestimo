@@ -81,7 +81,7 @@
 }
 
 html {
-  font: normal 16px/24px var(--font-geist);
+  font: normal 16px/24px var(--font-roboto);
 }
 
 body {
@@ -93,6 +93,11 @@ body {
   color: var(--foreground);
   font-synthesis-weight: none;
   text-rendering: optimizeLegibility;
+}
+
+select {
+  border-width: 1px;
+  border-radius: var(--radius-xs);
 }
 
 .card {

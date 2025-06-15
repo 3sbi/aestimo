@@ -140,6 +140,7 @@ export const RoomWrapper: React.FC<Props> = ({
             prev[index] = { ...prev[index], ...update };
             return [...prev];
           });
+          break;
         }
         case "delete-room": {
           router.replace("/");
@@ -166,12 +167,14 @@ export const RoomWrapper: React.FC<Props> = ({
         }
       }
     };
+
     eventSource.onopen = () => {
       if (disconnected) {
         toast.success(i18n.toast.reconnected);
         setDisconnected(false);
       }
     };
+
     eventSource.onerror = () => {
       toast.error(i18n.toast.disconnected);
       setDisconnected(true);
@@ -181,12 +184,6 @@ export const RoomWrapper: React.FC<Props> = ({
       eventSource.close();
     };
   }, [room.uuid, router, user.id, i18n, disconnected, goToNextRound]);
-
-  useEffect(() => {
-    window.addEventListener("beforeunload", function (event) {
-      event.preventDefault();
-    });
-  }, []);
 
   const isAdmin: boolean = user.role === "admin";
   return (

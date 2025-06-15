@@ -1,5 +1,5 @@
 {
-  "id": "610fe651-b8c6-4aa0-aaef-2a167c010e9a",
+  "id": "a584143e-bb27-48cd-9450-86d9811aa335",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -149,12 +149,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
-        },
-        "connected": {
-          "name": "connected",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},

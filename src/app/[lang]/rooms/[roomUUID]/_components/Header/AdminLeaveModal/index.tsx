@@ -7,6 +7,7 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "sonner";
 import styles from "./AdminLeaveModal.module.css";
 
 type Props = {
@@ -49,16 +50,39 @@ const AdminLeaveModal: React.FC<Props> = ({ userId, users, i18n, trigger }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [ref]);
 
-  async function onAdminLeave() {
+  async function transferRights() {
     setLoading(true);
     try {
       const res = await api.delete(`/api/users/${userId}`, { newAdminId });
       if (res.ok) {
         router.replace("/");
+      } else {
+        const data = await res.json();
+        toast.error(data.error);
       }
     } catch (err) {
       setLoading(false);
       console.error(err);
+    }
+  }
+
+  async function onAdminLeave() {
+    if (users.length > 1) {
+      setOpened(true);
+    } else {
+      setLoading(true);
+      try {
+        const res = await api.delete(`/api/users/${userId}`, { newAdminId });
+        if (res.ok) {
+          router.replace("/");
+        } else {
+          const data = await res.json();
+          toast.error(data.error);
+        }
+      } catch (err) {
+        setLoading(false);
+        console.error(err);
+      }
     }
   }
 
@@ -72,20 +96,26 @@ const AdminLeaveModal: React.FC<Props> = ({ userId, users, i18n, trigger }) => {
             id={newAdminSelectId}
             onChange={(e) => setNewAdminId(Number(e.target.value))}
           >
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
+            {users
+              .filter((user) => user.id !== userId)
+              .map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              ))}
           </select>
-          <div className="flex gap-2">
-            <Button variant="secondary" disabled={loading}>
+          <div className="flex gap-2 mt-2">
+            <Button
+              variant="secondary"
+              disabled={loading}
+              onClick={() => setOpened(false)}
+            >
               {i18n["cancel"]}
             </Button>
             <Button
               variant="destructive"
               disabled={loading}
-              onClick={onAdminLeave}
+              onClick={transferRights}
             >
               {i18n["leave"]}
             </Button>
@@ -95,9 +125,11 @@ const AdminLeaveModal: React.FC<Props> = ({ userId, users, i18n, trigger }) => {
     );
   }
 
+  if (users.length === 0) return <></>;
+
   return (
     <>
-      {React.cloneElement(trigger, { onClick: () => setOpened(true) })}
+      {React.cloneElement(trigger, { onClick: () => onAdminLeave() })}
       {opened && createPortal(renderModal(), document.body)}
     </>
   );

@@ -6,7 +6,7 @@ To run this app quickly use [Docker](https://www.docker.com/):
 
 ```bash
 $ cp .env.example .env
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.

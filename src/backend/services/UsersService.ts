@@ -79,7 +79,7 @@ class UsersService {
 
   /* basically soft-delete */
   async leave(id: User["id"]): Promise<User> {
-    const user = await UserRepository.update(id, { deleted: false });
+    const user = await UserRepository.update(id, { deleted: true });
     if (!user) {
       throw new UserNotFoundError();
     }
