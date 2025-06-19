@@ -10,6 +10,7 @@ export const CreateRoomDtoSchema = z.object({
     })
   ),
   private: z.boolean(),
+  prefix: z.string().optional(),
 });
 
 type CreateRoomDto = z.infer<typeof CreateRoomDtoSchema>;

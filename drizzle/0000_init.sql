@@ -6,12 +6,12 @@ CREATE TABLE "rooms" (
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"vote_values" json NOT NULL,
-	"uuid" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"status" "room_status" DEFAULT 'started' NOT NULL,
 	"round" integer DEFAULT 1 NOT NULL,
 	"password" varchar(255),
+	"slug" varchar(255) NOT NULL,
 	"private" boolean DEFAULT false NOT NULL,
-	CONSTRAINT "rooms_uuid_unique" UNIQUE("uuid")
+	CONSTRAINT "rooms_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
@@ -21,9 +21,7 @@ CREATE TABLE "users" (
 	"name" varchar(256) NOT NULL,
 	"room_id" integer NOT NULL,
 	"role" "role" DEFAULT 'basic' NOT NULL,
-	"uuid" uuid DEFAULT gen_random_uuid() NOT NULL,
-	"deleted" boolean DEFAULT false NOT NULL,
-	CONSTRAINT "users_uuid_unique" UNIQUE("uuid")
+	"deleted" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "votes" (

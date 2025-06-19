@@ -26,31 +26,33 @@ import { ClientUserSchema } from "../dtos/ClientUserSchema";
 
 class RoomsService {
   convertToClientRoom(room: Room): ClientRoom {
-    const { name, round, status, uuid } = room;
-    return { name, private: room.private, round, status, uuid };
+    const { name, round, status, slug } = room;
+    return { name, private: room.private, round, status, slug };
   }
 
-  async getOne(uuid: string): Promise<Room> {
-    const room = await RoomRepository.getByUUID(uuid);
+  async getOne(slug: Room["slug"]): Promise<Room> {
+    const room = await RoomRepository.getBySlug(slug);
     if (!room) {
       throw new RoomNotFoundError();
     }
     return room;
   }
 
-  async createRoom(values: CreateRoomDto): Promise<{ room: Room; user: User }> {
-    const room = await RoomRepository.create({
-      name: values.name,
-      voteOptions: values.voteOptions,
-      private: values.private,
-    });
+  async createRoom({
+    username,
+    ...dto
+  }: Omit<CreateRoomDto, "prefix"> & { slug: string }): Promise<{
+    room: Room;
+    user: User;
+  }> {
+    const room = await RoomRepository.create(dto);
     if (!room) {
       throw new RoomNotFoundError();
     }
 
     const user = await UserRepository.create({
       roomId: room.id,
-      name: values.username,
+      name: username,
       role: "admin",
     });
 
@@ -62,8 +64,8 @@ class RoomsService {
   }
 
   async joinRoom(values: JoinRoomDto): Promise<{ room: Room; user?: User }> {
-    const { roomUUID, username } = values;
-    const room = await this.getOne(roomUUID);
+    const { roomSlug, username } = values;
+    const room = await this.getOne(roomSlug);
     if (!room) throw new RoomNotFoundError();
     if (room.private) throw new RoomIsPrivateError();
 
@@ -76,8 +78,8 @@ class RoomsService {
   }
 
   async getUsers(
-    roomId: number,
-    round: number,
+    roomId: Room["id"],
+    round: Room["round"],
     addVotes: boolean
   ): Promise<ClientUser[]> {
     const users = await UserRepository.getAllByRoomId(roomId);
@@ -86,7 +88,7 @@ class RoomsService {
     for (const user of users) {
       const vote = votes.find((vote) => vote.userId === user.id);
       const voted = vote !== undefined;
-      const connected: boolean = sseStore.isConnected(user.uuid);
+      const connected: boolean = sseStore.isConnected(user.id);
       const clientUser = ClientUserSchema.parse({ ...user, voted, connected });
       if (addVotes) {
         clientUser.vote = vote?.option;
@@ -96,8 +98,8 @@ class RoomsService {
     return usersList;
   }
 
-  async getVoteTypes(roomUUID: string): Promise<Room["voteOptions"]> {
-    const room = await RoomRepository.getByUUID(roomUUID);
+  async getVoteTypes(slug: Room["slug"]): Promise<Room["voteOptions"]> {
+    const room = await RoomRepository.getBySlug(slug);
     if (!room) {
       throw new RoomNotFoundError();
     }
@@ -105,8 +107,8 @@ class RoomsService {
     return room.voteOptions;
   }
 
-  async openCards(roomUUID: string): Promise<ClientUser[]> {
-    const room = await RoomRepository.update(roomUUID, { status: "finished" });
+  async openCards(slug: Room["slug"]): Promise<ClientUser[]> {
+    const room = await RoomRepository.update(slug, { status: "finished" });
     if (!room) {
       throw new RoomNotFoundError();
     }
@@ -115,7 +117,10 @@ class RoomsService {
   }
 
   /* for finished round */
-  async getVotes(roomId: number, round: number): Promise<ClientVote[]> {
+  async getVotes(
+    roomId: Room["id"],
+    round: Room["round"]
+  ): Promise<ClientVote[]> {
     const votes = await VoteRepository.getAllRoundVotes(roomId, round);
     return votes;
   }
@@ -139,9 +144,9 @@ class RoomsService {
   }
 
   async goToNextRound(
-    uuid: string
+    slug: Room["slug"]
   ): Promise<{ room: ClientRoom; prevRoundVotes: ClientVote[] }> {
-    const item = await RoomRepository.getByUUID(uuid);
+    const item = await RoomRepository.getBySlug(slug);
     if (!item) {
       throw new RoomNotFoundError();
     }
@@ -150,7 +155,7 @@ class RoomsService {
       item.id,
       currentRound
     );
-    const room = await RoomRepository.update(uuid, {
+    const room = await RoomRepository.update(slug, {
       round: currentRound + 1,
       status: "started",
     });
@@ -162,7 +167,11 @@ class RoomsService {
     return { room: clientRoom, prevRoundVotes };
   }
 
-  async addVote(room: Room, userId: number, value: VoteCard): Promise<Vote> {
+  async addVote(
+    room: Room,
+    userId: User["id"],
+    value: VoteCard
+  ): Promise<Vote> {
     const existingVote = await VoteRepository.getOne(
       room.id,
       room.round,
@@ -191,8 +200,8 @@ class RoomsService {
     return vote;
   }
 
-  async restart(uuid: string): Promise<Room> {
-    const room = await RoomRepository.update(uuid, { status: "started" });
+  async restart(slug: Room["slug"]): Promise<Room> {
+    const room = await RoomRepository.update(slug, { status: "started" });
     if (!room) {
       throw new RoomNotFoundError();
     }
@@ -201,18 +210,18 @@ class RoomsService {
   }
 
   async changeRoomPrivacy(
-    uuid: string,
+    slug: Room["slug"],
     newPrivate: boolean
   ): Promise<ClientRoom> {
-    const room = await RoomRepository.update(uuid, { private: newPrivate });
+    const room = await RoomRepository.update(slug, { private: newPrivate });
     if (!room) {
       throw new RoomNotFoundError();
     }
     return this.convertToClientRoom(room);
   }
 
-  async delete(uuid: string): Promise<boolean> {
-    return RoomRepository.delete(uuid);
+  async delete(slug: Room["slug"]): Promise<boolean> {
+    return RoomRepository.delete(slug);
   }
 
   async getPublicRooms(): Promise<ClientRoom[]> {

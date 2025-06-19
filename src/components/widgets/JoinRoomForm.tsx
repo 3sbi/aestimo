@@ -12,10 +12,10 @@ type Response = { success: boolean };
 
 type Props = {
   i18n: Dictionary["pages"]["home"]["joinRoomForm"];
-  roomUUID: string;
+  roomSlug: string;
 };
 
-const JoinRoomForm: React.FC<Props> = ({ i18n, roomUUID }) => {
+const JoinRoomForm: React.FC<Props> = ({ i18n, roomSlug }) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
@@ -23,9 +23,9 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomUUID }) => {
   const onFinish = async () => {
     setLoading(true);
     try {
-      const res = await api.post(`/api/rooms/${roomUUID}/join`, { username });
+      const res = await api.post(`/api/rooms/${roomSlug}/join`, { username });
       const result: Response = await res.json();
-      if (result.success) router.replace(`/rooms/${roomUUID}`);
+      if (result.success) router.replace(`/rooms/${roomSlug}`);
     } catch (err) {
       console.error(err);
     }

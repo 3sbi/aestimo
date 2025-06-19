@@ -1,9 +1,13 @@
 import { db, usersTable, votesTable } from "@/backend/db";
-import type { ClientVote, Vote, VoteCard } from "@/types";
+import type { ClientVote, Room, User, Vote, VoteCard } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 
 class VoteRepository {
-  static async getOne(roomId: number, round: number, userId: number) {
+  static async getOne(
+    roomId: Room["id"],
+    round: Room["round"],
+    userId: User["id"]
+  ) {
     const vote = await db
       .select()
       .from(votesTable)
@@ -17,7 +21,7 @@ class VoteRepository {
     return vote.pop();
   }
 
-  static async update(id: number, value: VoteCard, round: number) {
+  static async update(id: Room["id"], value: VoteCard, round: Room["round"]) {
     const vote = await db
       .update(votesTable)
       .set({
@@ -31,10 +35,10 @@ class VoteRepository {
   }
 
   static async create(
-    roomId: number,
-    userId: number,
+    roomId: Room["id"],
+    userId: User["id"],
     value: VoteCard,
-    round: number
+    round: Room["round"]
   ): Promise<Vote | undefined> {
     const vote = await db
       .insert(votesTable)
@@ -44,8 +48,8 @@ class VoteRepository {
   }
 
   static async getAllRoundVotes(
-    roomId: number,
-    round: number
+    roomId: Room["id"],
+    round: Room["round"]
   ): Promise<ClientVote[]> {
     const votes = await db
       .select({
@@ -60,8 +64,8 @@ class VoteRepository {
   }
 
   static async getAllVotes(
-    roomId: number
-  ): Promise<Array<ClientVote & { round: number }>> {
+    roomId: Room["id"]
+  ): Promise<Array<ClientVote & { round: Room["round"] }>> {
     const votes = await db
       .select({
         userId: votesTable.userId,
@@ -75,7 +79,7 @@ class VoteRepository {
     return votes;
   }
 
-  static async deleteAll(roomId: number, round: number) {
+  static async deleteAll(roomId: Room["id"], round: Room["round"]) {
     await db
       .delete(votesTable)
       .where(and(eq(votesTable.roomId, roomId), eq(votesTable.round, round)));

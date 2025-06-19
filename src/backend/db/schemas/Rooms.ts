@@ -1,5 +1,4 @@
 import { VoteCard } from "@/types";
-import { sql } from "drizzle-orm";
 import {
   boolean,
   integer,
@@ -8,7 +7,6 @@ import {
   pgTable,
   serial,
   timestamp,
-  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 
@@ -20,14 +18,9 @@ export const roomsTable = pgTable("rooms", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   name: varchar({ length: 255 }).notNull(),
   voteOptions: json("vote_values").$type<VoteCard[]>().notNull(),
-  uuid: uuid()
-    .unique()
-    .notNull()
-    .default(sql`gen_random_uuid()`),
   status: statusEnum().notNull().default("started"),
   round: integer().notNull().default(1),
   password: varchar({ length: 255 }),
-
-  // defines if room can be joined or not. Defaults to being open to join
-  private: boolean().notNull().default(false),
+  slug: varchar({ length: 255 }).unique().notNull(),
+  private: boolean().notNull().default(false), // defines if room can be joined or not. Defaults to being open to join
 });

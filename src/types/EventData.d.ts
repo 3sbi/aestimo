@@ -1,4 +1,4 @@
-import { ClientRoom, ClientUser, ClientVote } from ".";
+import type { ClientRoom, ClientUser, ClientVote, User } from ".";
 
 export type NextRoundEvent = {
   type: "next-round";
@@ -17,14 +17,14 @@ export type Event =
   | NextRoundEvent
   | RestartEvent
   | RevealEvent
-  | { type: "kick"; data: { userId: number } }
+  | { type: "kick"; data: { userId: User["id"] } }
   | {
       type: "user-update";
       data: {
-        userId: number;
+        userId: User["id"];
         update: Partial<Pick<ClientUser, "name" | "connected">>;
       };
     }
   | { type: "delete-room" }
   | { type: "vote"; data: ClientUser }
-  | { type: "transfer-admin"; data: { newAdminId: number } };
+  | { type: "transfer-admin"; data: { newAdminId: ClientUser["uuid"] } };

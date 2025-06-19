@@ -4,8 +4,8 @@ import { cn } from "@/utils/cn";
 
 const Input = React.forwardRef<
   HTMLInputElement,
-  React.ComponentProps<"input"> & { label: string }
->(({ label, className, type, ...props }, ref) => {
+  React.ComponentProps<"input"> & { label: string; helper?: string }
+>(({ label, helper, className, type, ...props }, ref) => {
   return (
     <div className="space-y-1 flex flex-col mb-3">
       <label htmlFor={props.id}>{label}</label>
@@ -19,10 +19,12 @@ const Input = React.forwardRef<
         ref={ref}
         {...props}
       />
+      {helper && (
+        <span className="text-[var(--muted-foreground)]">{helper}</span>
+      )}
     </div>
   );
 });
 Input.displayName = "Input";
 
 export { Input };
-

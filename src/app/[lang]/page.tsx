@@ -28,17 +28,17 @@ export default async function Home(props: Props) {
 
   const i18n = getDictionary(lang).pages.home;
   const session = await getSession();
-  const { userUUID, roomUUID } = session;
+  const { userId, roomSlug } = session;
 
-  if (roomUUID && userUUID) {
+  if (roomSlug && userId) {
     async function getData(
-      roomUUID: string,
-      userUUID: string
+      roomSlug: string,
+      userId: number
     ): Promise<{ user?: User; room?: Room }> {
       try {
         const result = await usersService.checkIfUserExistsInRoom(
-          roomUUID,
-          userUUID
+          roomSlug,
+          userId
         );
         return result;
       } catch (err) {
@@ -46,9 +46,9 @@ export default async function Home(props: Props) {
         return {};
       }
     }
-    const { user, room } = await getData(roomUUID, userUUID);
+    const { user, room } = await getData(roomSlug, userId);
     if (user && room) {
-      redirect(`/${lang}/rooms/${roomUUID}`, RedirectType.replace);
+      redirect(`/${lang}/rooms/${roomSlug}`, RedirectType.replace);
     }
   }
 

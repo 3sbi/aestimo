@@ -10,7 +10,7 @@ export type VoteCard = { color: string; value: string };
 // for client-side only
 export type ClientRoom = Pick<
   Room,
-  "private" | "status" | "name" | "round" | "uuid"
+  "private" | "status" | "name" | "round" | "slug"
 >;
 
 export type ClientUser = z.infer<typeof ClientUserSchema>;

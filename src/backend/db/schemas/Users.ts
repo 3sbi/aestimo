@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import {
   boolean,
   integer,
@@ -6,8 +5,7 @@ import {
   pgTable,
   serial,
   timestamp,
-  uuid,
-  varchar,
+  varchar
 } from "drizzle-orm/pg-core";
 import { roomsTable } from "./Rooms";
 
@@ -22,9 +20,5 @@ export const usersTable = pgTable("users", {
     .references(() => roomsTable.id, { onDelete: "cascade" })
     .notNull(),
   role: rolesEnum().notNull().default("basic"),
-  uuid: uuid()
-    .unique()
-    .notNull()
-    .default(sql`gen_random_uuid()`),
   deleted: boolean("deleted").notNull().default(false),
 });

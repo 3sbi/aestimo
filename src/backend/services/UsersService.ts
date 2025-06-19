@@ -17,46 +17,38 @@ class UsersService {
     if (!user) {
       throw new UserNotFoundError();
     }
-    return user;
-  }
-
-  async getOneByUUID(uuid: User["uuid"]): Promise<User> {
-    const user = await UserRepository.getByUUID(uuid);
-    if (!user) {
-      throw new UserNotFoundError();
-    }
     return user.users;
   }
 
-  async isAdmin(): Promise<{ isAdmin: boolean; userUUID: User["uuid"] }> {
-    const { userUUID, roomUUID } = await getSession();
-    if (typeof roomUUID !== "string") {
+  async isAdmin(): Promise<{ isAdmin: boolean; userId: User["id"] }> {
+    const { userId, roomSlug } = await getSession();
+    if (typeof roomSlug !== "string") {
       throw new RoomNotFoundError();
     }
-    if (typeof userUUID !== "string") {
+    if (typeof userId !== "number") {
       throw new UserNotFoundError();
     }
-    const data = await UserRepository.getByUUID(userUUID);
+    const data = await UserRepository.getById(userId);
     if (!data || !data.users) {
       throw new UserNotFoundError();
     }
     const user = data.users;
     const isAdmin: boolean =
-      user.role === "admin" && roomUUID === data.rooms?.uuid;
-    return { isAdmin, userUUID };
+      user.role === "admin" && roomSlug === data.rooms?.slug;
+    return { isAdmin, userId };
   }
 
   async checkIfUserExistsInRoom(
-    roomUUID: Room["uuid"],
-    userUUID: User["uuid"]
+    slug: Room["slug"],
+    userId: User["id"]
   ): Promise<{ user: User; room: Room }> {
-    const room = await RoomRepository.getByUUID(roomUUID);
+    const room = await RoomRepository.getBySlug(slug);
     if (!room) {
       throw new RoomNotFoundError();
     }
 
     const users = await UserRepository.getAllByRoomId(room.id);
-    const user = users.find((user) => user.uuid === userUUID);
+    const user = users.find((user) => user.id === userId);
     if (!user) {
       throw new UserNotFoundError();
     }
@@ -65,12 +57,12 @@ class UsersService {
   }
 
   async getVoteIndex(
-    userId: User["id"],
+    id: User["id"],
     roomId: Room["id"],
     round: Room["round"]
   ): Promise<number | null> {
     const votes = await VoteRepository.getAllRoundVotes(roomId, round);
-    const index = votes.findIndex((vote) => vote.userId === userId);
+    const index = votes.findIndex((vote) => vote.userId === id);
     if (index === -1) {
       return null;
     }
@@ -88,8 +80,8 @@ class UsersService {
 
   async transferAdminRights(data: TransferAdminRightsDto): Promise<User> {
     const { newAdminId, oldAdminId } = data;
-    const oldAdmin = await UserRepository.getById(oldAdminId);
-    const newAdmin = await UserRepository.getById(newAdminId);
+    const oldAdmin = (await UserRepository.getById(oldAdminId))?.users;
+    const newAdmin = (await UserRepository.getById(newAdminId))?.users;
     if (!oldAdmin || !newAdmin) {
       throw new UserNotFoundError();
     }

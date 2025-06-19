@@ -17,8 +17,8 @@ export async function PATCH(
   try {
     const req = await request.json();
     const session = await getSession();
-    const { roomUUID } = session;
-    if (!roomUUID) {
+    const { roomSlug } = session;
+    if (!roomSlug) {
       throw new RoomNotFoundError();
     }
 
@@ -34,7 +34,7 @@ export async function PATCH(
     }
 
     const updatedUser = await usersService.update(id, data);
-    const connected = sseStore.isConnected(updatedUser.uuid);
+    const connected = sseStore.isConnected(updatedUser.id);
     const clientUser = ClientUserSchema.parse({
       ...updatedUser,
       connected,
@@ -56,8 +56,8 @@ export async function DELETE(
 ) {
   try {
     const session = await getSession();
-    const { roomUUID } = session;
-    if (!roomUUID) {
+    const { roomSlug } = session;
+    if (!roomSlug) {
       throw new RoomNotFoundError();
     }
 
@@ -65,9 +65,9 @@ export async function DELETE(
     if (Number.isNaN(id)) {
       throw new UserNotFoundError();
     }
-    const { isAdmin, userUUID } = await usersService.isAdmin();
+    const { isAdmin, userId } = await usersService.isAdmin();
     const user: User = await usersService.getOne(id);
-    const isMyself: boolean = userUUID === user.uuid;
+    const isMyself: boolean = userId === user.id;
 
     if (!isAdmin && !isMyself) {
       return Response.json({ error: "Not allowed" }, { status: 403 });
@@ -95,7 +95,7 @@ export async function DELETE(
         data: { newAdminId: user.id },
       } as const;
 
-      sseStore.broadcast(roomUUID, event, userUUID);
+      sseStore.broadcast(roomSlug, event, userId);
     }
 
     const kickedUser = await usersService.leave(id);
@@ -103,7 +103,7 @@ export async function DELETE(
       type: "kick",
       data: { userId: kickedUser.id },
     } as const;
-    sseStore.broadcast(roomUUID, data, userUUID);
+    sseStore.broadcast(roomSlug, data, userId);
 
     if (isMyself) {
       session.destroy();

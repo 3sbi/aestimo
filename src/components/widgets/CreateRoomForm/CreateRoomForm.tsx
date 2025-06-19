@@ -4,7 +4,9 @@ import type { DefinedVoteType } from "@/backend/consts/predefinedVoteTypes";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import type { Dictionary } from "@/i18n/getDictionary";
+import { VoteCard } from "@/types";
 import { api } from "@/utils/api";
+import { slugify } from "@/utils/slugify";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,7 +15,7 @@ import { Switch } from "../../Switch";
 import { getRandomPresetColor } from "./ColorPicker/colors";
 import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
 
-type Response = { roomUUID: string };
+type Response = { slug: string };
 
 type Props = {
   i18n: Dictionary["pages"]["home"]["createRoomForm"];
@@ -25,6 +27,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
+  const [prefix, setPrefix] = useState<string>("");
   const [privateRoom, setPrivateRoom] = useState<boolean>(false);
   const [voteTypeId, setVoteTypeId] = useState<string>(
     predefinedVoteTypes[0].id
@@ -55,17 +58,21 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
           : predefinedVoteTypes.find(({ id }) => id === voteTypeId)?.values;
 
       if (voteOptions) {
-        const values = {
+        const values: Record<string, string | boolean | VoteCard[]> = {
           name,
           username,
           voteOptions,
           private: privateRoom,
         };
 
+        if (prefix) {
+          values.prefix = prefix;
+        }
+
         const res = await api.post("/api/rooms", values);
         if (res.ok) {
-          const { roomUUID }: Response = await res.json();
-          router.replace(`/rooms/${roomUUID}`);
+          const { slug }: Response = await res.json();
+          router.replace(`/rooms/${slug}`);
         }
       }
     } catch (err) {
@@ -73,6 +80,14 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
     }
 
     setLoading(false);
+  };
+
+  const renderSlugHelper = (): string => {
+    if (!prefix.length) {
+      return i18n.slug.random;
+    }
+    const url: string = `${location.origin}/${slugify(prefix)}-xxxxxxx`;
+    return `${i18n.slug.helper} ${url}`;
   };
 
   return (
@@ -94,6 +109,13 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
             name="username"
             label={i18n.username}
             onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            type="text"
+            name="prefix"
+            label={i18n.slug.label}
+            onChange={(e) => setPrefix(e.target.value)}
+            helper={renderSlugHelper()}
           />
           <div className="flex items-center gap-2 mb-3">
             <Switch
@@ -143,7 +165,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
                   className="flex items-center gap-1 w-full"
                   htmlFor="custom"
                 >
-                  <b className="min-w-32">Custom</b>
+                  <b className="min-w-32">{i18n.custom}</b>
                   <div className="flex gap-0.5 flex-wrap">
                     {customVoteType.map((card) => (
                       <SmallVoteCard key={card.id} {...card} />

@@ -1,5 +1,5 @@
 {
-  "id": "a584143e-bb27-48cd-9450-86d9811aa335",
+  "id": "ee8c2990-0fdf-4989-86f9-10a5d995fb21",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -40,13 +40,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "uuid": {
-          "name": "uuid",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
         "status": {
           "name": "status",
           "type": "room_status",
@@ -68,6 +61,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "slug": {
+          "name": "slug",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "private": {
           "name": "private",
           "type": "boolean",
@@ -80,11 +79,11 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "rooms_uuid_unique": {
-          "name": "rooms_uuid_unique",
+        "rooms_slug_unique": {
+          "name": "rooms_slug_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "uuid"
+            "slug"
           ]
         }
       },
@@ -136,13 +135,6 @@
           "notNull": true,
           "default": "'basic'"
         },
-        "uuid": {
-          "name": "uuid",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
         "deleted": {
           "name": "deleted",
           "type": "boolean",
@@ -168,15 +160,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "users_uuid_unique": {
-          "name": "users_uuid_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "uuid"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

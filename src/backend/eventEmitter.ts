@@ -2,9 +2,8 @@ import { Room, User } from "@/types";
 import { Event } from "@/types/EventData";
 
 export type SseClient = {
-  UUID: User["uuid"];
   id: User["id"];
-  roomUUID: Room["uuid"];
+  roomSlug: Room["slug"];
   send: (data: string) => void;
 };
 
@@ -15,8 +14,8 @@ class SseStore {
     this.clients.push(client);
   }
 
-  public isConnected(uuid: string): boolean {
-    return this.clients.find((u) => u.UUID === uuid) !== undefined;
+  public isConnected(id: SseClient["id"]): boolean {
+    return this.clients.find((u) => u.id === id) !== undefined;
   }
 
   public removeClient(client: SseClient) {
@@ -29,10 +28,10 @@ class SseStore {
    * that are in the same room as event emitter source
    *
    */
-  public broadcast(roomUUID: string, data: Event, initiatorUUID?: string) {
+  public broadcast(roomSlug: string, data: Event, initiatorId?: number) {
     const payload = `data: ${JSON.stringify(data)}\n\n`;
     const clientsInRoom = this.clients.filter(
-      (client) => client.roomUUID === roomUUID && client.UUID !== initiatorUUID
+      (client) => client.roomSlug === roomSlug && client.id !== initiatorId
     );
     clientsInRoom.forEach((client) => client.send(payload));
   }
@@ -41,4 +40,3 @@ class SseStore {
 const sseStore = new SseStore();
 
 export { sseStore };
-

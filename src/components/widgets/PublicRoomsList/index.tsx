@@ -28,7 +28,7 @@ const PublicRoomsList: React.FC<Props> = async ({ lang, i18n }) => {
     return (
       <ul className="flex flex-col">
         {roomsToJoin.map((room) => (
-          <Link href={`/${lang}/rooms/${room.uuid}/join`} key={room.uuid}>
+          <Link href={`/${lang}/rooms/${room.slug}/join`} key={room.slug}>
             <li className={styles.roomItem}>
               <div className={styles.icon}>
                 <DoorClosedIcon />

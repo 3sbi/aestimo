@@ -22,7 +22,13 @@
         "header": "Create new room",
         "username": "Your name",
         "roomName": "Room name",
-        "private": "Private room",
+        "private": "Private room (Other users can't join private room)",
+        "custom": "Custom",
+        "slug": {
+          "label": "URL prefix",
+          "random": "Room address will be randomly generated",
+          "helper": "URL will look like this:"
+        },
         "checkboxes": "Vote options",
         "customVoteCard": {
           "color": "Change background color",

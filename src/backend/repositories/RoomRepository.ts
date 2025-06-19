@@ -1,4 +1,5 @@
 import { db, roomsTable } from "@/backend/db";
+import { CreateRoomDto } from "@/backend/dtos";
 import { Room } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 
@@ -8,17 +9,17 @@ class RoomRepository {
     return result;
   }
 
-  static async getByUUID(uuid: string): Promise<Room | undefined> {
+  static async getBySlug(slug: Room["slug"]): Promise<Room | undefined> {
     const result = await db
       .select()
       .from(roomsTable)
-      .where(and(eq(roomsTable.uuid, uuid)));
+      .where(and(eq(roomsTable.slug, slug)));
 
     const room = result.pop();
     return room;
   }
 
-  static async getById(id: number): Promise<Room | undefined> {
+  static async getById(id: Room["id"]): Promise<Room | undefined> {
     const result = await db
       .select()
       .from(roomsTable)
@@ -27,17 +28,13 @@ class RoomRepository {
     return room;
   }
 
-  static async create(dto: {
-    name: string;
-    voteOptions: Room["voteOptions"];
-    private: boolean;
-  }): Promise<Room | undefined> {
+  static async create(
+    dto: Omit<CreateRoomDto, "prefix" | "username"> & { slug: string }
+  ): Promise<Room | undefined> {
     const result = await db
       .insert(roomsTable)
       .values({
-        name: dto.name,
-        voteOptions: dto.voteOptions,
-        private: dto.private,
+        ...dto,
         createdAt: sql`NOW()`,
         updatedAt: sql`NOW()`,
       })
@@ -47,7 +44,7 @@ class RoomRepository {
   }
 
   static async update(
-    uuid: string,
+    slug: Room["slug"],
     values: Partial<typeof roomsTable.$inferSelect>
   ): Promise<Room | undefined> {
     const result = await db
@@ -56,16 +53,16 @@ class RoomRepository {
         ...values,
         updatedAt: sql`NOW()`,
       })
-      .where(eq(roomsTable.uuid, uuid))
+      .where(eq(roomsTable.slug, slug))
       .returning();
     const room = result.pop();
     return room;
   }
 
-  static async delete(uuid: string) {
+  static async delete(slug: Room["slug"]) {
     const result = await db
       .delete(roomsTable)
-      .where(eq(roomsTable.uuid, uuid))
+      .where(eq(roomsTable.slug, slug))
       .returning();
     const room = result.pop();
     return !!room;

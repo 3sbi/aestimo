@@ -17,25 +17,16 @@ class UserRepository {
     return user;
   }
 
-  static async getByUUID(
-    uuid: User["uuid"]
+  static async getById(
+    id: User["id"]
   ): Promise<{ users: User; rooms: Room | null } | undefined> {
     const res = await db
       .select()
       .from(usersTable)
-      .where(and(eq(usersTable.uuid, uuid), eq(usersTable.deleted, false)))
+      .where(and(eq(usersTable.id, id), eq(usersTable.deleted, false)))
       .leftJoin(roomsTable, eq(usersTable.roomId, roomsTable.id));
     const data = res.pop();
     return data;
-  }
-
-  static async getById(id: User["id"]): Promise<User | undefined> {
-    const res = await db
-      .select()
-      .from(usersTable)
-      .where(and(eq(usersTable.id, id), eq(usersTable.deleted, false)));
-    const user = res.pop();
-    return user;
   }
 
   static async getAllByRoomId(roomId: Room["id"]): Promise<User[]> {

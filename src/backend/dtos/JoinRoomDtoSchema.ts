@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const JoinRoomDtoSchema = z.object({
   username: z.string(),
-  roomUUID: z.string(),
+  roomSlug: z.string(),
 });
 
 type JoinRoomDto = z.infer<typeof JoinRoomDtoSchema>;
