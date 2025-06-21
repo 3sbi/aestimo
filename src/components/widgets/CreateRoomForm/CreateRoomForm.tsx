@@ -3,6 +3,9 @@
 import type { DefinedVoteType } from "@/backend/consts/predefinedVoteTypes";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import RadioButton from "@/components/RadioButton";
+import { SmallVoteCard } from "@/components/SmallVoteCard";
+import { Switch } from "@/components/Switch";
 import type { Dictionary } from "@/i18n/getDictionary";
 import { VoteCard } from "@/types";
 import { api } from "@/utils/api";
@@ -10,9 +13,6 @@ import { slugify } from "@/utils/slugify";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { SmallVoteCard } from "../../SmallVoteCard";
-import { Switch } from "../../Switch";
-import { getRandomPresetColor } from "./ColorPicker/colors";
 import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
 
 type Response = { slug: string };
@@ -32,9 +32,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
   const [voteTypeId, setVoteTypeId] = useState<string>(
     predefinedVoteTypes[0].id
   );
-  const [customVoteType, setCustomVoteType] = useState<CustomVoteCard[]>([
-    { id: 1, value: "1", color: getRandomPresetColor() },
-  ]);
+  const [customVoteType, setCustomVoteType] = useState<CustomVoteCard[]>([]);
 
   const getLabel = (option: DefinedVoteType): React.JSX.Element => {
     return (
@@ -90,6 +88,47 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
     return `${i18n.slug.helper} ${url}`;
   };
 
+  const renderCustomVoteType = (): React.JSX.Element => {
+    return (
+      <div className="flex flex-col">
+        <div className="flex gap-2">
+          <RadioButton
+            id="custom"
+            name="voteType"
+            value="custom"
+            checked={voteTypeId === "custom"}
+            onChange={(e) => {
+              const id = e.target.value;
+              setVoteTypeId(id);
+            }}
+            label={
+              <>
+                <b className="min-w-32">{i18n.custom}</b>
+                <div className="flex gap-0.5 flex-wrap">
+                  {customVoteType.length === 0 ? (
+                    <SmallVoteCard color="#fff" value="❓" />
+                  ) : (
+                    customVoteType.map((card) => (
+                      <SmallVoteCard key={card.id} {...card} />
+                    ))
+                  )}
+                </div>
+              </>
+            }
+          />
+        </div>
+
+        {voteTypeId === "custom" && (
+          <VoteTypeCreator
+            cards={customVoteType}
+            onChange={(newCards) => setCustomVoteType(newCards)}
+            i18n={i18n.customVoteCard}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div>
       <div className="px-6 py-3">
@@ -120,7 +159,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
           <div className="flex items-center gap-2 mb-3">
             <Switch
               id="private"
-              onCheckedChange={(value) => setPrivateRoom(value)}
+              onChange={(value) => setPrivateRoom(value)}
               checked={privateRoom}
             />
             <label htmlFor="private">{i18n.private}</label>
@@ -129,8 +168,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
             <legend className="font-semibold mb-3">{i18n.checkboxes}</legend>
             {predefinedVoteTypes.map((option) => (
               <div className="flex gap-2 items-center" key={option.id}>
-                <input
-                  type="radio"
+                <RadioButton
                   id={option.id}
                   name="voteType"
                   value={option.id}
@@ -139,49 +177,11 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
                     const id = e.target.value;
                     setVoteTypeId(id);
                   }}
+                  label={getLabel(option)}
                 />
-                <label
-                  className="flex items-center gap-1 w-full"
-                  htmlFor={option.id}
-                >
-                  {getLabel(option)}
-                </label>
               </div>
             ))}
-            <div className="flex flex-col">
-              <div className="flex gap-2">
-                <input
-                  type="radio"
-                  id="custom"
-                  name="voteType"
-                  value="custom"
-                  checked={voteTypeId === "custom"}
-                  onChange={(e) => {
-                    const id = e.target.value;
-                    setVoteTypeId(id);
-                  }}
-                />
-                <label
-                  className="flex items-center gap-1 w-full"
-                  htmlFor="custom"
-                >
-                  <b className="min-w-32">{i18n.custom}</b>
-                  <div className="flex gap-0.5 flex-wrap">
-                    {customVoteType.map((card) => (
-                      <SmallVoteCard key={card.id} {...card} />
-                    ))}
-                  </div>
-                </label>
-              </div>
-
-              {voteTypeId === "custom" && (
-                <VoteTypeCreator
-                  cards={customVoteType}
-                  onChange={(newCards) => setCustomVoteType(newCards)}
-                  i18n={i18n.customVoteCard}
-                />
-              )}
-            </div>
+            {renderCustomVoteType()}
           </fieldset>
         </div>
         <Button

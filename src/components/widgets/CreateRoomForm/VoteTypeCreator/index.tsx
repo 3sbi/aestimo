@@ -2,12 +2,12 @@
 
 import { Dictionary } from "@/i18n/getDictionary";
 import { VoteCard } from "@/types";
+import { getContrastYIQ } from "@/utils/colors";
 import { PaintBucketIcon, PlusCircleIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { ColorPicker } from "../ColorPicker";
 import { getRandomPresetColor } from "../ColorPicker/colors";
 import styles from "./VoteTypeCreator.module.css";
-import { getContrastYIQ } from "@/utils/colors";
 
 export type CustomVoteCard = VoteCard & { id: number };
 
@@ -26,16 +26,19 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
     return (
       <div
         className={styles.addButton}
-        onClick={() =>
+        onClick={() => {
+          let max = Math.max(...cards.map((card) => card.id));
+          if (!isFinite(max)) max = 0;
+
           onChange([
             ...cards,
             {
-              id: cards.length + 1,
+              id: max + 1,
               color: getRandomPresetColor(),
               value: `${cards.length + 1}`,
             },
-          ])
-        }
+          ]);
+        }}
       >
         <PlusCircleIcon size={20} />
       </div>
@@ -99,7 +102,7 @@ const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {
 
   return (
     <div className="flex gap-0.5 flex-wrap items-center mt-3">
-      {cards.map(renderCard)}
+      {cards.map((card, index) => renderCard(card, index))}
       {renderAddButton()}
     </div>
   );
