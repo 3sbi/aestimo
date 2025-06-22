@@ -14,7 +14,7 @@ type Props = {
 const Switch: React.FC<Props> = ({ id, checked, disabled, onChange }) => {
   return (
     <label
-      className={cn(styles["switch-container"], disabled ? "disabled" : "")}
+      className={cn(styles.switchContainer, disabled ? styles.disabled : "")}
     >
       <input
         id={id}
@@ -25,7 +25,7 @@ const Switch: React.FC<Props> = ({ id, checked, disabled, onChange }) => {
           if (onChange) onChange(!!event.target.checked);
         }}
       />
-      <span className={styles["switch-slider"]} />
+      <span className={styles.switchSlider} />
     </label>
   );
 };

@@ -1,4 +1,4 @@
-.switch-container {
+.switchContainer {
   position: relative;
   display: inline-block;
   min-width: 42px;
@@ -6,13 +6,13 @@
   cursor: pointer;
 }
 
-.switch-container input {
+.switchContainer input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.switch-slider {
+.switchSlider {
   position: absolute;
   inset: 0;
   background-color: var(--background);
@@ -21,7 +21,7 @@
   transition: background-color 0.2s;
 }
 
-.switch-slider::before {
+.switchSlider::before {
   content: "";
   position: absolute;
   left: 3px;
@@ -34,20 +34,20 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.switch-container input:checked + .switch-slider {
+.switchContainer input:checked + .switchSlider {
   background-color: var(--primary);
 }
 
-.switch-container input:checked + .switch-slider::before {
+.switchContainer input:checked + .switchSlider::before {
   transform: translateX(18px);
 }
 
-.switch-container input:focus-visible + .switch-slider {
+.switchContainer input:focus-visible + .switchSlider {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 
-.switch-container.disabled {
+.switchContainer.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

@@ -23,7 +23,7 @@ const RadioButton: React.FC<Props> = ({
 }) => {
   return (
     <label
-      className={cn(styles["radio-container"], disabled ? "disabled" : "")}
+      className={cn(styles.radioContainer, disabled ? styles.disabled : "")}
     >
       <input
         id={id}
@@ -34,8 +34,8 @@ const RadioButton: React.FC<Props> = ({
         onChange={onChange}
         disabled={disabled}
       />
-      <span className={styles["custom-radio"]} />
-      {label && <div className={styles["radio-label"]}>{label}</div>}
+      <span className={styles.customRadio} />
+      {label && <div className={styles.radioLabel}>{label}</div>}
     </label>
   );
 };

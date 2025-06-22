@@ -10,9 +10,14 @@ import styles from "./LocaleSwitcher.module.css";
 type Props = {
   i18nConfig: typeof i18nConfig;
   languageNames: Record<string, string>;
+  title?: string;
 };
 
-const LocaleSwitcher: React.FC<Props> = ({ languageNames, i18nConfig }) => {
+const LocaleSwitcher: React.FC<Props> = ({
+  languageNames,
+  i18nConfig,
+  title,
+}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -67,7 +72,7 @@ const LocaleSwitcher: React.FC<Props> = ({ languageNames, i18nConfig }) => {
         ref={btnRef}
         className={styles.langSwitcherBtn}
         onClick={() => setOpened(!opened)}
-        title={languageNames[currentLanguage ?? i18nConfig.defaultLocale]}
+        title={title}
       >
         <LanguagesIcon size={18} />
       </Button>

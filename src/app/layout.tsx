@@ -1,5 +1,6 @@
 import "server-only";
 
+import { GithubButton } from "@/components/GithubButton";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import {
@@ -65,6 +66,7 @@ export default async function RootLayout(props: Readonly<Props>) {
               languageNames={getLanguageNames()}
             />
             <ThemeSwitcher />
+            <GithubButton />
           </div>
         </ThemeProvider>
       </body>
