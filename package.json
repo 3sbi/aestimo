@@ -1,6 +1,13 @@
 {
   "name": "aestimo",
-  "version": "0.2.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3sbi/aestimo"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
