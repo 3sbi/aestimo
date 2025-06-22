@@ -1,15 +1,15 @@
 import "server-only";
 
+import { TransferAdminRightsDto } from "@/server/dtos";
+import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { UserNotAdminError } from "@/server/errors/Users";
 import {
   RoomRepository,
   UserRepository,
   VoteRepository,
-} from "@/backend/repositories";
-import { Room, User } from "@/types";
-import { TransferAdminRightsDto } from "../dtos";
-import { RoomNotFoundError, UserNotFoundError } from "../errors";
-import { UserNotAdminError } from "../errors/Users";
-import { getSession } from "../session";
+} from "@/server/repositories";
+import { getSession } from "@/server/session";
+import type { Room, User } from "@/types";
 
 class UsersService {
   async getOne(id: User["id"]): Promise<User> {

@@ -1,13 +1,13 @@
 "use client";
 
-import type { DefinedVoteType } from "@/backend/consts/predefinedVoteTypes";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import RadioButton from "@/components/RadioButton";
 import { SmallVoteCard } from "@/components/SmallVoteCard";
 import { Switch } from "@/components/Switch";
 import type { Dictionary } from "@/i18n/getDictionary";
-import { VoteCard } from "@/types";
+import type { DefinedVoteType } from "@/server/consts/predefinedVoteTypes";
+import type { VoteCard } from "@/types";
 import { api } from "@/utils/api";
 import { slugify } from "@/utils/slugify";
 import { Loader2Icon } from "lucide-react";

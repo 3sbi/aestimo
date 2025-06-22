@@ -1,6 +1,6 @@
-import { db, roomsTable } from "@/backend/db";
-import { CreateRoomDto } from "@/backend/dtos";
-import { Room } from "@/types";
+import { db, roomsTable } from "@/server/db";
+import { CreateRoomDto } from "@/server/dtos";
+import type { Room } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 
 class RoomRepository {

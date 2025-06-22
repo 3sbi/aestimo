@@ -1,4 +1,4 @@
-import { VoteCard } from "@/types";
+import type { VoteCard } from "@/types";
 import {
   boolean,
   integer,

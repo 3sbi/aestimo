@@ -1,28 +1,28 @@
 import "server-only";
 
-import { CreateRoomDto, JoinRoomDto } from "@/backend/dtos";
+import { CreateRoomDto, JoinRoomDto } from "@/server/dtos";
 import {
-  RoomIsPrivateError,
-  RoomNotFoundError,
-  UserNotFoundError,
-  VoteNotFoundError,
-} from "@/backend/errors";
+    RoomIsPrivateError,
+    RoomNotFoundError,
+    UserNotFoundError,
+    VoteNotFoundError,
+} from "@/server/errors";
 import {
-  RoomRepository,
-  UserRepository,
-  VoteRepository,
-} from "@/backend/repositories";
-import {
-  ClientRoom,
-  ClientUser,
-  ClientVote,
-  Room,
-  User,
-  Vote,
-  VoteCard,
+    RoomRepository,
+    UserRepository,
+    VoteRepository,
+} from "@/server/repositories";
+import type {
+    ClientRoom,
+    ClientUser,
+    ClientVote,
+    Room,
+    User,
+    Vote,
+    VoteCard,
 } from "@/types";
-import { sseStore } from "../eventEmitter";
 import { ClientUserSchema } from "../dtos/ClientUserSchema";
+import { sseStore } from "../eventEmitter";
 
 class RoomsService {
   convertToClientRoom(room: Room): ClientRoom {

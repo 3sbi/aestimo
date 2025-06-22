@@ -1,12 +1,12 @@
 import "server-only";
 
-import { PREDEFINED_VOTE_TYPES } from "@/backend/consts/predefinedVoteTypes";
-import { usersService } from "@/backend/services";
-import { getSession } from "@/backend/session";
 import { CreateRoomForm } from "@/components/widgets/CreateRoomForm/CreateRoomForm";
 import { PublicRoomsList } from "@/components/widgets/PublicRoomsList";
 import { getDictionary, I18nLocale } from "@/i18n/getDictionary";
-import { Room, User } from "@/types";
+import { PREDEFINED_VOTE_TYPES } from "@/server/consts/predefinedVoteTypes";
+import { usersService } from "@/server/services";
+import { getSession } from "@/server/session";
+import type { Room, User } from "@/types";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { redirect, RedirectType } from "next/navigation";

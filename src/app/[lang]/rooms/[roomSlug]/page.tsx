@@ -1,10 +1,10 @@
 import "server-only";
 
-import { roomsService, usersService } from "@/backend/services";
-import { getSession } from "@/backend/session";
 import type { I18nLocale } from "@/i18n/getDictionary";
 import { getDictionary } from "@/i18n/getDictionary";
-import { ClientUser, ClientVote, Room, User, Vote } from "@/types";
+import { roomsService, usersService } from "@/server/services";
+import { getSession } from "@/server/session";
+import type { ClientUser, ClientVote, Room, User, Vote } from "@/types";
 import { Metadata } from "next";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import { RoomWrapper } from "./_components/RoomWrapper";

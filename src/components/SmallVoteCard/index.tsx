@@ -1,4 +1,4 @@
-import { VoteCard } from "@/types";
+import type { VoteCard } from "@/types";
 import { getContrastYIQ } from "@/utils/colors";
 import React from "react";
 import styles from "./SmallVoteCard.module.css";

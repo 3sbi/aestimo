@@ -1,8 +1,8 @@
-import { UserNotFoundError } from "@/backend/errors";
-import type { SseClient } from "@/backend/eventEmitter";
-import { sseStore } from "@/backend/eventEmitter";
-import { usersService } from "@/backend/services";
-import { getSession } from "@/backend/session";
+import { UserNotFoundError } from "@/server/errors";
+import type { SseClient } from "@/server/eventEmitter";
+import { sseStore } from "@/server/eventEmitter";
+import { usersService } from "@/server/services";
+import { getSession } from "@/server/session";
 import { NextRequest } from "next/server";
 
 export async function GET(

@@ -22,7 +22,7 @@ const Switch: React.FC<Props> = ({ id, checked, disabled, onChange }) => {
         checked={checked}
         disabled={disabled}
         onChange={(event) => {
-          onChange && onChange(!!event.target.checked);
+          if (onChange) onChange(!!event.target.checked);
         }}
       />
       <span className={styles["switch-slider"]} />

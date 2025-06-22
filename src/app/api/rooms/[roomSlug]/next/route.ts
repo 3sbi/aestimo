@@ -1,7 +1,7 @@
-import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import { sseStore } from "@/backend/eventEmitter";
-import { roomsService, usersService } from "@/backend/services";
-import { NextRoundEvent } from "@/types/EventData";
+import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { sseStore } from "@/server/eventEmitter";
+import { roomsService, usersService } from "@/server/services";
+import type { NextRoundEvent } from "@/types/EventData";
 import { NextRequest } from "next/server";
 
 export async function POST(

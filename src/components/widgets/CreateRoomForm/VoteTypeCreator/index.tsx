@@ -1,7 +1,7 @@
 "use client";
 
 import { Dictionary } from "@/i18n/getDictionary";
-import { VoteCard } from "@/types";
+import type { VoteCard } from "@/types";
 import { getContrastYIQ } from "@/utils/colors";
 import { PaintBucketIcon, PlusCircleIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";

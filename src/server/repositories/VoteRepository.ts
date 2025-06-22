@@ -1,4 +1,4 @@
-import { db, usersTable, votesTable } from "@/backend/db";
+import { db, usersTable, votesTable } from "@/server/db";
 import type { ClientVote, Room, User, Vote, VoteCard } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 

@@ -1,12 +1,10 @@
-import "server-only";
-
-import { JoinRoomDtoSchema } from "@/backend/dtos";
-import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
-import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import { sseStore } from "@/backend/eventEmitter";
-import { roomsService } from "@/backend/services";
-import { getSession } from "@/backend/session";
-import { ClientUser } from "@/types";
+import { JoinRoomDtoSchema } from "@/server/dtos";
+import { ClientUserSchema } from "@/server/dtos/ClientUserSchema";
+import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { sseStore } from "@/server/eventEmitter";
+import { roomsService } from "@/server/services";
+import { getSession } from "@/server/session";
+import type { ClientUser } from "@/types";
 
 export async function POST(
   request: Request,

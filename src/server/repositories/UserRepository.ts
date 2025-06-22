@@ -1,5 +1,5 @@
-import { db, roomsTable, usersTable } from "@/backend/db";
-import { Room, User } from "@/types";
+import { db, roomsTable, usersTable } from "@/server/db";
+import type { Room, User } from "@/types";
 import { and, eq, sql } from "drizzle-orm";
 import { CreateUserDto } from "../dtos/CreateUserDtoSchema";
 

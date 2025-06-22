@@ -1,6 +1,6 @@
 import "server-only";
 
-import { config } from "@/backend/config";
+import { config } from "@/server/config";
 import { getIronSession, IronSession, SessionOptions } from "iron-session";
 import { cookies } from "next/headers";
 import { Room, User } from "../types";

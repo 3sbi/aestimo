@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/Button";
-import { ClientUser } from "@/types";
+import type { ClientUser } from "@/types";
 import { api } from "@/utils/api";
 import React, { useState } from "react";
 import styles from "./UsersList.module.css";

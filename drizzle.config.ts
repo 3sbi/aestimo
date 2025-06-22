@@ -1,4 +1,4 @@
-import { config } from "@/backend/config";
+import { config } from "@/server/config";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({

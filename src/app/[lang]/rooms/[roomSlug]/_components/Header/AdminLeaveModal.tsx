@@ -3,7 +3,7 @@
 import { Button } from "@/components/Button";
 import { Modal } from "@/components/Modal";
 import { Dictionary } from "@/i18n/getDictionary";
-import { ClientUser } from "@/types";
+import type { ClientUser } from "@/types";
 import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";

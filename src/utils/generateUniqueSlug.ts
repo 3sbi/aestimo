@@ -1,6 +1,6 @@
 import "server-only";
 
-import { db, roomsTable } from "@/backend/db";
+import { db, roomsTable } from "@/server/db";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 

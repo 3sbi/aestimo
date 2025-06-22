@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/Button";
-import { ClientRoom } from "@/types";
+import type { ClientRoom } from "@/types";
 import { CheckIcon, Link2Icon } from "lucide-react";
 import { useState } from "react";
 

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Room } from "@/types";
+import type { Room } from "@/types";
 
 export type DefinedVoteType = {
   id: string;

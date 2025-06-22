@@ -1,8 +1,8 @@
-import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import { sseStore } from "@/backend/eventEmitter";
-import { roomsService, usersService } from "@/backend/services";
-import { ClientRoom, Room } from "@/types";
-import { RestartEvent } from "@/types/EventData";
+import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { sseStore } from "@/server/eventEmitter";
+import { roomsService, usersService } from "@/server/services";
+import type { ClientRoom, Room } from "@/types";
+import type { RestartEvent } from "@/types/EventData";
 
 // only admin can hit this endpoint
 export async function POST(

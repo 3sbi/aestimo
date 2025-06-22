@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Trash2Icon } from "lucide-react";
 import React, { useState } from "react";
 import { api } from "@/utils/api";
-import { ClientRoom } from "@/types";
+import type { ClientRoom } from "@/types";
 import { Dictionary } from "@/i18n/getDictionary";
 
 type Props = {

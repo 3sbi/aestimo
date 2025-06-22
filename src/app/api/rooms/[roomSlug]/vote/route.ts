@@ -1,10 +1,10 @@
-import { CreateVoteDtoSchema } from "@/backend/dtos";
-import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
-import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import { sseStore } from "@/backend/eventEmitter";
-import { roomsService, usersService } from "@/backend/services";
-import { getSession } from "@/backend/session";
-import { ClientUser, Vote, VoteCard } from "@/types";
+import { CreateVoteDtoSchema } from "@/server/dtos";
+import { ClientUserSchema } from "@/server/dtos/ClientUserSchema";
+import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { sseStore } from "@/server/eventEmitter";
+import { roomsService, usersService } from "@/server/services";
+import { getSession } from "@/server/session";
+import type { ClientUser, Vote, VoteCard } from "@/types";
 
 export async function POST(
   request: Request,

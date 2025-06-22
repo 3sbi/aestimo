@@ -1,5 +1,5 @@
-import { roomsTable, usersTable, votesTable } from "@/backend/db";
-import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
+import { roomsTable, usersTable, votesTable } from "@/server/db";
+import { ClientUserSchema } from "@/server/dtos/ClientUserSchema";
 import { z } from "zod";
 
 export type Room = typeof roomsTable.$inferSelect;

@@ -1,13 +1,13 @@
 import {
   TransferAdminRightsDtoSchema,
   UpdateUserDtoSchema,
-} from "@/backend/dtos";
-import { ClientUserSchema } from "@/backend/dtos/ClientUserSchema";
-import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import { sseStore } from "@/backend/eventEmitter";
-import { usersService } from "@/backend/services";
-import { getSession } from "@/backend/session";
-import { User } from "@/types";
+} from "@/server/dtos";
+import { ClientUserSchema } from "@/server/dtos/ClientUserSchema";
+import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { sseStore } from "@/server/eventEmitter";
+import { usersService } from "@/server/services";
+import { getSession } from "@/server/session";
+import type { User } from "@/types";
 import { NextRequest } from "next/server";
 
 export async function PATCH(

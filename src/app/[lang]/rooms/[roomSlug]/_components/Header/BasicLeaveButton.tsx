@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/Button";
 import { Dictionary } from "@/i18n/getDictionary";
-import { ClientUser } from "@/types";
+import type { ClientUser } from "@/types";
 import { api } from "@/utils/api";
 import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";

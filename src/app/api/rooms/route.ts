@@ -1,9 +1,9 @@
 import "server-only";
 
-import { CreateRoomDtoSchema } from "@/backend/dtos";
-import { RoomNotFoundError, UserNotFoundError } from "@/backend/errors";
-import { roomsService } from "@/backend/services";
-import { getSession } from "@/backend/session";
+import { CreateRoomDtoSchema } from "@/server/dtos";
+import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { roomsService } from "@/server/services";
+import { getSession } from "@/server/session";
 import { generateUniqueSlug } from "@/utils/generateUniqueSlug";
 import { slugify } from "@/utils/slugify";
 

@@ -1,5 +1,5 @@
-import { Room, User } from "@/types";
-import { Event } from "@/types/EventData";
+import type { Room, User } from "@/types";
+import type { Event } from "@/types/EventData";
 
 export type SseClient = {
   id: User["id"];
