@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Dictionary, I18nLocale } from "@/i18n/getDictionary";
+import type { Dictionary, I18nLocale } from "@/i18n/getDictionary";
 import { roomsService } from "@/server/services";
 import type { ClientRoom } from "@/types";
 import { DoorClosedIcon, DoorOpenIcon, SearchXIcon } from "lucide-react";

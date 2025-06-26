@@ -5,7 +5,7 @@ import { Trash2Icon } from "lucide-react";
 import React, { useState } from "react";
 import { api } from "@/utils/api";
 import type { ClientRoom } from "@/types";
-import { Dictionary } from "@/i18n/getDictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 
 type Props = {
   i18n: Dictionary["pages"]["room"]["toolbar"]["delete-modal"];

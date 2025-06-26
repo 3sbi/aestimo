@@ -1,9 +1,9 @@
 import "server-only";
 
 import { config } from "@/server/config";
+import type { Room, User } from "@/types";
 import { getIronSession, IronSession, SessionOptions } from "iron-session";
 import { cookies } from "next/headers";
-import { Room, User } from "../types";
 
 interface SessionData {
   userId?: User["id"];

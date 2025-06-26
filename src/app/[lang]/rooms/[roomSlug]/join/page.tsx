@@ -1,7 +1,8 @@
 import "server-only";
 
 import { JoinRoomForm } from "@/components/widgets/JoinRoomForm";
-import { getDictionary, I18nLocale } from "@/i18n/getDictionary";
+import type { I18nLocale } from "@/i18n/getDictionary";
+import { getDictionary } from "@/i18n/getDictionary";
 import { UserRepository } from "@/server/repositories";
 import { getSession } from "@/server/session";
 import type { Room, User } from "@/types";

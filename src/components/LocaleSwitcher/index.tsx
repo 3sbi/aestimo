@@ -1,6 +1,7 @@
 "use client";
 
-import type { i18nConfig, I18nLocale } from "@/i18n/getDictionary";
+import type { I18nLocale } from "@/i18n/getDictionary";
+import { i18nConfig } from "@/i18n/getDictionary";
 import { CheckIcon, LanguagesIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";

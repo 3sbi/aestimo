@@ -1,6 +1,6 @@
 import "server-only";
 
-import { CreateRoomDto, JoinRoomDto } from "@/server/dtos";
+import type { CreateRoomDto, JoinRoomDto } from "@/server/dtos";
 import {
     RoomIsPrivateError,
     RoomNotFoundError,

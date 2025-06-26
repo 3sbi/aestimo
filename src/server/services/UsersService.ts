@@ -1,6 +1,6 @@
 import "server-only";
 
-import { TransferAdminRightsDto } from "@/server/dtos";
+import type { TransferAdminRightsDto } from "@/server/dtos";
 import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
 import { UserNotAdminError } from "@/server/errors/Users";
 import {

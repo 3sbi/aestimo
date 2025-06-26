@@ -2,7 +2,8 @@ import "server-only";
 
 import { CreateRoomForm } from "@/components/widgets/CreateRoomForm/CreateRoomForm";
 import { PublicRoomsList } from "@/components/widgets/PublicRoomsList";
-import { getDictionary, I18nLocale } from "@/i18n/getDictionary";
+import type { I18nLocale } from "@/i18n/getDictionary";
+import { getDictionary } from "@/i18n/getDictionary";
 import { PREDEFINED_VOTE_TYPES } from "@/server/consts/predefinedVoteTypes";
 import { usersService } from "@/server/services";
 import { getSession } from "@/server/session";
