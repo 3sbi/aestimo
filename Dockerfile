@@ -11,10 +11,7 @@ FROM node:24-alpine AS deploy
 WORKDIR /app
 COPY --from=builder /build/package*.json ./
 RUN npm ci --production
-COPY --from=builder /build/.next ./.next
-COPY --from=builder /build/drizzle ./drizzle
-COPY --from=builder /build/.env ./
-COPY --from=builder /build/entrypoint.sh ./
+COPY --from=builder /build/. ./
 
 RUN chmod 755 /app/entrypoint.sh
 EXPOSE 8080
