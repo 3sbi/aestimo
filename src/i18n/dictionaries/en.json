@@ -41,7 +41,7 @@
     "room": {
       "header": {
         "round": "Round",
-        "copy": "Copy join URL",
+        "share": "Share",
         "select-new-admin": "Select a new admin:",
         "leave": "Leave",
         "cancel": "Cancel"

@@ -12,3 +12,15 @@
   white-space: nowrap;
   text-align: center;
 }
+
+.rainbowCard {
+  background: #f39893;
+  animation: hueSpin 30s linear infinite;
+  filter: hue-rotate(0deg);
+}
+
+@keyframes hueSpin {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}

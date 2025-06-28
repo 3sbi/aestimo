@@ -5,7 +5,7 @@ import { LogOutIcon } from "lucide-react";
 import { AdminLeaveModal } from "./AdminLeaveModal";
 import { BasicLeaveButton } from "./BasicLeaveButton";
 import styles from "./Header.module.css";
-import { InviteButton } from "./InviteButton";
+import { ShareButton } from "./InviteButton";
 
 type Props = {
   room: ClientRoom;
@@ -23,7 +23,7 @@ const Header: React.FC<Props> = ({ i18n, room, user, users }) => {
       </h2>
 
       <div className="flex gap-1 justify-self-end">
-        <InviteButton title={i18n.copy} room={room} />
+        <ShareButton title={i18n.share} room={room} />
         {user.role === "admin" ? (
           <AdminLeaveModal
             trigger={

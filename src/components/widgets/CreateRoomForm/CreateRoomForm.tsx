@@ -106,7 +106,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
                 <b className="min-w-32">{i18n.custom}</b>
                 <div className="flex gap-0.5 flex-wrap">
                   {customVoteType.length === 0 ? (
-                    <SmallVoteCard color="#fff" value="❓" />
+                    <SmallVoteCard rainbow color="#fff" value="❓" />
                   ) : (
                     customVoteType.map((card) => (
                       <SmallVoteCard key={card.id} {...card} />

@@ -2,12 +2,15 @@
 
 import { Button } from "@/components/Button";
 import type { ClientRoom } from "@/types";
-import { CheckIcon, Link2Icon } from "lucide-react";
+import { CheckIcon, Share2Icon } from "lucide-react";
 import { useState } from "react";
 
-type Props = { title: string; room: ClientRoom };
+type Props = {
+  title: string;
+  room: ClientRoom;
+};
 
-const InviteButton: React.FC<Props> = ({ title, room }) => {
+const ShareButton: React.FC<Props> = ({ title, room }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   async function onClickInvite() {
@@ -25,9 +28,10 @@ const InviteButton: React.FC<Props> = ({ title, room }) => {
   }
   return (
     <Button onClick={onClickInvite} title={title} loading={loading} size="icon">
-      {loading ? <CheckIcon /> : <Link2Icon />}
+      {title}
+      {loading ? <CheckIcon /> : <Share2Icon />}
     </Button>
   );
 };
 
-export { InviteButton };
+export { ShareButton };
