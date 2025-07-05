@@ -11,7 +11,7 @@ $ cp .env.example .env
 $ docker compose up -d
 ```
 
-Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Why Aestimo is better
 
@@ -38,7 +38,7 @@ There are a lot of alternatives, even open-sourced ones here on github, but I fi
 
 | Name             | Description                                                                                                                                                                                                                          | Default      |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
-| PORT             |                                                                                                                                                                                                                                      | 8080         |
+| PORT             |                                                                                                                                                                                                                                      | 3000         |
 | NODE_ENV         | `production` or `development`                                                                                                                                                                                                        | `production` |
 | SESSION_SECRET\* | Session secret is required by iron-session, [it should be at least 32 characters long](https://github.com/vvo/iron-session?tab=readme-ov-file#session-options), you can [generate it here](https://1password.com/password-generator) |              |
 | DATABASE_URL\*   |                                                                                                                                                                                                                                      |              |

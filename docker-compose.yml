@@ -1,19 +1,9 @@
 services:
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - web
-    restart: always
-
-  web:
+  aestimo-web:
     build: .
     restart: always
     expose:
-      - "8080"
+      - "3000"
     env_file: ./.env
     depends_on:
       - db
@@ -23,8 +13,7 @@ services:
     restart: always
     env_file: ./.env
     volumes:
-      - aestimo_db_data:/var/lib/postgresql/data
+      - aestimo_pgdata:/var/lib/postgresql/data
 
 volumes:
-  aestimo_db_data:
-
+  aestimo_pgdata:
