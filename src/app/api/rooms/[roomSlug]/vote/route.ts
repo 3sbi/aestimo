@@ -47,6 +47,13 @@ export async function POST(
     });
 
     sseStore.broadcast(roomSlug, { type: "vote", data: votedUser }, user.id);
+
+    const users = await roomsService.getUsers(room.id, room.round, true);
+    const allVoted: boolean = users.every((user) => user.voted);
+    if (room.autoreveal && allVoted) {
+      const data = await roomsService.openCards(roomSlug);
+      sseStore.broadcast(roomSlug, { type: "reveal", data });
+    }
     return Response.json({ success: !!vote });
   } catch (err) {
     console.error(err);

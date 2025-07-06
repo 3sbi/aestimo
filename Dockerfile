@@ -14,6 +14,6 @@ RUN npm ci --production
 COPY --from=builder /build/. ./
 
 RUN chmod 755 /app/entrypoint.sh
-EXPOSE 8080
+EXPOSE 3000
 
 ENTRYPOINT ["/app/entrypoint.sh"]

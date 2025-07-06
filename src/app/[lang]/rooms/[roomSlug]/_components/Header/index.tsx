@@ -23,7 +23,7 @@ const Header: React.FC<Props> = ({ i18n, room, user, users }) => {
       </h2>
 
       <div className="flex gap-1 justify-self-end">
-        <ShareButton title={i18n.share} room={room} />
+        <ShareButton i18n={i18n.share} room={room} />
         {user.role === "admin" ? (
           <AdminLeaveModal
             trigger={

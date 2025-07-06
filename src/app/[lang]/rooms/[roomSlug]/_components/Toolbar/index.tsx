@@ -7,19 +7,23 @@ import type { NextRoundEvent, RestartEvent } from "@/types/EventData";
 import { api } from "@/utils/api";
 import { ArrowRightCircleIcon, EyeIcon, RotateCwIcon } from "lucide-react";
 import React, { useState } from "react";
+import { AutoOpenSwitch } from "./AutorevealSwitch";
 import { DeleteButton } from "./DeleteButton";
+import { PrivateSwitch } from "./PrivateSwitch";
 import styles from "./Toolbar.module.css";
 
-type ToolbarProps = {
+type Props = {
   room: ClientRoom;
+  setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
   i18n: Dictionary["pages"]["room"]["toolbar"];
   revealVotes: (data: ClientUser[]) => void;
   restartRound: (data: RestartEvent["data"]) => void;
   goToNextRound: (data: NextRoundEvent["data"]) => void;
 };
 
-const Toolbar: React.FC<ToolbarProps> = ({
+const Toolbar: React.FC<Props> = ({
   room,
+  setRoom,
   i18n,
   revealVotes,
   restartRound,
@@ -69,27 +73,33 @@ const Toolbar: React.FC<ToolbarProps> = ({
   }
 
   return (
-    <div className={styles.toolbar}>
-      {room.status !== "finished" && (
-        <Button onClick={onClickReveal} loading={loadingButton === "reveal"}>
-          <EyeIcon />
-          {i18n.reveal}
+    <div className={styles.toolbarWrapper}>
+      <div className="flex items-center justify-between gap-2 p-2">
+        <PrivateSwitch room={room} setRoom={setRoom} label={i18n.private} />
+        <AutoOpenSwitch room={room} setRoom={setRoom} label={i18n.autoreveal} />
+      </div>
+      <div className={styles.toolbar}>
+        {room.status !== "finished" && !room.autoreveal && (
+          <Button onClick={onClickReveal} loading={loadingButton === "reveal"}>
+            <EyeIcon />
+            {i18n.reveal}
+          </Button>
+        )}
+
+        {room.status === "finished" && (
+          <Button onClick={onClickNextRound} loading={loadingButton === "next"}>
+            <ArrowRightCircleIcon />
+            {i18n.next}
+          </Button>
+        )}
+
+        <Button onClick={onClickRestart} loading={loadingButton === "restart"}>
+          <RotateCwIcon />
+          {i18n.restart}
         </Button>
-      )}
 
-      {room.status === "finished" && (
-        <Button onClick={onClickNextRound} loading={loadingButton === "next"}>
-          <ArrowRightCircleIcon />
-          {i18n.next}
-        </Button>
-      )}
-
-      <Button onClick={onClickRestart} loading={loadingButton === "restart"}>
-        <RotateCwIcon />
-        {i18n.restart}
-      </Button>
-
-      <DeleteButton room={room} i18n={i18n["delete-modal"]} />
+        <DeleteButton room={room} i18n={i18n["delete-modal"]} />
+      </div>
     </div>
   );
 };

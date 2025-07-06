@@ -86,7 +86,7 @@ export const RoomWrapper: React.FC<Props> = ({
     setUsers(data);
     setRoom((prev) => {
       prev.status = "finished";
-      return prev;
+      return { ...prev };
     });
   };
 
@@ -111,6 +111,11 @@ export const RoomWrapper: React.FC<Props> = ({
         case "join": {
           const newUser = eventPayload.data;
           setUsers((prev) => [...prev, newUser]);
+          break;
+        }
+        case "room-update": {
+          const { room } = eventPayload.data;
+          setRoom(room);
           break;
         }
         case "next-round": {
@@ -142,7 +147,7 @@ export const RoomWrapper: React.FC<Props> = ({
           });
           break;
         }
-        case "delete-room": {
+        case "room-delete": {
           router.replace("/");
           break;
         }
@@ -209,6 +214,7 @@ export const RoomWrapper: React.FC<Props> = ({
         <Toolbar
           i18n={i18n.toolbar}
           room={room}
+          setRoom={setRoom}
           revealVotes={revealVotes}
           restartRound={restartRound}
           goToNextRound={goToNextRound}

@@ -1,16 +1,22 @@
 "use client";
 
 import { Button } from "@/components/Button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from "@/components/Tooltip";
+import { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom } from "@/types";
-import { CheckIcon, Share2Icon } from "lucide-react";
+import { Share2Icon } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
-  title: string;
+  i18n: Dictionary["pages"]["room"]["header"]["share"];
   room: ClientRoom;
 };
 
-const ShareButton: React.FC<Props> = ({ title, room }) => {
+const ShareButton: React.FC<Props> = ({ i18n, room }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   async function onClickInvite() {
@@ -27,10 +33,15 @@ const ShareButton: React.FC<Props> = ({ title, room }) => {
     }
   }
   return (
-    <Button onClick={onClickInvite} title={title} loading={loading} size="icon">
-      {title}
-      {loading ? <CheckIcon /> : <Share2Icon />}
-    </Button>
+    <Tooltip open={loading}>
+      <TooltipTrigger>
+        <Button onClick={onClickInvite} title={i18n.title} loading={loading}>
+          {i18n.title}
+          <Share2Icon />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>{i18n.tooltip}</TooltipContent>
+    </Tooltip>
   );
 };
 

@@ -12,7 +12,7 @@ export async function POST(
   try {
     const { roomSlug } = await params;
     const { isAdmin, userId } = await usersService.isAdmin();
-    if (isAdmin === false) {
+    if (!isAdmin) {
       return Response.json({ error: "Not admin" }, { status: 403 });
     }
 

@@ -41,7 +41,7 @@
     "room": {
       "header": {
         "round": "Round",
-        "share": "Share",
+        "share": { "title": "Share", "tooltip": "Copied!" },
         "select-new-admin": "Select a new admin:",
         "leave": "Leave",
         "cancel": "Cancel"
@@ -57,7 +57,9 @@
           "delete": "Delete",
           "cancel": "Cancel"
         },
-        "history": "History"
+        "history": "History",
+        "private": "Private room",
+        "autoreveal": "End the round automatically after the last vote"
       },
       "usersList": {
         "you": "you",

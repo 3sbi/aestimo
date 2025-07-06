@@ -25,6 +25,7 @@ export type Event =
         update: Partial<Pick<ClientUser, "name" | "connected">>;
       };
     }
-  | { type: "delete-room" }
+  | { type: "room-delete" }
   | { type: "vote"; data: ClientUser }
-  | { type: "transfer-admin"; data: { newAdminId: ClientUser["uuid"] } };
+  | { type: "transfer-admin"; data: { newAdminId: ClientUser["uuid"] } }
+  | { type: "room-update"; data: { room: ClientRoom } };

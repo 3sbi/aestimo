@@ -2,32 +2,33 @@ import "server-only";
 
 import type { CreateRoomDto, JoinRoomDto } from "@/server/dtos";
 import {
-    RoomIsPrivateError,
-    RoomNotFoundError,
-    UserNotFoundError,
-    VoteNotFoundError,
+  RoomIsPrivateError,
+  RoomNotFoundError,
+  UserNotFoundError,
+  VoteNotFoundError,
 } from "@/server/errors";
 import {
-    RoomRepository,
-    UserRepository,
-    VoteRepository,
+  RoomRepository,
+  UserRepository,
+  VoteRepository,
 } from "@/server/repositories";
 import type {
-    ClientRoom,
-    ClientUser,
-    ClientVote,
-    Room,
-    User,
-    Vote,
-    VoteCard,
+  ClientRoom,
+  ClientUser,
+  ClientVote,
+  Room,
+  User,
+  Vote,
+  VoteCard,
 } from "@/types";
 import { ClientUserSchema } from "../dtos/ClientUserSchema";
 import { sseStore } from "../eventEmitter";
+import { UpdateRoomDto } from "../dtos/UpdateRoomDtoSchema";
 
 class RoomsService {
   convertToClientRoom(room: Room): ClientRoom {
-    const { name, round, status, slug } = room;
-    return { name, private: room.private, round, status, slug };
+    const { name, round, status, slug, autoreveal } = room;
+    return { name, private: room.private, round, status, slug, autoreveal };
   }
 
   async getOne(slug: Room["slug"]): Promise<Room> {
@@ -126,7 +127,7 @@ class RoomsService {
   }
 
   async getVotesHistory(
-    roomId: number,
+    roomId: Room["id"],
     beforeRound: number
   ): Promise<Record<Vote["round"], ClientVote[]>> {
     const allVotes = await VoteRepository.getAllVotes(roomId);
@@ -209,11 +210,11 @@ class RoomsService {
     return room;
   }
 
-  async changeRoomPrivacy(
+  async update(
     slug: Room["slug"],
-    newPrivate: boolean
+    changes: UpdateRoomDto
   ): Promise<ClientRoom> {
-    const room = await RoomRepository.update(slug, { private: newPrivate });
+    const room = await RoomRepository.update(slug, changes);
     if (!room) {
       throw new RoomNotFoundError();
     }

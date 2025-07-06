@@ -23,4 +23,5 @@ export const roomsTable = pgTable("rooms", {
   password: varchar({ length: 255 }),
   slug: varchar({ length: 255 }).unique().notNull(),
   private: boolean().notNull().default(false), // defines if room can be joined or not. Defaults to being open to join
+  autoreveal: boolean().notNull().default(false),
 });
