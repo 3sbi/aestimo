@@ -34,6 +34,7 @@
   color: var(--secondary-foreground);
   height: 32px;
   text-align: center;
+  gap: 4px;
   padding: 0px 8px;
   width: 112px;
   display: flex;
