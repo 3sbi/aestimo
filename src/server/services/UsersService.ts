@@ -56,13 +56,12 @@ class UsersService {
     return { user, room };
   }
 
-  async getVoteIndex(
-    id: User["id"],
-    roomId: Room["id"],
-    round: Room["round"]
-  ): Promise<number | null> {
-    const votes = await VoteRepository.getAllRoundVotes(roomId, round);
-    const index = votes.findIndex((vote) => vote.userId === id);
+  async getVoteIndex(id: User["id"], room: Room): Promise<number | null> {
+    const votes = await VoteRepository.getAllRoundVotes(room.id, room.round);
+    const option = votes.find((vote) => vote.userId === id)?.option;
+    const index = room.voteOptions.findIndex(
+      ({ value, color }) => value === option?.value && color === option.color
+    );
     if (index === -1) {
       return null;
     }

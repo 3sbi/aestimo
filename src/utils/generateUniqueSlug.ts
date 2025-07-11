@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 
 export async function generateUniqueSlug(
   prefix: string = "",
-  length: number = 10
+  length: number = 6
 ): Promise<string> {
   let slug: string;
   let isUnique = false;
