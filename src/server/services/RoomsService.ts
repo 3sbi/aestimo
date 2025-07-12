@@ -4,7 +4,7 @@ import type { CreateRoomDto, JoinRoomDto } from "@/server/dtos";
 import {
   RoomNotFoundError,
   UserNotFoundError,
-  VoteNotFoundError
+  VoteNotFoundError,
 } from "@/server/errors";
 import {
   RoomRepository,
@@ -95,6 +95,11 @@ class RoomsService {
         clientUser.vote = vote?.option;
       }
       usersList.push(clientUser);
+    }
+
+    // HACK: allows to show that admin of room is connected when they just created a room
+    if (usersList.length === 0) {
+      usersList[0].connected = true;
     }
     return usersList;
   }
