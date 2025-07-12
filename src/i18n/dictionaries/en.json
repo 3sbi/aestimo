@@ -22,7 +22,10 @@
         "header": "Create new room",
         "username": "Your name",
         "roomName": "Room name",
-        "private": "Private room (Other users can't join private room)",
+        "private": {
+          "label": "Private room",
+          "helper": "Other users can't join private room"
+        },
         "custom": "Custom",
         "slug": {
           "label": "URL prefix",

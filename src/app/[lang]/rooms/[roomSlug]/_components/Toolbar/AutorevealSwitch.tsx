@@ -21,8 +21,8 @@ const AutoOpenSwitch: React.FC<Props> = ({ room, setRoom, label }) => {
 
   return (
     <div className="flex items-center gap-2">
-      <Switch id="private" onChange={onChange} checked={room.autoreveal} />
-      <label htmlFor="private">{label}</label>
+      <Switch id="autoreveal" onChange={onChange} checked={room.autoreveal} />
+      <label htmlFor="autoreveal">{label}</label>
     </div>
   );
 };

@@ -18,6 +18,7 @@ const BasicLeaveButton: React.FC<Props> = ({ userId, i18n }) => {
   const router = useRouter();
 
   async function onBasicLeave() {
+    if (loading) return;
     setLoading(true);
     try {
       const res = await api.delete(`/api/users/${userId}`);

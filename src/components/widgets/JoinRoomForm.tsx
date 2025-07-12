@@ -25,7 +25,9 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomSlug }) => {
     try {
       const res = await api.post(`/api/rooms/${roomSlug}/join`, { username });
       const result: Response = await res.json();
-      if (result.success) router.replace(`/rooms/${roomSlug}`);
+      if (result.success) {
+        router.replace(`/rooms/${roomSlug}`);
+      }
     } catch (err) {
       console.error(err);
     }

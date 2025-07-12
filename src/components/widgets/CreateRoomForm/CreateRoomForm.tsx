@@ -10,10 +10,11 @@ import type { DefinedVoteType } from "@/server/consts/predefinedVoteTypes";
 import type { VoteCard } from "@/types";
 import { api } from "@/utils/api";
 import { slugify } from "@/utils/slugify";
-import { Loader2Icon } from "lucide-react";
+import { CircleQuestionMarkIcon, Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
 
 type Response = { slug: string };
 
@@ -162,7 +163,15 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
               onChange={(value) => setPrivateRoom(value)}
               checked={privateRoom}
             />
-            <label htmlFor="private">{i18n.private}</label>
+            <div className="flex items-center gap-2">
+              <label htmlFor="private">{i18n.private.label}</label>
+              <Tooltip>
+                <TooltipTrigger>
+                  <CircleQuestionMarkIcon size={16} />
+                </TooltipTrigger>
+                <TooltipContent>{i18n.private.helper}</TooltipContent>
+              </Tooltip>
+            </div>
           </div>
           <fieldset className="flex flex-col gap-4 mt-8 mb-8">
             <legend className="font-semibold mb-3">{i18n.checkboxes}</legend>
