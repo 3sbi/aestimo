@@ -49,8 +49,6 @@ const AdminLeaveModal: React.FC<Props> = ({ userId, users, i18n, trigger }) => {
         name="users"
         id={newAdminSelectId}
         onChange={(e) => {
-          console.log(e.target.value);
-          console.log(e.currentTarget.value);
           setNewAdminId(Number(e.target.value));
         }}
       >

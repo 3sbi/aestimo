@@ -78,7 +78,7 @@
       "historyDrawer": {
         "header": "History",
         "round": "Round",
-        "empty": "Here will be the voting history for all rounds. No rounds have been completed yet."
+        "empty": "The history of votes for all round will be here. No round has been completed yet"
       }
     },
 
@@ -90,5 +90,10 @@
       "header": "Not found",
       "button": "Return to app"
     }
+  },
+
+  "errors": {
+    "Not found": "Not found",
+    "Not admin": "Not admin"
   }
 }

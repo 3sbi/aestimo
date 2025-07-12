@@ -2,10 +2,9 @@ import "server-only";
 
 import type { CreateRoomDto, JoinRoomDto } from "@/server/dtos";
 import {
-  RoomIsPrivateError,
   RoomNotFoundError,
   UserNotFoundError,
-  VoteNotFoundError,
+  VoteNotFoundError
 } from "@/server/errors";
 import {
   RoomRepository,
@@ -22,8 +21,8 @@ import type {
   VoteCard,
 } from "@/types";
 import { ClientUserSchema } from "../dtos/ClientUserSchema";
-import { sseStore } from "../eventEmitter";
 import { UpdateRoomDto } from "../dtos/UpdateRoomDtoSchema";
+import { sseStore } from "../eventEmitter";
 
 class RoomsService {
   convertToClientRoom(room: Room): ClientRoom {
@@ -68,7 +67,8 @@ class RoomsService {
     const { roomSlug, username } = values;
     const room = await this.getOne(roomSlug);
     if (!room) throw new RoomNotFoundError();
-    if (room.private) throw new RoomIsPrivateError();
+    // we shouldn't disclose if room exists or not if it is private so we pretend it is not found
+    if (room.private) throw new RoomNotFoundError();
 
     const user = await UserRepository.create({
       roomId: room.id,

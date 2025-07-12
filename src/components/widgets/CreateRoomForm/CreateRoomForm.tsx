@@ -5,6 +5,7 @@ import { Input } from "@/components/Input";
 import RadioButton from "@/components/RadioButton";
 import { SmallVoteCard } from "@/components/SmallVoteCard";
 import { Switch } from "@/components/Switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { DefinedVoteType } from "@/server/consts/predefinedVoteTypes";
 import type { VoteCard } from "@/types";
@@ -13,8 +14,8 @@ import { slugify } from "@/utils/slugify";
 import { CircleQuestionMarkIcon, Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast, Toaster } from "sonner";
 import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
 
 type Response = { slug: string };
 
@@ -72,6 +73,9 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
         if (res.ok) {
           const { slug }: Response = await res.json();
           router.replace(`/rooms/${slug}`);
+        } else {
+          const data = await res.json();
+          toast.error(data.error);
         }
       }
     } catch (err) {
@@ -132,6 +136,7 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
 
   return (
     <div>
+      <Toaster richColors />
       <div className="px-6 py-3">
         <h1 className="text-center font-semibold text-lg">{i18n.header}</h1>
       </div>

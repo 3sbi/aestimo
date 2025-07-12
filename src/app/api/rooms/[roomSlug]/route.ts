@@ -1,19 +1,24 @@
+import { getDictionary, i18nConfig } from "@/i18n/getDictionary";
 import { UpdateRoomDtoSchema } from "@/server/dtos/UpdateRoomDtoSchema";
-import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import {
+  RoomNotFoundError,
+  UserNotAdminError,
+  UserNotFoundError,
+} from "@/server/errors";
 import { sseStore } from "@/server/eventEmitter";
 import { roomsService, usersService } from "@/server/services";
 import { getSession } from "@/server/session";
 import { NextRequest } from "next/server";
 
 export async function DELETE(
-  _: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ roomSlug: string }> }
 ) {
   try {
     const { roomSlug } = await params;
     const { isAdmin } = await usersService.isAdmin();
     if (!isAdmin) {
-      return Response.json({ error: "Not admin" }, { status: 403 });
+      throw new UserNotAdminError();
     }
     const success = roomsService.delete(roomSlug);
     const session = await getSession();
@@ -23,8 +28,13 @@ export async function DELETE(
     return Response.json({ success });
   } catch (err) {
     console.error(err);
+    const locale = req.headers.get("referer") ?? i18nConfig.defaultLocale;
+    const errors = getDictionary(locale).errors;
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
-      return Response.json({ error: err.message }, { status: 404 });
+      return Response.json({ error: errors["Not found"] }, { status: 404 });
+    }
+    if (err instanceof UserNotAdminError) {
+      Response.json({ error: errors["Not admin"] }, { status: 403 });
     }
     return Response.json({ error: err }, { status: 500 });
   }
@@ -38,7 +48,7 @@ export async function PATCH(
     const { roomSlug } = await params;
     const { isAdmin } = await usersService.isAdmin();
     if (!isAdmin) {
-      return Response.json({ error: "Not admin" }, { status: 403 });
+      throw new UserNotAdminError();
     }
 
     const json = await req.json();
@@ -61,8 +71,13 @@ export async function PATCH(
     return Response.json(room);
   } catch (err) {
     console.error(err);
+    const locale = req.headers.get("referer") ?? i18nConfig.defaultLocale;
+    const errors = getDictionary(locale).errors;
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
-      return Response.json({ error: err.message }, { status: 404 });
+      return Response.json({ error: errors["Not found"] }, { status: 404 });
+    }
+    if (err instanceof UserNotAdminError) {
+      Response.json({ error: errors["Not admin"] }, { status: 403 });
     }
     return Response.json({ error: err }, { status: 500 });
   }

@@ -1,3 +1,4 @@
+import { getDictionary, i18nConfig } from "@/i18n/getDictionary";
 import { JoinRoomDtoSchema } from "@/server/dtos";
 import { ClientUserSchema } from "@/server/dtos/ClientUserSchema";
 import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
@@ -25,18 +26,12 @@ export async function POST(
     }
     const res = await roomsService.joinRoom(data);
     if (res === null) {
-      return Response.json(
-        { success: false },
-        { status: 404, statusText: "Room not found" }
-      );
+      throw new RoomNotFoundError();
     }
 
     const { room, user } = res;
     if (room.private || user === undefined) {
-      return Response.json(
-        { success: false },
-        { status: 404, statusText: "Room not found" }
-      );
+      throw new RoomNotFoundError();
     }
 
     const session = await getSession();
@@ -54,8 +49,11 @@ export async function POST(
     return Response.json({ success: true });
   } catch (err) {
     console.error(err);
+    const locale = request.headers.get("referer") ?? i18nConfig.defaultLocale;
+    const errors = getDictionary(locale).errors;
+    console.error(locale);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
-      return Response.json({ error: err.message }, { status: 404 });
+      return Response.json({ error: errors["Not found"] }, { status: 404 });
     }
 
     return Response.json({ error: err }, { status: 500 });

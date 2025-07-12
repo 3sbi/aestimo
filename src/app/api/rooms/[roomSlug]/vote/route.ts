@@ -1,6 +1,12 @@
+import { getDictionary, i18nConfig } from "@/i18n/getDictionary";
 import { CreateVoteDtoSchema } from "@/server/dtos";
 import { ClientUserSchema } from "@/server/dtos/ClientUserSchema";
-import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import {
+  RoomNotFoundError,
+  UserNotAdminError,
+  UserNotFoundError,
+  VoteNotFoundError,
+} from "@/server/errors";
 import { sseStore } from "@/server/eventEmitter";
 import { roomsService, usersService } from "@/server/services";
 import { getSession } from "@/server/session";
@@ -29,7 +35,7 @@ export async function POST(
     const voteValue: VoteCard | undefined = voteOptions[data.voteIndex];
 
     if (!voteValue) {
-      return Response.json({ error: "Vote not found" }, { status: 404 });
+      throw new VoteNotFoundError();
     }
 
     const { user, room } = await usersService.checkIfUserExistsInRoom(
@@ -57,8 +63,18 @@ export async function POST(
     return Response.json({ success: !!vote });
   } catch (err) {
     console.error(err);
-    if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
-      return Response.json({ error: err.message }, { status: 404 });
+    const locale = request.headers.get("referer") ?? i18nConfig.defaultLocale;
+    const errors = getDictionary(locale).errors;
+    if (
+      err instanceof UserNotFoundError ||
+      err instanceof RoomNotFoundError ||
+      err instanceof VoteNotFoundError
+    ) {
+      return Response.json({ error: errors["Not found"] }, { status: 404 });
+    }
+
+    if (err instanceof UserNotAdminError) {
+      Response.json({ error: errors["Not admin"] }, { status: 403 });
     }
 
     return Response.json({ error: err }, { status: 500 });

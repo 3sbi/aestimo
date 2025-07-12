@@ -1,4 +1,9 @@
-import { RoomNotFoundError, UserNotFoundError } from "@/server/errors";
+import { getDictionary, i18nConfig } from "@/i18n/getDictionary";
+import {
+  RoomNotFoundError,
+  UserNotAdminError,
+  UserNotFoundError,
+} from "@/server/errors";
 import { sseStore } from "@/server/eventEmitter";
 import { roomsService, usersService } from "@/server/services";
 import type { ClientRoom, Room } from "@/types";
@@ -6,14 +11,14 @@ import type { RestartEvent } from "@/types/EventData";
 
 // only admin can hit this endpoint
 export async function POST(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ roomSlug: string }> }
 ) {
   try {
     const { roomSlug } = await params;
     const { isAdmin, userId } = await usersService.isAdmin();
     if (!isAdmin) {
-      return Response.json({ error: "Not admin" }, { status: 403 });
+      throw new UserNotAdminError();
     }
 
     const updatedRoom: Room = await roomsService.restart(roomSlug);
@@ -28,8 +33,15 @@ export async function POST(
     return Response.json(data["data"]);
   } catch (err) {
     console.error(err);
+    const locale = request.headers.get("referer") ?? i18nConfig.defaultLocale;
+    const errors = getDictionary(locale).errors;
+    console.error(err);
     if (err instanceof UserNotFoundError || err instanceof RoomNotFoundError) {
-      return Response.json({ error: err.message }, { status: 404 });
+      return Response.json({ error: errors["Not found"] }, { status: 404 });
+    }
+
+    if (err instanceof UserNotAdminError) {
+      Response.json({ error: errors["Not admin"] }, { status: 403 });
     }
 
     return Response.json({ error: err }, { status: 500 });

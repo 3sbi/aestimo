@@ -25,23 +25,22 @@ export async function GET(
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     start(controller) {
-      const send = (data: string) => {
-        controller.enqueue(encoder.encode(data));
-      };
+      const send = (data: string) => controller.enqueue(encoder.encode(data));
+
       const client: SseClient = {
         roomSlug,
         id: userId,
         send,
       };
       sseStore.addClient(client);
-      sseStore.broadcast(client.roomSlug, {
+      sseStore.broadcast(roomSlug, {
         type: "user-update",
         data: { userId: user.id, update: { connected: true } },
       });
 
       req.signal?.addEventListener("abort", () => {
         sseStore.removeClient(client);
-        sseStore.broadcast(client.roomSlug, {
+        sseStore.broadcast(roomSlug, {
           type: "user-update",
           data: { userId: client.id, update: { connected: false } },
         });

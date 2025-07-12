@@ -7,8 +7,7 @@ import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-type Response = { success: boolean };
+import { toast, Toaster } from "sonner";
 
 type Props = {
   i18n: Dictionary["pages"]["home"]["joinRoomForm"];
@@ -24,9 +23,12 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomSlug }) => {
     setLoading(true);
     try {
       const res = await api.post(`/api/rooms/${roomSlug}/join`, { username });
-      const result: Response = await res.json();
-      if (result.success) {
+      if (res.ok) {
         router.replace(`/rooms/${roomSlug}`);
+      } else {
+        const data = await res.json();
+        console.log(data);
+        toast.error(data.error);
       }
     } catch (err) {
       console.error(err);
@@ -36,6 +38,7 @@ const JoinRoomForm: React.FC<Props> = ({ i18n, roomSlug }) => {
 
   return (
     <form className="flex flex-col px-6 pb-6 pt-3 grow">
+      <Toaster richColors />
       <div className="grow">
         <Input
           id="username"

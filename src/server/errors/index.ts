@@ -1,4 +1,3 @@
-export { RoomIsPrivateError, RoomNotFoundError } from "./Rooms";
-export { UserNotFoundError } from "./Users";
+export { RoomNotFoundError } from "./Rooms";
+export { UserNotFoundError, UserNotAdminError } from "./Users";
 export { VoteNotFoundError } from "./Vote";
-
