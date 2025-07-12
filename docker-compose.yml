@@ -1,5 +1,5 @@
 services:
-  aestimo-web:
+  web:
     build: .
     restart: always
     expose:
