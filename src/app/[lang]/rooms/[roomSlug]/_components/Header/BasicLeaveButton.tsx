@@ -22,7 +22,7 @@ const BasicLeaveButton: React.FC<Props> = ({ userId, i18n }) => {
     setLoading(true);
     try {
       const res = await api.delete(`/api/users/${userId}`);
-      if (!res.ok) {
+      if (res.ok) {
         router.replace("/");
       }
     } catch (err) {
