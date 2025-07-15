@@ -2,6 +2,7 @@
 
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientUser } from "@/types";
+import { getContrastYIQ } from "@/utils/colors";
 import { CrownIcon } from "lucide-react";
 import React from "react";
 import { KickButton } from "./KickButton";
@@ -35,7 +36,9 @@ const UsersList: React.FC<Props> = ({
 
         const style: React.CSSProperties = {};
         if (user.vote) {
-          style.backgroundColor = user.vote.color;
+          const backgroundColor = user.vote.color;
+          style.backgroundColor = backgroundColor;
+          style.color = getContrastYIQ(backgroundColor);
         }
 
         if (!user.connected && !isCurrentUser) {

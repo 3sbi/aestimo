@@ -1,11 +1,11 @@
 import { Button } from "@/components/Button";
 import { Modal } from "@/components/Modal";
-import { useRouter } from "next/navigation";
-import { Trash2Icon } from "lucide-react";
-import React, { useState } from "react";
-import { api } from "@/utils/api";
-import type { ClientRoom } from "@/types";
 import type { Dictionary } from "@/i18n/getDictionary";
+import type { ClientRoom } from "@/types";
+import { api } from "@/utils/api";
+import { Loader2Icon, Trash2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 type Props = {
   i18n: Dictionary["pages"]["room"]["toolbar"]["delete-modal"];
@@ -49,7 +49,12 @@ const DeleteButton: React.FC<Props> = ({ i18n, room }) => {
           <Button variant="secondary" onClick={() => setOpened(false)}>
             {i18n.cancel}
           </Button>
-          <Button variant="destructive" onClick={onClickDelete}>
+          <Button
+            variant="destructive"
+            onClick={onClickDelete}
+            loading={loading}
+          >
+            {loading && <Loader2Icon className="animate-spin" size={16} />}
             {i18n.delete}
           </Button>
         </div>
