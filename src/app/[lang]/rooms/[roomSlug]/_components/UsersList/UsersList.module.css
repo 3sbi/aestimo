@@ -11,14 +11,14 @@
   border-radius: var(--radius);
   border-width: 1px;
   box-shadow: var(--box-shadow);
-  padding: 48px 32px;
+  padding: 32px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 3rem; /* (48px) */
-  line-height: 1;
-  max-width: 120px;
-  width: 120px;
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+  max-width: 100px;
+  width: 100px;
   position: relative;
 }
 
@@ -36,7 +36,7 @@
   text-align: center;
   gap: 4px;
   padding: 0px 8px;
-  width: 112px;
+  width: 92px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,23 +46,35 @@
   width: 12px;
 }
 
-.userCard button.kickButton {
+.userCard .kickButton {
   display: none;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
-  width: 32px;
-  padding: 4px;
   position: absolute;
-  top: 18px;
+  top: 20px;
   right: 4px;
   fill: var(--card-foreground);
 }
 
-.userCard:hover button.kickButton {
-  display: block;
+.userCard:hover .kickButton {
+  display: flex;
 }
 
-.userCard button.kickButton:hover {
+.userCard .kickButton button:hover {
   fill: var(--destructive);
+}
+
+@media (width >= 48rem) {
+  .userCard {
+    padding: 48px 32px;
+    font-size: var(--text-5xl);
+    line-height: var(--text-5xl--line-height);
+    max-width: 120px;
+    width: 120px;
+  }
+
+  .userCard .username {
+    width: 112px;
+  }
 }

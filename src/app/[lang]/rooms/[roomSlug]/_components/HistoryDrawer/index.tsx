@@ -1,18 +1,30 @@
 import { SmallVoteCard } from "@/components/SmallVoteCard";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
+import Tooltip from "@/components/Tooltip";
 import type { Dictionary } from "@/i18n/getDictionary";
-import type { ClientRoom, ClientVote } from "@/types";
+import type { ClientRoom } from "@/types";
+import type { RoundHistory } from "@/types/EventData";
 import { ArchiveIcon, ChevronLeftIcon } from "lucide-react";
 import styles from "./HistoryDrawer.module.css";
 
 type Props = {
   i18n: Dictionary["pages"]["room"]["historyDrawer"];
-  votesHistory: Record<ClientRoom["round"], ClientVote[]>;
+  roundsHistory: Record<ClientRoom["round"], RoundHistory>;
 };
 
-const HistoryDrawer: React.FC<Props> = ({ i18n, votesHistory }) => {
+const HistoryDrawer: React.FC<Props> = ({ i18n, roundsHistory }) => {
+  function renderTimestamp(round: RoundHistory): React.JSX.Element {
+    if (!round?.endedAt) return <></>;
+    return (
+      <span className={styles.timestamp}>
+        {`${new Date(round.endedAt).toLocaleDateString()} ${new Date(
+          round.endedAt
+        ).toLocaleTimeString()}`}
+      </span>
+    );
+  }
+
   function renderVotes() {
-    if (Object.keys(votesHistory).length === 0) {
+    if (Object.keys(roundsHistory).length === 0) {
       return (
         <div className={styles.empty}>
           <ArchiveIcon size={32} />
@@ -21,20 +33,20 @@ const HistoryDrawer: React.FC<Props> = ({ i18n, votesHistory }) => {
       );
     }
 
-    return Object.entries(votesHistory)
+    return Object.entries(roundsHistory)
       .reverse()
-      .map(([round, votes]) => (
-        <div className={styles.roundItem} key={round}>
-          <h4 className="font-semibold text-xl">
-            {i18n.round} {round}
-          </h4>
+      .map(([roundNumber, round]) => (
+        <div className={styles.roundItem} key={roundNumber}>
+          <div className="flex items-center gap-1">
+            <h4 className="font-semibold text-xl">
+              {i18n.round} {roundNumber}
+            </h4>
+            {renderTimestamp(round)}
+          </div>
           <div className={styles.roundItemVotes}>
-            {votes.map((vote) => (
-              <Tooltip key={vote.userId}>
-                <TooltipTrigger>
-                  <SmallVoteCard {...vote.option} />
-                </TooltipTrigger>
-                <TooltipContent>{vote.userName}</TooltipContent>
+            {round.votes.map((vote) => (
+              <Tooltip label={vote.userName} key={vote.userId}>
+                <SmallVoteCard {...vote.option} />
               </Tooltip>
             ))}
           </div>

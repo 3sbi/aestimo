@@ -6,8 +6,8 @@
   border-width: 1px;
   border-bottom-width: 0px;
   box-shadow: var(--box-shadow);
-  width: min-content;
-  min-width: 800px;
+  max-width: 800px;
+  width: 100%;
   margin: 0px auto;
   padding: 4px;
 }
@@ -15,7 +15,7 @@
 .toolbar {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
   margin: 0px auto;
   background: var(--card);
   color: var(--card-foreground);
@@ -24,9 +24,9 @@
   border-width: 1px;
   border-bottom-width: 0px;
   box-shadow: var(--box-shadow);
-  padding: 24px;
-  width: min-content;
-  min-width: 800px;
+  padding: 12px 20px;
+  max-width: 800px;
+  width: 100%;
 }
 
 .toolbar button {
@@ -34,4 +34,10 @@
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
+}
+
+@media (width >= 48rem) {
+  .toolbar {
+    gap: 12px;
+  }
 }

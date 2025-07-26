@@ -1,12 +1,8 @@
 "use client";
 
 import { Button } from "@/components/Button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from "@/components/Tooltip";
-import { Dictionary } from "@/i18n/getDictionary";
+import Tooltip from "@/components/Tooltip";
+import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom } from "@/types";
 import { Share2Icon } from "lucide-react";
 import { useState } from "react";
@@ -33,14 +29,11 @@ const ShareButton: React.FC<Props> = ({ i18n, room }) => {
     }
   }
   return (
-    <Tooltip open={loading}>
-      <TooltipTrigger>
-        <Button onClick={onClickInvite} title={i18n.title} loading={loading}>
-          {i18n.title}
-          <Share2Icon />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>{i18n.tooltip}</TooltipContent>
+    <Tooltip label={i18n.tooltip} opened={loading}>
+      <Button onClick={onClickInvite} title={i18n.title} loading={loading}>
+        {i18n.title}
+        <Share2Icon />
+      </Button>
     </Tooltip>
   );
 };

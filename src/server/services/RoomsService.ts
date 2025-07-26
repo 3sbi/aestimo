@@ -23,6 +23,7 @@ import type {
 import { ClientUserSchema } from "../dtos/ClientUserSchema";
 import { UpdateRoomDto } from "../dtos/UpdateRoomDtoSchema";
 import { sseStore } from "../eventEmitter";
+import { RoundHistory } from "@/types/EventData";
 
 class RoomsService {
   convertToClientRoom(room: Room): ClientRoom {
@@ -131,19 +132,25 @@ class RoomsService {
     return votes;
   }
 
-  async getVotesHistory(
+  async getRoundsHistory(
     roomId: Room["id"],
-    beforeRound: number
-  ): Promise<Record<Vote["round"], ClientVote[]>> {
+    maxRoundNumber: number
+  ): Promise<Record<Vote["round"], RoundHistory>> {
     const allVotes = await VoteRepository.getAllVotes(roomId);
-    const history: Record<Vote["round"], ClientVote[]> = {};
+    const history: Record<Vote["round"], RoundHistory> = {};
     for (const vote of allVotes) {
-      const { round, ...clientVote } = vote;
-      if (round < beforeRound) {
-        if (!Array.isArray(history[round])) {
-          history[round] = [];
+      const { round: roundNumber, updatedAt, ...clientVote } = vote;
+      const timestamp = updatedAt.getTime();
+      if (roundNumber < maxRoundNumber) {
+        const round = history[roundNumber];
+        if (!Array.isArray(round?.votes)) {
+          history[roundNumber] = { votes: [clientVote], endedAt: timestamp };
+        } else {
+          round.votes.push(clientVote);
+          if (round.endedAt < timestamp) {
+            round.endedAt = timestamp;
+          }
         }
-        history[round].push(clientVote);
       }
     }
     return history;
@@ -151,26 +158,29 @@ class RoomsService {
 
   async goToNextRound(
     slug: Room["slug"]
-  ): Promise<{ room: ClientRoom; prevRoundVotes: ClientVote[] }> {
+  ): Promise<{ room: ClientRoom; prevRound: RoundHistory }> {
     const item = await RoomRepository.getBySlug(slug);
     if (!item) {
       throw new RoomNotFoundError();
     }
     const currentRound: number = item.round;
-    const prevRoundVotes = await VoteRepository.getAllRoundVotes(
-      item.id,
-      currentRound
-    );
+    const votes = await VoteRepository.getAllRoundVotes(item.id, currentRound);
+    const prevRound: RoundHistory = {
+      votes,
+      endedAt: Math.max(...votes.map((vote) => vote.updatedAt.getTime())),
+    };
+
     const room = await RoomRepository.update(slug, {
       round: currentRound + 1,
       status: "started",
     });
+
     if (!room) {
       throw new RoomNotFoundError();
     }
 
     const clientRoom: ClientRoom = this.convertToClientRoom(room);
-    return { room: clientRoom, prevRoundVotes };
+    return { room: clientRoom, prevRound };
   }
 
   async addVote(

@@ -48,9 +48,8 @@ button.btn.icon {
   aspect-ratio: 1/1;
   min-width: 14px;
   min-height: 14px;
-  max-width: 36px;
+  width: 36px;
 }
-
 
 button.btn.icon svg {
   width: 100%;

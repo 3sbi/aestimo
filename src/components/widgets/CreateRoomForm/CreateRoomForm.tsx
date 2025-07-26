@@ -5,7 +5,7 @@ import { Input } from "@/components/Input";
 import RadioButton from "@/components/RadioButton";
 import { SmallVoteCard } from "@/components/SmallVoteCard";
 import { Switch } from "@/components/Switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
+import Tooltip from "@/components/Tooltip";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { DefinedVoteType } from "@/server/consts/predefinedVoteTypes";
 import type { VoteCard } from "@/types";
@@ -170,11 +170,8 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
             />
             <div className="flex items-center gap-2">
               <label htmlFor="private">{i18n.private.label}</label>
-              <Tooltip>
-                <TooltipTrigger>
-                  <CircleQuestionMarkIcon size={16} />
-                </TooltipTrigger>
-                <TooltipContent>{i18n.private.helper}</TooltipContent>
+              <Tooltip label={i18n.private.helper}>
+                <CircleQuestionMarkIcon size={16} />
               </Tooltip>
             </div>
           </div>

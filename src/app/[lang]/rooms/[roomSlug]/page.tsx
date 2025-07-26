@@ -4,7 +4,8 @@ import type { I18nLocale } from "@/i18n/getDictionary";
 import { getDictionary } from "@/i18n/getDictionary";
 import { roomsService, usersService } from "@/server/services";
 import { getSession } from "@/server/session";
-import type { ClientUser, ClientVote, Room, User, Vote } from "@/types";
+import type { ClientUser, Room, User, Vote } from "@/types";
+import { RoundHistory } from "@/types/EventData";
 import { Metadata } from "next";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import { RoomWrapper } from "./_components/RoomWrapper";
@@ -62,8 +63,8 @@ export default async function Page({ params }: Props) {
     showVotes
   );
 
-  const votesHistory: Record<Vote["round"], ClientVote[]> =
-    await roomsService.getVotesHistory(room.id, room.round);
+  const roundsHistory: Record<Vote["round"], RoundHistory> =
+    await roomsService.getRoundsHistory(room.id, room.round);
   const index = await usersService.getVoteIndex(user.id, room);
   const i18n = getDictionary(lang).pages.room;
 
@@ -76,7 +77,7 @@ export default async function Page({ params }: Props) {
         initialRoom={room}
         initialUsersList={usersList}
         initialSelectedIndex={index}
-        initialVotesHistory={votesHistory}
+        initialRoundsHistory={roundsHistory}
       />
     </>
   );

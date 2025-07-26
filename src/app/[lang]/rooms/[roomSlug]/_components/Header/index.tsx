@@ -17,9 +17,9 @@ type Props = {
 const Header: React.FC<Props> = ({ i18n, room, user, users }) => {
   return (
     <header className={styles.roomHeader}>
-      <h2 className="text-2xl truncate">{room.name}</h2>
-      <h2 className="font-semibold text-center text-2xl justify-self-center truncate w-full">
-        {i18n.round} {room.round}
+      <h2 className="md:text-2xl truncate w-min">{room.name}</h2>
+      <h2 className="font-semibold text-center w-min truncate md:w-full md:text-2xl md:justify-self-center">
+        {`${i18n.round} ${room.round}`}
       </h2>
 
       <div className="flex gap-1 justify-self-end">

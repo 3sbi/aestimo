@@ -1,0 +1,37 @@
+.container {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  background: var(--foreground);
+  color: var(--background);
+  border-radius: 4px;
+  position: absolute;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  min-width: 50px;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.tooltip::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--foreground);
+  left: calc(50% - 5px);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.tooltip.top::before {
+  bottom: -3px;
+}
+
+.tooltip.bottom::before {
+  top: -3px;
+}

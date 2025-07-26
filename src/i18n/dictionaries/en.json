@@ -62,7 +62,10 @@
         },
         "history": "History",
         "private": "Private room",
-        "autoreveal": "End the round automatically after the last vote"
+        "autoreveal": {
+          "label": "Auto reveal",
+          "tooltip": "End the round automatically after the last vote"
+        }
       },
       "usersList": {
         "you": "you",

@@ -50,12 +50,13 @@ class VoteRepository {
   static async getAllRoundVotes(
     roomId: Room["id"],
     round: Room["round"]
-  ): Promise<ClientVote[]> {
+  ): Promise<Array<ClientVote & { updatedAt: Date }>> {
     const votes = await db
       .select({
         userId: votesTable.userId,
         userName: usersTable.name,
         option: votesTable.value,
+        updatedAt: votesTable.updatedAt,
       })
       .from(votesTable)
       .where(and(eq(votesTable.roomId, roomId), eq(votesTable.round, round)))
@@ -65,13 +66,14 @@ class VoteRepository {
 
   static async getAllVotes(
     roomId: Room["id"]
-  ): Promise<Array<ClientVote & { round: Room["round"] }>> {
+  ): Promise<Array<ClientVote & { round: Room["round"]; updatedAt: Date }>> {
     const votes = await db
       .select({
         userId: votesTable.userId,
         userName: usersTable.name,
         option: votesTable.value,
         round: votesTable.round,
+        updatedAt: votesTable.updatedAt,
       })
       .from(votesTable)
       .where(eq(votesTable.roomId, roomId))

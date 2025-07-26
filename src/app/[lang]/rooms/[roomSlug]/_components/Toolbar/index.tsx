@@ -5,12 +5,18 @@ import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
 import type { NextRoundEvent, RestartEvent } from "@/types/EventData";
 import { api } from "@/utils/api";
-import { ArrowRightCircleIcon, EyeIcon, RotateCwIcon } from "lucide-react";
+import {
+  ArrowRightCircleIcon,
+  CircleQuestionMarkIcon,
+  EyeIcon,
+  RotateCwIcon,
+} from "lucide-react";
 import React, { useState } from "react";
 import { AutoOpenSwitch } from "./AutorevealSwitch";
 import { DeleteButton } from "./DeleteButton";
 import { PrivateSwitch } from "./PrivateSwitch";
 import styles from "./Toolbar.module.css";
+import Tooltip from "@/components/Tooltip";
 
 type Props = {
   room: ClientRoom;
@@ -74,9 +80,18 @@ const Toolbar: React.FC<Props> = ({
 
   return (
     <div className={styles.toolbarWrapper}>
-      <div className="flex items-center justify-between gap-2 p-2">
+      <div className="flex items-center justify-between gap-4 p-2">
         <PrivateSwitch room={room} setRoom={setRoom} label={i18n.private} />
-        <AutoOpenSwitch room={room} setRoom={setRoom} label={i18n.autoreveal} />
+        <div className="flex gap-1 items-center">
+          <AutoOpenSwitch
+            room={room}
+            setRoom={setRoom}
+            label={i18n.autoreveal.label}
+          />
+          <Tooltip label={i18n.autoreveal.tooltip}>
+            <CircleQuestionMarkIcon size={16} />
+          </Tooltip>
+        </div>
       </div>
       <div className={styles.toolbar}>
         {room.status !== "finished" && !room.autoreveal && (

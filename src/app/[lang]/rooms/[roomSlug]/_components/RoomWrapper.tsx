@@ -1,19 +1,13 @@
 "use client";
 
 import type { Dictionary } from "@/i18n/getDictionary";
-import type {
-  ClientRoom,
-  ClientUser,
-  ClientVote,
-  User,
-  Vote,
-  VoteCard,
-} from "@/types";
+import type { ClientRoom, ClientUser, User, Vote, VoteCard } from "@/types";
 import type {
   Event,
   NextRoundEvent,
   RestartEvent,
   RevealEvent,
+  RoundHistory,
 } from "@/types/EventData";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
@@ -31,12 +25,12 @@ type Props = {
   voteOptions: VoteCard[];
   user: Pick<User, "id" | "role">;
   i18n: Dictionary["pages"]["room"];
-  initialVotesHistory: Record<Vote["round"], ClientVote[]>;
+  initialRoundsHistory: Record<Vote["round"], RoundHistory>;
 };
 
 export const RoomWrapper: React.FC<Props> = ({
   initialRoom,
-  initialVotesHistory,
+  initialRoundsHistory,
   initialSelectedIndex,
   initialUsersList,
   i18n,
@@ -45,8 +39,8 @@ export const RoomWrapper: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   const [room, setRoom] = useState<ClientRoom>(initialRoom);
-  const [votesHistory, setVotesHistory] =
-    useState<Record<Vote["round"], ClientVote[]>>(initialVotesHistory);
+  const [roundsHistory, setRoundsHistory] =
+    useState<Record<Vote["round"], RoundHistory>>(initialRoundsHistory);
   const [users, setUsers] = useState<ClientUser[]>(initialUsersList);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(
     initialSelectedIndex
@@ -55,9 +49,9 @@ export const RoomWrapper: React.FC<Props> = ({
 
   const goToNextRound = useCallback(
     (data: NextRoundEvent["data"]) => {
-      const { room: newRoom, prevRoundVotes } = data;
-      setVotesHistory((prev) => {
-        prev[room.round] = prevRoundVotes;
+      const { room: newRoom, prevRound } = data;
+      setRoundsHistory((prev) => {
+        prev[room.round] = prevRound;
         return structuredClone(prev);
       });
       setRoom(newRoom);
@@ -98,8 +92,35 @@ export const RoomWrapper: React.FC<Props> = ({
     });
   };
 
-  const kickUser = (userUUID: ClientUser["id"]) => {
-    setUsers((prev) => prev.filter((user) => user.id !== userUUID));
+  const kickUser = useCallback(
+    (userId: ClientUser["id"]) => {
+      if (user.id === userId) {
+        router.replace("/");
+      }
+      setUsers((prev) => prev.filter((user) => user.id !== userId));
+    },
+    [user.id, router]
+  );
+
+  const trasfetAdmin = (newAdminId: number) => {
+    setUsers((prev) => {
+      return prev.map((user) => {
+        const isAdmin = user.id === newAdminId;
+        user.role = isAdmin ? "admin" : "basic";
+        return user;
+      });
+    });
+  };
+
+  const updateUser = (
+    userId: User["id"],
+    update: Partial<Pick<ClientUser, "name" | "connected">>
+  ) => {
+    setUsers((prev) => {
+      const index = prev.findIndex((user) => user.id === userId);
+      prev[index] = { ...prev[index], ...update };
+      return [...prev];
+    });
   };
 
   useEffect(() => {
@@ -114,8 +135,7 @@ export const RoomWrapper: React.FC<Props> = ({
           break;
         }
         case "room-update": {
-          const { room } = eventPayload.data;
-          setRoom(room);
+          setRoom(eventPayload.data.room);
           break;
         }
         case "next-round": {
@@ -131,20 +151,12 @@ export const RoomWrapper: React.FC<Props> = ({
           break;
         }
         case "kick": {
-          const { userId } = eventPayload.data;
-          kickUser(userId);
-          if (user.id === userId) {
-            router.replace("/");
-          }
+          kickUser(eventPayload.data.userId);
           break;
         }
         case "user-update": {
-          const { userId, update } = eventPayload.data;
-          setUsers((prev) => {
-            const index = prev.findIndex((user) => user.id === userId);
-            prev[index] = { ...prev[index], ...update };
-            return [...prev];
-          });
+          const { update, userId } = eventPayload.data;
+          updateUser(userId, update);
           break;
         }
         case "room-delete": {
@@ -152,14 +164,7 @@ export const RoomWrapper: React.FC<Props> = ({
           break;
         }
         case "transfer-admin": {
-          const { newAdminId } = eventPayload.data;
-          setUsers((prev) => {
-            return prev.map((user) => {
-              const isAdmin = user.id === newAdminId;
-              user.role = isAdmin ? "admin" : "basic";
-              return user;
-            });
-          });
+          trasfetAdmin(eventPayload.data.newAdminId);
           break;
         }
         case "vote": {
@@ -188,40 +193,45 @@ export const RoomWrapper: React.FC<Props> = ({
     return () => {
       eventSource.close();
     };
-  }, [room.slug, router, user.id, i18n, disconnected, goToNextRound]);
+  }, [room.slug, router, i18n, disconnected, kickUser, goToNextRound]);
 
   const isAdmin: boolean = user.role === "admin";
   return (
-    <div className="room">
-      <Toaster richColors />
-      <Header users={users} room={room} i18n={i18n.header} user={user} />
-      <UsersList
-        users={users}
-        kickUser={kickUser}
-        currentUserId={user.id}
-        i18n={i18n.usersList}
-        isAdmin={isAdmin}
-      />
-      <CardsHand
-        voteOptions={voteOptions}
-        room={room}
-        setVoted={() => setVoted(user.id)}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
-      />
-
-      {isAdmin && (
-        <Toolbar
-          i18n={i18n.toolbar}
-          room={room}
-          setRoom={setRoom}
-          revealVotes={revealVotes}
-          restartRound={restartRound}
-          goToNextRound={goToNextRound}
+    <>
+      <div className="room">
+        <Header users={users} room={room} i18n={i18n.header} user={user} />
+        <UsersList
+          users={users}
+          kickUser={kickUser}
+          currentUserId={user.id}
+          i18n={i18n.usersList}
+          isAdmin={isAdmin}
         />
-      )}
+        <CardsHand
+          voteOptions={voteOptions}
+          room={room}
+          setVoted={() => setVoted(user.id)}
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+        />
 
-      <HistoryDrawer i18n={i18n.historyDrawer} votesHistory={votesHistory} />
-    </div>
+        {isAdmin && (
+          <Toolbar
+            i18n={i18n.toolbar}
+            room={room}
+            setRoom={setRoom}
+            revealVotes={revealVotes}
+            restartRound={restartRound}
+            goToNextRound={goToNextRound}
+          />
+        )}
+
+        <HistoryDrawer
+          i18n={i18n.historyDrawer}
+          roundsHistory={roundsHistory}
+        />
+      </div>
+      <Toaster richColors />
+    </>
   );
 };

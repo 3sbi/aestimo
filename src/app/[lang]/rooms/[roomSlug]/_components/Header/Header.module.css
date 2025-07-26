@@ -6,8 +6,8 @@
   box-shadow: var(--box-shadow);
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
-  min-width: 600px;
-  width: min-content;
+  max-width: 600px;
+  width: 100%;
   margin: 0px auto;
   display: grid;
   align-items: center;

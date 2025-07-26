@@ -40,7 +40,7 @@ const CardsHand: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex justify-center items-center gap-4 flex-wrap m-auto">
+    <div className="flex justify-center items-center gap-4 md:gap-6 flex-wrap m-auto">
       {voteOptions.map((voteOption, index) => {
         const { color, value } = voteOption;
         const selected: boolean = index === selectedIndex;
@@ -55,8 +55,8 @@ const CardsHand: React.FC<Props> = ({
           <div
             key={value}
             className={cn(
-              "px-6 py-8 border-2 rounded-lg cursor-pointer font-bold text-4xl shadow-md transition text-black",
-              selected ? "-translate-y-4 border-2" : "",
+              "px-4 py-4 border-2 rounded-lg cursor-pointer font-bold text-4xl shadow-md transition text-black md:px-6 md:py-8 ",
+              selected ? "-translate-y-6 scale-110 border-2" : "",
               roundFinished ? "opacity-60 cursor-not-allowed" : ""
             )}
             title={value}

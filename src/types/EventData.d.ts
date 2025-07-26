@@ -1,8 +1,13 @@
 import type { ClientRoom, ClientUser, ClientVote, User } from ".";
 
+type RoundHistory = { votes: ClientVote[]; endedAt: number }
+
 export type NextRoundEvent = {
   type: "next-round";
-  data: { room: ClientRoom; prevRoundVotes: ClientVote[] };
+  data: {
+    room: ClientRoom;
+    prevRound: RoundHistory;
+  };
 };
 
 export type RestartEvent = {
