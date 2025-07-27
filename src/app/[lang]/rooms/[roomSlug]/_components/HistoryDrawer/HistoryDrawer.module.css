@@ -80,6 +80,9 @@
   font-size: var(--text-xs);
   line-height: var(--text-xs--line-height);
   color: var(--muted-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (width >= 48rem) {

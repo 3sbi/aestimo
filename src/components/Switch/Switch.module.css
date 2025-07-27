@@ -40,6 +40,7 @@
 
 .switchContainer input:checked + .switchSlider::before {
   transform: translateX(18px);
+  background-color: var(--primary-foreground);
 }
 
 .switchContainer input:focus-visible + .switchSlider {

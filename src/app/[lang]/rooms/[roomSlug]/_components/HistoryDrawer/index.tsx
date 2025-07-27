@@ -14,11 +14,12 @@ type Props = {
 const HistoryDrawer: React.FC<Props> = ({ i18n, roundsHistory }) => {
   function renderTimestamp(round: RoundHistory): React.JSX.Element {
     if (!round?.endedAt) return <></>;
+    const timestamp = `${new Date(
+      round.endedAt
+    ).toLocaleDateString()} ${new Date(round.endedAt).toLocaleTimeString()}`;
     return (
-      <span className={styles.timestamp}>
-        {`${new Date(round.endedAt).toLocaleDateString()} ${new Date(
-          round.endedAt
-        ).toLocaleTimeString()}`}
+      <span className={styles.timestamp} title={timestamp}>
+        {timestamp}
       </span>
     );
   }
@@ -37,9 +38,9 @@ const HistoryDrawer: React.FC<Props> = ({ i18n, roundsHistory }) => {
       .reverse()
       .map(([roundNumber, round]) => (
         <div className={styles.roundItem} key={roundNumber}>
-          <div className="flex items-center gap-1">
-            <h4 className="font-semibold text-xl">
-              {i18n.round} {roundNumber}
+          <div className="flex items-baseline gap-1">
+            <h4 className="font-semibold text-lg truncate">
+              {`${i18n.round} ${roundNumber}`}
             </h4>
             {renderTimestamp(round)}
           </div>

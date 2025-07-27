@@ -47,28 +47,25 @@ export const RoomWrapper: React.FC<Props> = ({
   );
   const [disconnected, setDisconnected] = useState<boolean>(false);
 
-  const goToNextRound = useCallback(
-    (data: NextRoundEvent["data"]) => {
-      const { room: newRoom, prevRound } = data;
-      setRoundsHistory((prev) => {
-        prev[room.round] = prevRound;
-        return structuredClone(prev);
-      });
-      setRoom(newRoom);
-      setUsers((prev) => {
-        prev = prev.map(({ id, name, role, connected }) => ({
-          id,
-          name,
-          role,
-          connected,
-          voted: false,
-        }));
-        return prev;
-      });
-      setSelectedIndex(null);
-    },
-    [room.round]
-  );
+  const goToNextRound = (data: NextRoundEvent["data"]) => {
+    const { room: newRoom, prevRound } = data;
+    setRoundsHistory((prev) => {
+      prev[newRoom.round - 1] = prevRound;
+      return structuredClone(prev);
+    });
+    setRoom(newRoom);
+    setUsers((prev) => {
+      prev = prev.map(({ id, name, role, connected }) => ({
+        id,
+        name,
+        role,
+        connected,
+        voted: false,
+      }));
+      return prev;
+    });
+    setSelectedIndex(null);
+  };
 
   const restartRound = (data: RestartEvent["data"]) => {
     setRoom(data.room);
@@ -193,7 +190,7 @@ export const RoomWrapper: React.FC<Props> = ({
     return () => {
       eventSource.close();
     };
-  }, [room.slug, router, i18n, disconnected, kickUser, goToNextRound]);
+  }, [room.slug, router, i18n, disconnected, kickUser]);
 
   const isAdmin: boolean = user.role === "admin";
   return (

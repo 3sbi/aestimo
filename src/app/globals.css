@@ -1,27 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: hsl(240 9% 98%);
-  --foreground: hsl(0 0% 20%);
-  --card: hsl(0 0% 100%);
-  --card-foreground: hsl(0 0% 20%);
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(0 0% 20%);
-  --primary: hsl(140 53% 43%);
-  --primary-hover: hsl(140 53% 48%);
-  --primary-active: hsl(140 53% 41%);
-  --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(0 0% 98%);
-  --secondary-foreground: hsl(0 0% 20%);
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --accent: hsl(146 87% 88%);
-  --accent-foreground: hsl(0 0% 20%);
-  --destructive: hsl(0 84% 60%);
-  --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(0 0% 83.1373%);
-  --input: hsl(0 0% 83.1373%);
-  --ring: hsl(140 53% 43%);
+  --background: #f9f9fa;
+  --foreground: #0f1419;
+  --card: #f7f8f8;
+  --card-foreground: #0f1419;
+  --popover: #f7f8f8;
+  --popover-foreground: #0f1419;
+  --primary: #2e7d32;
+  --primary-active: hsl(140, 53%, 34%);
+  --primary-foreground: #ffffff;
+  --secondary: #e8f5e9;
+  --secondary-foreground: #1b5e20;
+  --muted: #f0e9e0;
+  --muted-foreground: #0f1419;
+  --accent: #c8e6c9;
+  --accent-foreground: #1b5e20;
+  --destructive: #c62828;
+  --destructive-foreground: #ffffff;
+  --border: #e0d6c9;
+  --input: #e0d6c9;
+  --ring: #2e7d32;
   --radius: 0.5rem;
   --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
@@ -35,6 +34,7 @@
   --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
     0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --box-shadow: var(--shadow-lg);
 
   --radix-popper-transform-origin: 49px 38px;
 }
@@ -72,7 +72,6 @@
   --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
     0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --box-shadow: var(--shadow-md);
 }
 
 * {

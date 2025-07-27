@@ -19,13 +19,17 @@ button.btn {
   border-width: 0px;
 }
 
+button.btn:active {
+  transform: translateY(1px);
+}
+
 button.primary {
   color: var(--primary-foreground);
   background-color: var(--primary);
 }
 
 button.btn.primary:hover {
-  background-color: var(--primary-hover);
+  background-color: color-mix(in oklab, var(--primary) 90%, transparent);
 }
 
 button.btn.primary:active {
@@ -63,4 +67,8 @@ button.btn.loading {
 button.btn.destructive {
   background-color: var(--destructive);
   color: var(--destructive-foreground);
+}
+
+button.btn.destructive:hover {
+  background-color: color-mix(in oklab, var(--destructive) 90%, transparent);
 }
