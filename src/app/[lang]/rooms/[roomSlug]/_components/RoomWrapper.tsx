@@ -14,7 +14,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import CardsHand from "./CardsHand";
 import { Header } from "./Header";
-import { HistoryDrawer } from "./HistoryDrawer";
 import { Toolbar } from "./Toolbar";
 import { UsersList } from "./UsersList";
 
@@ -196,14 +195,32 @@ export const RoomWrapper: React.FC<Props> = ({
   return (
     <>
       <div className="room">
-        <Header users={users} room={room} i18n={i18n.header} user={user} />
-        <UsersList
+        <Header
           users={users}
-          kickUser={kickUser}
-          currentUserId={user.id}
-          i18n={i18n.usersList}
-          isAdmin={isAdmin}
+          room={room}
+          i18n={i18n}
+          user={user}
+          setRoom={setRoom}
+          roundsHistory={roundsHistory}
         />
+        <div className="flex flex-col gap-4 m-auto">
+          <UsersList
+            users={users}
+            kickUser={kickUser}
+            currentUserId={user.id}
+            i18n={i18n.usersList}
+            isAdmin={isAdmin}
+          />
+          {isAdmin && (
+            <Toolbar
+              i18n={i18n.toolbar}
+              room={room}
+              revealVotes={revealVotes}
+              restartRound={restartRound}
+              goToNextRound={goToNextRound}
+            />
+          )}
+        </div>
         <CardsHand
           voteOptions={voteOptions}
           room={room}
@@ -211,24 +228,8 @@ export const RoomWrapper: React.FC<Props> = ({
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
         />
-
-        {isAdmin && (
-          <Toolbar
-            i18n={i18n.toolbar}
-            room={room}
-            setRoom={setRoom}
-            revealVotes={revealVotes}
-            restartRound={restartRound}
-            goToNextRound={goToNextRound}
-          />
-        )}
-
-        <HistoryDrawer
-          i18n={i18n.historyDrawer}
-          roundsHistory={roundsHistory}
-        />
       </div>
-      <Toaster richColors />
+      <Toaster richColors position="top-center" />
     </>
   );
 };

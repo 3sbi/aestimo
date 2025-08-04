@@ -10,7 +10,7 @@ import { useState } from "react";
 import { toast, Toaster } from "sonner";
 
 type Props = {
-  i18n: Dictionary["pages"]["home"]["joinRoomForm"];
+  i18n: Dictionary["pages"]["new"]["joinRoomForm"];
   roomSlug: string;
 };
 

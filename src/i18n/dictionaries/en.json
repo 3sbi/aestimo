@@ -1,11 +1,27 @@
 {
   "language": "English",
   "metadata": {
-    "description": "Aestimo is a self-hosted web app for your team's planning poker"
+    "description": "Aestimo - planning poker app to estimate user stories"
   },
 
   "pages": {
     "home": {
+      "header": "Aestimo",
+      "subheader": "planning poker app to estimate user stories",
+      "advantages": [
+        "🧠 100% open source",
+        "🧑‍💻 Perfect for sprint planning and grooming sessions",
+        "🔒 No sign-up or emails, join with a link",
+        "🃏 Use classic planning poker cards (Fibonacci, T-shirt) or create a custom set of cards"
+      ],
+
+      "buttons": {
+        "new": "Create",
+        "join": "Join"
+      }
+    },
+
+    "new": {
       "tabs": {
         "create": "Create",
         "join": "Join"
@@ -42,31 +58,35 @@
     },
 
     "room": {
-      "header": {
-        "round": "Round",
-        "share": { "title": "Share", "tooltip": "Copied!" },
-        "select-new-admin": "Select a new admin:",
-        "leave": "Leave",
-        "cancel": "Cancel"
-      },
-      "toolbar": {
-        "next": "Next round",
-        "reveal": "Reveal",
-        "restart": "Restart round",
-        "delete": "Delete",
-        "delete-modal": {
-          "header": "Are you sure?",
-          "help": "If you just want to leave the room yourself but keep it alive, give admin rights to one of the users. Once deleted, the room cannot be restored and all participants will be thrown back to the main screen.",
-          "delete": "Delete",
-          "cancel": "Cancel"
+      "settings": {
+        "leave": {
+          "label": "Leave",
+          "select-new-admin": "Select a new admin:",
+          "modal": {
+            "header": "Are you sure?",
+            "help": "If you just want to leave the room yourself but keep it alive, give admin rights to one of the users. Once deleted, the room cannot be restored and all participants will be thrown back to the main screen.",
+            "confirm": "Delete",
+            "cancel": "Cancel"
+          }
         },
-        "history": "History",
         "private": "Private room",
         "autoreveal": {
           "label": "Auto reveal",
-          "tooltip": "End the round automatically after the last vote"
+          "tooltip": "Ends the round automatically after the last vote"
         }
       },
+
+      "header": {
+        "round": "Round",
+        "share": { "title": "Share", "tooltip": "Copied!" }
+      },
+
+      "toolbar": {
+        "next": "Next round",
+        "reveal": "Reveal",
+        "restart": "Restart round"
+      },
+
       "usersList": {
         "you": "you",
         "admin": "Admin",
@@ -78,10 +98,12 @@
         "reconnected": "Reconnected to server-sent events :)",
         "unknown-event": "Unknown event"
       },
-      "historyDrawer": {
+
+      "vote-history": {
         "header": "History",
         "round": "Round",
-        "empty": "The history of votes for all round will be here. No round has been completed yet"
+        "empty": "The history of votes for all round will be here. No round has been completed yet",
+        "no-votes": "No one voted"
       }
     },
 

@@ -3,16 +3,17 @@ import { Modal } from "@/components/Modal";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom } from "@/types";
 import { api } from "@/utils/api";
-import { Loader2Icon, Trash2Icon } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 type Props = {
-  i18n: Dictionary["pages"]["room"]["toolbar"]["delete-modal"];
+  i18n: Dictionary["pages"]["room"]["settings"]["leave"]["modal"];
+  trigger: React.JSX.Element;
   room: ClientRoom;
 };
 
-const DeleteButton: React.FC<Props> = ({ i18n, room }) => {
+const DeleteButton: React.FC<Props> = ({ i18n, room, trigger }) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -32,16 +33,7 @@ const DeleteButton: React.FC<Props> = ({ i18n, room }) => {
   }
 
   return (
-    <Modal
-      opened={opened}
-      setOpened={setOpened}
-      trigger={
-        <Button loading={loading}>
-          <Trash2Icon />
-          {i18n.delete}
-        </Button>
-      }
-    >
+    <Modal opened={opened} setOpened={setOpened} trigger={trigger}>
       <div className="flex flex-col items-center gap-2 max-w-[400px]">
         <h2 className="font-semibold text-2xl mb-2">{i18n.header}</h2>
         <p className="text-justify">{i18n.help}</p>
@@ -55,7 +47,7 @@ const DeleteButton: React.FC<Props> = ({ i18n, room }) => {
             loading={loading}
           >
             {loading && <Loader2Icon className="animate-spin" size={16} />}
-            {i18n.delete}
+            {i18n.confirm}
           </Button>
         </div>
       </div>

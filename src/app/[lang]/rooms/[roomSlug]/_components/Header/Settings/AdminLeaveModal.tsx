@@ -2,45 +2,30 @@
 
 import { Button } from "@/components/Button";
 import { Modal } from "@/components/Modal";
-import { Dictionary } from "@/i18n/getDictionary";
+import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientUser } from "@/types";
-import { api } from "@/utils/api";
 import { Loader2Icon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React, { useId, useState } from "react";
-import { toast } from "sonner";
 
 type Props = {
   users: ClientUser[];
   userId: ClientUser["id"];
-  i18n: Dictionary["pages"]["room"]["header"];
+  i18n: Dictionary["pages"]["room"]["settings"]["leave"];
   trigger: React.JSX.Element;
+  onLeave: (newAdminId?: number) => Promise<void>;
 };
 
-const AdminLeaveModal: React.FC<Props> = ({ userId, users, i18n, trigger }) => {
+const AdminLeaveModal: React.FC<Props> = ({
+  userId,
+  users,
+  i18n,
+  trigger,
+  onLeave,
+}) => {
   const newAdminSelectId = useId();
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [newAdminId, setNewAdminId] = useState<ClientUser["id"]>();
-  const router = useRouter();
-
-  async function transferRights() {
-    setLoading(true);
-    try {
-      const res = await api.delete(`/api/users/${userId}`, { newAdminId });
-      if (res.ok) {
-        router.replace("/");
-      } else {
-        const data = await res.json();
-        toast.error(data.error);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
-  }
-
-  if (users.length < 2) return <></>;
 
   return (
     <Modal trigger={trigger} opened={opened} setOpened={setOpened}>
@@ -48,9 +33,7 @@ const AdminLeaveModal: React.FC<Props> = ({ userId, users, i18n, trigger }) => {
       <select
         name="users"
         id={newAdminSelectId}
-        onChange={(e) => {
-          setNewAdminId(Number(e.target.value));
-        }}
+        onChange={(e) => setNewAdminId(Number(e.target.value))}
       >
         {users
           .filter((user) => user.id !== userId)
@@ -62,15 +45,19 @@ const AdminLeaveModal: React.FC<Props> = ({ userId, users, i18n, trigger }) => {
       </select>
       <div className="flex gap-2 mt-2">
         <Button variant="secondary" onClick={() => setOpened(false)}>
-          {i18n["cancel"]}
+          {i18n.modal.cancel}
         </Button>
         <Button
           variant="destructive"
           disabled={loading}
-          onClick={transferRights}
+          onClick={async () => {
+            setLoading(true);
+            await onLeave(newAdminId);
+            setLoading(false);
+          }}
         >
           {loading && <Loader2Icon className="animate-spin" size={20} />}
-          {i18n["leave"]}
+          {i18n.modal.confirm}
         </Button>
       </div>
     </Modal>

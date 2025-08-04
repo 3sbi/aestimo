@@ -34,7 +34,7 @@ export default async function Page(props: Props) {
   }
 
   const dictionary = getDictionary(lang);
-  const i18n = dictionary.pages.home.joinRoomForm;
+  const i18n = dictionary.pages.new.joinRoomForm;
 
   return (
     <div className="m-auto card w-[420px] flex flex-col">

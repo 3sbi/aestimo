@@ -1,11 +1,26 @@
+.overlay {
+  height: 100%;
+  width: 100%;
+  background-color: color-mix(in oklab, #000000 50%, transparent);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  position: fixed;
+  z-index: 120;
+  padding: 0;
+}
+
 .drawer {
   display: none;
   position: fixed;
   top: 0px;
   right: 0px;
   height: 100%;
-  width: 24px;
-  z-index: 10;
+  width: 0px;
+  z-index: 50;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
@@ -15,22 +30,8 @@
   color: var(--card-foreground);
 }
 
-.drawer:hover {
+.opened {
   width: 256px;
-}
-
-.drawer .chevron {
-  position: absolute;
-  left: 0;
-  width: min-content;
-  margin-top: auto;
-  height: min-content;
-  margin-bottom: auto;
-  top: 50%;
-}
-
-.drawer:hover .chevron {
-  transform: rotate(180deg);
 }
 
 .drawer .empty {
@@ -47,14 +48,10 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  display: none;
+  display: flex;
   gap: 32px;
   position: relative;
   min-width: 254px;
-}
-
-.drawer:hover .history {
-  display: flex;
   flex-direction: column;
   padding: 24px;
 }
@@ -83,6 +80,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.noVotes {
+  display: flex;
+  gap: 4px;
+  color: var(--muted-foreground);
 }
 
 @media (width >= 48rem) {

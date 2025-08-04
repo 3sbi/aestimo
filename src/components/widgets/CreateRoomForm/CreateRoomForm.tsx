@@ -5,7 +5,7 @@ import { Input } from "@/components/Input";
 import RadioButton from "@/components/RadioButton";
 import { SmallVoteCard } from "@/components/SmallVoteCard";
 import { Switch } from "@/components/Switch";
-import Tooltip from "@/components/Tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { DefinedVoteType } from "@/server/consts/predefinedVoteTypes";
 import type { VoteCard } from "@/types";
@@ -20,7 +20,7 @@ import { CustomVoteCard, VoteTypeCreator } from "./VoteTypeCreator";
 type Response = { slug: string };
 
 type Props = {
-  i18n: Dictionary["pages"]["home"]["createRoomForm"];
+  i18n: Dictionary["pages"]["new"]["createRoomForm"];
   predefinedVoteTypes: DefinedVoteType[];
 };
 
@@ -170,8 +170,11 @@ const CreateRoomForm: React.FC<Props> = ({ i18n, predefinedVoteTypes }) => {
             />
             <div className="flex items-center gap-2">
               <label htmlFor="private">{i18n.private.label}</label>
-              <Tooltip label={i18n.private.helper}>
-                <CircleQuestionMarkIcon size={16} />
+              <Tooltip>
+                <TooltipTrigger>
+                  <CircleQuestionMarkIcon size={16} />
+                </TooltipTrigger>
+                <TooltipContent>{i18n.private.helper}</TooltipContent>
               </Tooltip>
             </div>
           </div>

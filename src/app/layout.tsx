@@ -1,12 +1,8 @@
 import "server-only";
 
-import { GithubButton } from "@/components/GithubButton";
-import LocaleSwitcher from "@/components/LocaleSwitcher";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import {
   getDictionary,
-  getLanguageNames,
-  i18nConfig,
+  i18nConfig
 } from "@/i18n/getDictionary";
 import { LOCALE_HEADER_KEY } from "@/middleware";
 import type { Metadata } from "next";
@@ -60,14 +56,6 @@ export default async function RootLayout(props: Readonly<Props>) {
           themes={["light", "dark"]}
         >
           {props.children}
-          <div className="flex flex-col gap-1 fixed left-2 bottom-2">
-            <LocaleSwitcher
-              i18nConfig={i18nConfig}
-              languageNames={getLanguageNames()}
-            />
-            <ThemeSwitcher />
-            <GithubButton />
-          </div>
         </ThemeProvider>
       </body>
     </html>

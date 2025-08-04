@@ -1,15 +1,13 @@
-.roomHeader {
+.headerChip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
   background: var(--card);
   color: var(--card-foreground);
   border-width: 1px;
-  padding: 24px;
-  box-shadow: var(--box-shadow);
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
-  max-width: 600px;
-  width: 100%;
-  margin: 0px auto;
-  display: grid;
-  align-items: center;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 8px 12px;
+  box-shadow: var(--shadow-2xl);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius);
 }

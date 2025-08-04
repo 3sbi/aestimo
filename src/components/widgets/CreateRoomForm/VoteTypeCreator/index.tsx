@@ -14,7 +14,7 @@ export type CustomVoteCard = VoteCard & { id: number };
 type Props = {
   cards: CustomVoteCard[];
   onChange: (newValues: CustomVoteCard[]) => void;
-  i18n: Dictionary["pages"]["home"]["createRoomForm"]["customVoteCard"];
+  i18n: Dictionary["pages"]["new"]["createRoomForm"]["customVoteCard"];
 };
 
 const VoteTypeCreator: React.FC<Props> = ({ cards, onChange, i18n }) => {

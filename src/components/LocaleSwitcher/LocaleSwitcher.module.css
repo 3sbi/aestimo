@@ -29,5 +29,5 @@
   border-radius: var(--radius);
   border-width: 1px;
   padding: 4px;
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--shadow-lg);
 }

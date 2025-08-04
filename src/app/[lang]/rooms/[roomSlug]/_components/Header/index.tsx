@@ -1,45 +1,56 @@
-import { Button } from "@/components/Button";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
-import { LogOutIcon } from "lucide-react";
-import { AdminLeaveModal } from "./AdminLeaveModal";
-import { BasicLeaveButton } from "./BasicLeaveButton";
 import styles from "./Header.module.css";
 import { ShareButton } from "./InviteButton";
+import AdminSettingsButton from "./Settings";
+import VoteHistory from "./Settings/VoteHistory";
+import { RoundHistory } from "@/types/EventData";
 
 type Props = {
   room: ClientRoom;
-  i18n: Dictionary["pages"]["room"]["header"];
+  setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
+  i18n: Dictionary["pages"]["room"];
   user: Pick<ClientUser, "id" | "role">;
   users: ClientUser[];
+  roundsHistory: Record<number, RoundHistory>;
 };
 
-const Header: React.FC<Props> = ({ i18n, room, user, users }) => {
+const Header: React.FC<Props> = ({
+  i18n,
+  room,
+  setRoom,
+  user,
+  users,
+  roundsHistory,
+}) => {
   return (
-    <header className={styles.roomHeader}>
-      <h2 className="md:text-2xl truncate w-min">{room.name}</h2>
-      <h2 className="font-semibold text-center w-min truncate md:w-full md:text-2xl md:justify-self-center">
-        {`${i18n.round} ${room.round}`}
-      </h2>
-
-      <div className="flex gap-1 justify-self-end">
-        <ShareButton i18n={i18n.share} room={room} />
-        {user.role === "admin" ? (
-          <AdminLeaveModal
-            trigger={
-              <Button variant="destructive" title={i18n.leave} size="icon">
-                <LogOutIcon />
-              </Button>
-            }
-            i18n={i18n}
-            users={users}
-            userId={user.id}
-          />
-        ) : (
-          <BasicLeaveButton i18n={i18n} userId={user.id} />
-        )}
+    <div className="absolute gap-2 justify-between top-5 left-5 flex right-5 z-30">
+      <div className={styles.headerChip}>
+        <div className="flex gap-2 items-center">
+          <b>{room.name}</b>
+          <ShareButton i18n={i18n.header.share} room={room} />
+        </div>
+        <h2
+          className={styles.roundCounter}
+        >{`${i18n.header.round} ${room.round}`}</h2>
       </div>
-    </header>
+      <div className={styles.headerChip}>
+        <VoteHistory i18n={i18n} roundsHistory={roundsHistory} />
+        <ThemeSwitcher />
+        {/* <LocaleSwitcher
+          i18nConfig={i18nConfig}
+          languageNames={getLanguageNames()}
+        /> */}
+        <AdminSettingsButton
+          user={user}
+          users={users}
+          room={room}
+          setRoom={setRoom}
+          i18n={i18n.settings}
+        />
+      </div>
+    </div>
   );
 };
 

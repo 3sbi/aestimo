@@ -5,22 +5,12 @@ import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
 import type { NextRoundEvent, RestartEvent } from "@/types/EventData";
 import { api } from "@/utils/api";
-import {
-  ArrowRightCircleIcon,
-  CircleQuestionMarkIcon,
-  EyeIcon,
-  RotateCwIcon,
-} from "lucide-react";
+import { ArrowRightCircleIcon, EyeIcon, RotateCwIcon } from "lucide-react";
 import React, { useState } from "react";
-import { AutoOpenSwitch } from "./AutorevealSwitch";
-import { DeleteButton } from "./DeleteButton";
-import { PrivateSwitch } from "./PrivateSwitch";
 import styles from "./Toolbar.module.css";
-import Tooltip from "@/components/Tooltip";
 
 type Props = {
   room: ClientRoom;
-  setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
   i18n: Dictionary["pages"]["room"]["toolbar"];
   revealVotes: (data: ClientUser[]) => void;
   restartRound: (data: RestartEvent["data"]) => void;
@@ -29,7 +19,6 @@ type Props = {
 
 const Toolbar: React.FC<Props> = ({
   room,
-  setRoom,
   i18n,
   revealVotes,
   restartRound,
@@ -79,42 +68,27 @@ const Toolbar: React.FC<Props> = ({
   }
 
   return (
-    <div className={styles.toolbarWrapper}>
-      <div className="flex items-center justify-between gap-4 p-2">
-        <PrivateSwitch room={room} setRoom={setRoom} label={i18n.private} />
-        <div className="flex gap-1 items-center">
-          <AutoOpenSwitch
-            room={room}
-            setRoom={setRoom}
-            label={i18n.autoreveal.label}
-          />
-          <Tooltip label={i18n.autoreveal.tooltip}>
-            <CircleQuestionMarkIcon size={16} />
-          </Tooltip>
-        </div>
-      </div>
-      <div className={styles.toolbar}>
-        {room.status !== "finished" && !room.autoreveal && (
-          <Button onClick={onClickReveal} loading={loadingButton === "reveal"}>
-            <EyeIcon />
-            {i18n.reveal}
-          </Button>
-        )}
+    <div className={styles.toolbar}>
+      {room.status !== "finished" && !room.autoreveal && (
+        <Button onClick={onClickReveal} loading={loadingButton === "reveal"}>
+          <EyeIcon />
+          {i18n.reveal}
+        </Button>
+      )}
 
-        {room.status === "finished" && (
-          <Button onClick={onClickNextRound} loading={loadingButton === "next"}>
-            <ArrowRightCircleIcon />
-            {i18n.next}
-          </Button>
-        )}
+      {room.status === "finished" && (
+        <Button onClick={onClickNextRound} loading={loadingButton === "next"}>
+          <ArrowRightCircleIcon />
+          {i18n.next}
+        </Button>
+      )}
 
+      {room.status !== "finished" && (
         <Button onClick={onClickRestart} loading={loadingButton === "restart"}>
           <RotateCwIcon />
           {i18n.restart}
         </Button>
-
-        <DeleteButton room={room} i18n={i18n["delete-modal"]} />
-      </div>
+      )}
     </div>
   );
 };

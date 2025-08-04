@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Button.module.css";
 
 interface Props
   extends React.DetailedHTMLProps<
@@ -24,10 +23,10 @@ const Button: React.FC<Props> = ({
   loading,
   ...rest
 }) => {
-  const classNames: string[] = [styles.btn, styles[variant], styles[size]];
+  const classNames: string[] = ["btn", `${variant}`, `${size}`];
 
   if (loading) {
-    classNames.push(styles.loading);
+    classNames.push("loading");
   }
 
   if (className) {

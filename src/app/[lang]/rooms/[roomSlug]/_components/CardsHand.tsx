@@ -40,7 +40,7 @@ const CardsHand: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex justify-center items-center gap-4 md:gap-6 flex-wrap m-auto">
+    <div className="flex justify-center items-center gap-4 md:gap-6 flex-wrap m-4">
       {voteOptions.map((voteOption, index) => {
         const { color, value } = voteOption;
         const selected: boolean = index === selectedIndex;

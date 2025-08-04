@@ -1,14 +1,21 @@
 import "server-only";
 
-import { CreateRoomForm } from "@/components/widgets/CreateRoomForm/CreateRoomForm";
-import { PublicRoomsList } from "@/components/widgets/PublicRoomsList";
+import Preview from "@/../public/room.png";
+import { Button } from "@/components/Button";
+import { GithubButton } from "@/components/GithubButton";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import type { I18nLocale } from "@/i18n/getDictionary";
-import { getDictionary } from "@/i18n/getDictionary";
-import { PREDEFINED_VOTE_TYPES } from "@/server/consts/predefinedVoteTypes";
+import {
+  getDictionary,
+  getLanguageNames,
+  i18nConfig,
+} from "@/i18n/getDictionary";
 import { usersService } from "@/server/services";
 import { getSession } from "@/server/session";
 import type { Room, User } from "@/types";
-import { cn } from "@/utils/cn";
+import { LinkIcon, RocketIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect, RedirectType } from "next/navigation";
 
@@ -54,23 +61,97 @@ export default async function Home(props: Props) {
   }
 
   return (
-    <div className="m-auto card relative w-[480px] flex flex-col max-h-3/5">
-      <div className="tabs">
-        {Object.entries(i18n.tabs).map(([value, label]) => (
-          <div className={cn("tab", value === tab ? "active" : "")} key={value}>
-            <Link href={`?tab=${value}`}>{label}</Link>
+    <div className="flex flex-col h-full grow">
+      <header className="flex gap-2 py-2 px-4 justify-between">
+        <div className="flex gap-2 items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            stroke="#1a1d23"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect
+              strokeWidth="0"
+              x="0"
+              y="0"
+              width="28"
+              height="28"
+              rx="8"
+              ry="8"
+              fill="#35975c"
+            />
+            <g transform="translate(2,2)">
+              <path d="M19 2v3h3" />
+              <path d="M13.4 10.6 22 2" />
+              <circle cx="12" cy="12" r="2" />
+              <path d="M12.3 6H12a6 6 0 1 0 6 6v-.3" />
+              <path d="M15 2.5A9.93 9.93 0 1 0 21.5 9" />
+              <path d="M5.3 19.4 4 22" />
+              <path d="M18.7 19.4 20 22" />
+            </g>
+          </svg>
+          <div className="text-2xl">Aestimo</div>
+        </div>
+        <div className="flex gap-2 items-center">
+          <LocaleSwitcher
+            i18nConfig={i18nConfig}
+            languageNames={getLanguageNames()}
+          />
+          <ThemeSwitcher />
+          <GithubButton />
+        </div>
+      </header>
+      <section className="grow w-full flex flex-col items-center justify-center px-6 py-16">
+        <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-foreground leading-tight mb-4">
+              {i18n.header}
+            </h1>
+
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6">
+              {i18n.subheader}
+            </p>
+
+            <ul className="space-y-3 text-base md:text-lg text-foreground mb-8">
+              {i18n.advantages.map((advantage) => (
+                <li key={advantage} className="flex items-center gap-2">
+                  {advantage}
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link href="/new?tab=create">
+                <Button variant="primary">
+                  <RocketIcon />
+                  {i18n.buttons.new}
+                </Button>
+              </Link>
+              <Link href="/new?tab=join">
+                <Button variant="secondary">
+                  <LinkIcon />
+                  {i18n.buttons.join}
+                </Button>
+              </Link>
+            </div>
           </div>
-        ))}
-      </div>
-      {tab === "create" && (
-        <CreateRoomForm
-          i18n={i18n.createRoomForm}
-          predefinedVoteTypes={PREDEFINED_VOTE_TYPES}
-        />
-      )}
-      {tab === "join" && (
-        <PublicRoomsList lang={lang} i18n={i18n.joinRoomForm} />
-      )}
+
+          <div className="w-full flex justify-center">
+            <Image
+              src={Preview}
+              alt="room"
+              width={500}
+              height={500}
+              className="rounded-lg shadow-lg w-full max-w-[400px]"
+            />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -9,7 +9,7 @@ import styles from "./PublicRoomsList.module.css";
 
 type Props = {
   lang: I18nLocale;
-  i18n: Dictionary["pages"]["home"]["joinRoomForm"];
+  i18n: Dictionary["pages"]["new"]["joinRoomForm"];
 };
 
 const PublicRoomsList: React.FC<Props> = async ({ lang, i18n }) => {
