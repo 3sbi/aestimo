@@ -20,8 +20,8 @@
 .langOptionsPopup {
   position: absolute;
   width: 96px;
-  top: -80px;
-  right: -60px;
+  top: 36px;
+  right: 8px;
   display: flex;
   flex-direction: column;
   background-color: var(--popover);
