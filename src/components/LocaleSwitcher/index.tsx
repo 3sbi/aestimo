@@ -7,11 +7,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../Button";
 import styles from "./LocaleSwitcher.module.css";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../Tooltip";
 
 type Props = {
   i18nConfig: typeof i18nConfig;
   languageNames: Record<string, string>;
-  title?: string;
+  title: string;
 };
 
 const LocaleSwitcher: React.FC<Props> = ({
@@ -67,16 +68,20 @@ const LocaleSwitcher: React.FC<Props> = ({
 
   return (
     <div className={styles.langSwitcher}>
-      <Button
-        variant="secondary"
-        size="icon"
-        ref={btnRef}
-        className={styles.langSwitcherBtn}
-        onClick={() => setOpened(!opened)}
-        title={title}
-      >
-        <LanguagesIcon size={18} />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="secondary"
+            size="icon"
+            ref={btnRef}
+            className={styles.langSwitcherBtn}
+            onClick={() => setOpened(!opened)}
+          >
+            <LanguagesIcon size={18} />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{title}</TooltipContent>
+      </Tooltip>
       {opened && (
         <div className={styles.langOptionsPopup} ref={modalRef}>
           {i18nConfig.locales.map((option: I18nLocale) => {

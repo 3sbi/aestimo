@@ -32,7 +32,7 @@ const KickButton: React.FC<Props> = ({ userId, kickUser, title }) => {
   return (
     <div className={styles.kickButton}>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <Button
             size="icon"
             variant="secondary"

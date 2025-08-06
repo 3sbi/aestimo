@@ -1,7 +1,12 @@
 import "server-only";
 
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 import type { I18nLocale } from "@/i18n/getDictionary";
-import { getDictionary } from "@/i18n/getDictionary";
+import {
+  getDictionary,
+  getLanguageNames,
+  i18nConfig,
+} from "@/i18n/getDictionary";
 import { roomsService, usersService } from "@/server/services";
 import { getSession } from "@/server/session";
 import type { ClientUser, Room, User, Vote } from "@/types";
@@ -69,16 +74,20 @@ export default async function Page({ params }: Props) {
   const i18n = getDictionary(lang).pages.room;
 
   return (
-    <>
-      <RoomWrapper
-        i18n={i18n}
-        user={{ id: user.id, role: user.role }}
-        voteOptions={voteOptions}
-        initialRoom={room}
-        initialUsersList={usersList}
-        initialSelectedIndex={index}
-        initialRoundsHistory={roundsHistory}
+    <RoomWrapper
+      i18n={i18n}
+      user={{ id: user.id, role: user.role }}
+      voteOptions={voteOptions}
+      initialRoom={room}
+      initialUsersList={usersList}
+      initialSelectedIndex={index}
+      initialRoundsHistory={roundsHistory}
+    >
+      <LocaleSwitcher
+        i18nConfig={i18nConfig}
+        languageNames={getLanguageNames()}
+        title={i18n.settings.language}
       />
-    </>
+    </RoomWrapper>
   );
 }

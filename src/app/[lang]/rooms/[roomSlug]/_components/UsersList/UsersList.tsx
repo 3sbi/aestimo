@@ -1,5 +1,6 @@
 "use client";
 
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientUser } from "@/types";
 import { getContrastYIQ } from "@/utils/colors";
@@ -63,9 +64,12 @@ const UsersList: React.FC<Props> = ({
                 </small>
               )}
               {userIsAdmin && (
-                <div title={"admin"}>
-                  <CrownIcon width={20} />
-                </div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <CrownIcon width={12} />
+                  </TooltipTrigger>
+                  <TooltipContent>{i18n.admin}</TooltipContent>
+                </Tooltip>
               )}
             </h2>
             {isAdmin && !isCurrentUser && (

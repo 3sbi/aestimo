@@ -10,6 +10,7 @@
   position: fixed;
   z-index: 120;
   padding: 0;
+  cursor: pointer;
 }
 
 .modal {
@@ -21,4 +22,5 @@
   padding: 20px 12px;
   border-width: 1px;
   border-radius: var(--radius);
+  cursor: auto;
 }

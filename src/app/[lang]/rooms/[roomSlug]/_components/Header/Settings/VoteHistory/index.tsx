@@ -4,6 +4,7 @@ import type { RoundHistory } from "@/types/EventData";
 import { HistoryIcon } from "lucide-react";
 import { useState } from "react";
 import VoteHistoryDrawer from "./VoteHistoryDrawer";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/Tooltip";
 
 type Props = {
   i18n: Dictionary["pages"]["room"];
@@ -13,16 +14,23 @@ type Props = {
 const VoteHistory: React.FC<Props> = ({ i18n, roundsHistory }) => {
   const [opened, setOpened] = useState<boolean>(false);
 
+  const title = i18n["vote-history"].header;
   return (
     <>
-      <Button
-        variant="secondary"
-        size="icon"
-        title={i18n["vote-history"].header}
-        onClick={() => setOpened(!opened)}
-      >
-        <HistoryIcon />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="secondary"
+            size="icon"
+            title={title}
+            onClick={() => setOpened(!opened)}
+          >
+            <HistoryIcon />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{title}</TooltipContent>
+      </Tooltip>
+
       <VoteHistoryDrawer
         opened={opened}
         i18n={i18n["vote-history"]}

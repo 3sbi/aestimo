@@ -25,6 +25,7 @@ type Props = {
   user: Pick<User, "id" | "role">;
   i18n: Dictionary["pages"]["room"];
   initialRoundsHistory: Record<Vote["round"], RoundHistory>;
+  children: React.ReactNode;
 };
 
 export const RoomWrapper: React.FC<Props> = ({
@@ -35,6 +36,7 @@ export const RoomWrapper: React.FC<Props> = ({
   i18n,
   voteOptions,
   user,
+  children,
 }) => {
   const router = useRouter();
   const [room, setRoom] = useState<ClientRoom>(initialRoom);
@@ -202,7 +204,9 @@ export const RoomWrapper: React.FC<Props> = ({
           user={user}
           setRoom={setRoom}
           roundsHistory={roundsHistory}
-        />
+        >
+          {children}
+        </Header>
         <div className="flex flex-col gap-4 m-auto">
           <UsersList
             users={users}

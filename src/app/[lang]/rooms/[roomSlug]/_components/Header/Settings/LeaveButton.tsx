@@ -62,9 +62,9 @@ const LeaveButton: React.FC<Props> = ({ user, i18n, users }) => {
       variant="destructive"
       onClick={() => onLeave()}
       title={i18n.label}
-      size="icon"
       loading={loading}
     >
+      {i18n.label}
       <LogOutIcon />
     </Button>
   );

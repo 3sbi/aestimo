@@ -1,13 +1,15 @@
+import { GithubButton } from "@/components/GithubButton";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
+import { RoundHistory } from "@/types/EventData";
 import styles from "./Header.module.css";
 import { ShareButton } from "./InviteButton";
 import AdminSettingsButton from "./Settings";
 import VoteHistory from "./Settings/VoteHistory";
-import { RoundHistory } from "@/types/EventData";
 
 type Props = {
+  children: React.ReactNode;
   room: ClientRoom;
   setRoom: React.Dispatch<React.SetStateAction<ClientRoom>>;
   i18n: Dictionary["pages"]["room"];
@@ -23,6 +25,7 @@ const Header: React.FC<Props> = ({
   user,
   users,
   roundsHistory,
+  children,
 }) => {
   return (
     <div className="absolute gap-2 justify-between top-5 left-5 flex right-5 z-30">
@@ -37,11 +40,6 @@ const Header: React.FC<Props> = ({
       </div>
       <div className={styles.headerChip}>
         <VoteHistory i18n={i18n} roundsHistory={roundsHistory} />
-        <ThemeSwitcher />
-        {/* <LocaleSwitcher
-          i18nConfig={i18nConfig}
-          languageNames={getLanguageNames()}
-        /> */}
         <AdminSettingsButton
           user={user}
           users={users}
@@ -49,6 +47,9 @@ const Header: React.FC<Props> = ({
           setRoom={setRoom}
           i18n={i18n.settings}
         />
+        <ThemeSwitcher title={i18n.settings.theme} />
+        {children}
+        <GithubButton />
       </div>
     </div>
   );

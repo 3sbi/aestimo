@@ -59,6 +59,7 @@
 
     "room": {
       "settings": {
+        "label": "Settings",
         "leave": {
           "label": "Leave",
           "select-new-admin": "Select a new admin:",
@@ -69,6 +70,8 @@
             "cancel": "Cancel"
           }
         },
+        "theme": "Change theme",
+        "language": "Change language",
         "private": "Private room",
         "autoreveal": {
           "label": "Auto reveal",

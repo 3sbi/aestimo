@@ -42,10 +42,6 @@
   align-items: center;
 }
 
-.userCard svg {
-  width: 12px;
-}
-
 .userCard .kickButton {
   display: none;
   transition-property: all;
