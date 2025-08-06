@@ -1,6 +1,6 @@
 # Aestimo - self-hosted planning poker web app
 
-![screenshoot](./public/room.png)
+![screenshoot](./public/room.webp)
 
 ## Getting Started
 

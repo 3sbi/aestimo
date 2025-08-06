@@ -1,6 +1,5 @@
 import "server-only";
 
-import Preview from "@/../public/room.png";
 import { Button } from "@/components/Button";
 import { GithubButton } from "@/components/GithubButton";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
@@ -142,11 +141,9 @@ export default async function Home(props: Props) {
 
           <div className="w-full flex justify-center">
             <Image
-              src={Preview}
+              src="/room.webp"
               alt="room"
-              width={500}
-              height={500}
-              className="rounded-lg shadow-lg w-full max-w-[400px]"
+              className="rounded-lg shadow-lg w-full"
             />
           </div>
         </div>

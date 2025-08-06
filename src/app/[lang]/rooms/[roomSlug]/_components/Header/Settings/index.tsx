@@ -1,6 +1,5 @@
 import { Button } from "@/components/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
 import { SettingsIcon } from "lucide-react";
