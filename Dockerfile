@@ -15,4 +15,7 @@ COPY --from=builder /build/. ./
 RUN chmod 755 /app/entrypoint.sh
 EXPOSE 3000
 
+RUN sed -i 's/\r$//' /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
+
 ENTRYPOINT ["/app/entrypoint.sh"]
