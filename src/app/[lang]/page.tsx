@@ -61,7 +61,7 @@ export default async function Home(props: Props) {
 
   return (
     <div className="flex flex-col h-full grow">
-      <header className="flex gap-2 py-2 px-4 justify-between">
+      <header className="flex gap-2 p-4 justify-between items-center m-auto w-full xl:max-w-6xl">
         <Link href={`/${lang}`} className="flex gap-2 items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +104,7 @@ export default async function Home(props: Props) {
           <GithubButton />
         </div>
       </header>
-      <section className="grow w-full flex flex-col items-center justify-center px-6 py-16">
+      <section className="grow w-full flex flex-col items-center justify-center px-6 py-16 xl:max-w-6xl m-auto">
         <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-foreground leading-tight mb-4">
@@ -142,6 +142,8 @@ export default async function Home(props: Props) {
           <div className="w-full flex justify-center">
             <Image
               src="/room.webp"
+              width={550}
+              height={458}
               alt="room"
               className="rounded-lg shadow-lg w-full"
             />
