@@ -36,9 +36,13 @@ There are a lot of alternatives, even open-sourced ones here on github, but I fi
 
 ## env
 
-| Name             | Description                                                                                                                                                                                                                          | Default      |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
-| PORT             |                                                                                                                                                                                                                                      | 3000         |
-| NODE_ENV         | `production` or `development`                                                                                                                                                                                                        | `production` |
-| SESSION_SECRET\* | Session secret is required by iron-session, [it should be at least 32 characters long](https://github.com/vvo/iron-session?tab=readme-ov-file#session-options), you can [generate it here](https://1password.com/password-generator) |              |
-| DATABASE_URL\*   |                                                                                                                                                                                                                                      |              |
+| Name                | Description                                                                                             | Default      |
+| ------------------- | ------------------------------------------------------------------------------------------------------- | ------------ |
+| PORT                |                                                                                                         | 3000         |
+| NODE_ENV            | `production` or `development`                                                                           | `production` |
+| SESSION_SECRET\*    | [should be 32+ characters long](https://github.com/vvo/iron-session?tab=readme-ov-file#session-options) |              |
+| POSTGRES_USER\*     |                                                                                                         |              |
+| POSTGRES_PASSWORD\* |                                                                                                         |              |
+| POSTGRES_DB\*       |                                                                                                         |              |
+| POSTGRES_HOST\*     |                                                                                                         |              |
+| POSTGRES_PORT\*     |                                                                                                         |              |
