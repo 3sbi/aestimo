@@ -1,5 +1,6 @@
 import { Button } from "@/components/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
 import type { Dictionary } from "@/i18n/getDictionary";
 import type { ClientRoom, ClientUser } from "@/types";
 import { SettingsIcon } from "lucide-react";
@@ -25,9 +26,16 @@ const AdminSettingsButton: React.FC<Props> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary" size="icon">
-          <SettingsIcon />
-        </Button>
+        <div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <SettingsIcon />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{i18n.label}</TooltipContent>
+          </Tooltip>
+        </div>
       </PopoverTrigger>
       <PopoverContent>
         <div className="flex flex-col gap-3">
@@ -45,7 +53,12 @@ const AdminSettingsButton: React.FC<Props> = ({
               />
             </>
           )}
-          <LeaveButton user={user} i18n={i18n.leave} users={users} />
+          <LeaveButton
+            roomSlug={room.slug}
+            user={user}
+            i18n={i18n.leave}
+            users={users}
+          />
         </div>
       </PopoverContent>
     </Popover>

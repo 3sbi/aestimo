@@ -81,7 +81,10 @@
 
       "header": {
         "round": "Round",
-        "share": { "title": "Share", "tooltip": "Copied!" }
+        "share": {
+          "title": "Share",
+          "copied": "Copied!"
+        }
       },
 
       "toolbar": {

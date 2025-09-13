@@ -11,7 +11,7 @@ const GithubButton = () => {
     >
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="secondary" size="icon">
+          <Button variant="ghost" size="icon">
             <svg
               role="img"
               viewBox="0 0 24 24"

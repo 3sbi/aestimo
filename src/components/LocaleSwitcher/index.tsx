@@ -71,7 +71,7 @@ const LocaleSwitcher: React.FC<Props> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            variant="secondary"
+            variant="ghost"
             size="icon"
             ref={btnRef}
             className={styles.langSwitcherBtn}

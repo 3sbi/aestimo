@@ -116,8 +116,6 @@ select {
   flex-grow: 1;
 }
 
-
-
 button.btn {
   display: inline-flex;
   padding-top: 0.5rem;
@@ -135,7 +133,6 @@ button.btn {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   cursor: pointer;
-  border-width: 0px;
   border: 1px solid transparent;
 }
 
@@ -156,9 +153,19 @@ button.btn:disabled {
   cursor: not-allowed;
 }
 
+button.btn.ghost {
+  color: var(--secondary-foreground);
+  fill: var(--secondary-foreground);
+}
+
+button.btn.ghost:hover {
+  background-color: color-mix(in oklab, var(--accent) 80%, transparent);
+}
+
 button.btn.secondary {
   color: var(--secondary-foreground);
   fill: var(--secondary-foreground);
+  border-color: var(--foreground);
 }
 
 button.btn.secondary:hover {

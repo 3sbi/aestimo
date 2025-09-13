@@ -14,15 +14,28 @@ type Props = {
   user: Pick<ClientUser, "id" | "role">;
   i18n: Dictionary["pages"]["room"]["settings"]["leave"];
   users: ClientUser[];
+  roomSlug: string;
 };
 
-const LeaveButton: React.FC<Props> = ({ user, i18n, users }) => {
+const LeaveButton: React.FC<Props> = ({ user, i18n, users, roomSlug }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  async function onLeave(newAdminId?: number) {
-    if (loading) return;
-    setLoading(true);
+  async function deleteRoom() {
+    try {
+      const res = await api.delete(`/api/rooms/${roomSlug}`);
+      if (res.ok) {
+        router.replace("/");
+      } else {
+        const data = await res.json();
+        toast.error(data.error);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function removeUser(newAdminId?: number) {
     try {
       const res = await api.delete(
         `/api/users/${user.id}`,
@@ -35,18 +48,17 @@ const LeaveButton: React.FC<Props> = ({ user, i18n, users }) => {
         toast.error(data.error);
       }
     } catch (err) {
-      setLoading(false);
       console.error(err);
     }
   }
 
-  if (user.role === "admin") {
+  if (user.role === "admin" && users.length > 1) {
     return (
       <AdminLeaveModal
         i18n={i18n}
         userId={user.id}
         users={users}
-        onLeave={onLeave}
+        onLeave={removeUser}
         trigger={
           <Button variant="destructive" title={i18n.label} loading={loading}>
             {i18n.label}
@@ -60,7 +72,16 @@ const LeaveButton: React.FC<Props> = ({ user, i18n, users }) => {
   return (
     <Button
       variant="destructive"
-      onClick={() => onLeave()}
+      onClick={() => {
+        if (loading) return;
+        setLoading(true);
+        if (user.role === "admin" && users.length === 1) {
+          deleteRoom();
+        } else {
+          removeUser();
+        }
+        setLoading(false);
+      }}
       title={i18n.label}
       loading={loading}
     >

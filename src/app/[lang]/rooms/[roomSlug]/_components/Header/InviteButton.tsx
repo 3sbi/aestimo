@@ -14,6 +14,7 @@ type Props = {
 
 const ShareButton: React.FC<Props> = ({ i18n, room }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [opened, setOpened] = useState<boolean>(false);
 
   async function onClickInvite() {
     setLoading(true);
@@ -22,25 +23,26 @@ const ShareButton: React.FC<Props> = ({ i18n, room }) => {
       await navigator.clipboard.writeText(url);
       setTimeout(() => {
         setLoading(false);
-      }, 500);
+      }, 800);
     } catch (err) {
       console.error(err);
       setLoading(false);
     }
   }
   return (
-    <Tooltip open={loading}>
+    <Tooltip open={opened}>
       <TooltipTrigger asChild>
         <Button
-          variant="secondary"
+          variant="ghost"
           size="icon"
           onClick={onClickInvite}
-          title={i18n.title}
+          onMouseOver={() => setOpened(true)}
+          onMouseLeave={() => setOpened(false)}
         >
           <Share2Icon size={14} />
         </Button>
       </TooltipTrigger>
-      <TooltipContent>{i18n.tooltip}</TooltipContent>
+      <TooltipContent>{loading ? i18n.copied : i18n.title}</TooltipContent>
     </Tooltip>
   );
 };

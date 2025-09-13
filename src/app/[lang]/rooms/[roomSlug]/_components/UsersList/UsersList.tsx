@@ -66,7 +66,7 @@ const UsersList: React.FC<Props> = ({
               {userIsAdmin && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <CrownIcon width={12} />
+                    <CrownIcon width={12} style={{ minWidth: "12px" }} />
                   </TooltipTrigger>
                   <TooltipContent>{i18n.admin}</TooltipContent>
                 </Tooltip>

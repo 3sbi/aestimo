@@ -20,7 +20,7 @@ const VoteHistory: React.FC<Props> = ({ i18n, roundsHistory }) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            variant="secondary"
+            variant="ghost"
             size="icon"
             title={title}
             onClick={() => setOpened(!opened)}

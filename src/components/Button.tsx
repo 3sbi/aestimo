@@ -5,7 +5,7 @@ interface Props
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  variant?: "primary" | "secondary" | "destructive";
+  variant?: "primary" | "secondary" | "destructive" | "ghost";
   size?: "default" | "icon";
   children: React.ReactNode;
   style?: React.CSSProperties;
