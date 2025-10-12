@@ -8,12 +8,6 @@
     "home": {
       "header": "Aestimo",
       "subheader": "planning poker app to estimate user stories",
-      "advantages": [
-        "🧠 100% open source",
-        "🧑‍💻 Perfect for sprint planning and grooming sessions",
-        "🔒 No sign-up or emails, join with a link",
-        "🃏 Use classic planning poker cards (Fibonacci, T-shirt) or create a custom set of cards"
-      ],
 
       "buttons": {
         "new": "Create",

@@ -87,14 +87,6 @@ export default async function Home(props: Props) {
               {i18n.pages.home.subheader}
             </p>
 
-            <ul className="space-y-3 text-base md:text-lg text-foreground mb-8">
-              {i18n.pages.home.advantages.map((advantage) => (
-                <li key={advantage} className="flex items-center gap-2">
-                  {advantage}
-                </li>
-              ))}
-            </ul>
-
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link href="/new?tab=create">
                 <Button variant="primary">
