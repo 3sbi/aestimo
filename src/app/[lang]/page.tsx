@@ -63,35 +63,7 @@ export default async function Home(props: Props) {
     <div className="flex flex-col h-full grow">
       <header className="flex gap-2 p-4 justify-between items-center m-auto w-full xl:max-w-6xl">
         <Link href={`/${lang}`} className="flex gap-2 items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
-            viewBox="0 0 28 28"
-            fill="none"
-            stroke="#1a1d23"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <rect
-              strokeWidth="0"
-              x="0"
-              y="0"
-              width="28"
-              height="28"
-              rx="8"
-              ry="8"
-              fill="#35975c"
-            />
-            <g transform="translate(2,2)">
-              <path d="M19 2v3h3" />
-              <path d="M13.4 10.6 22 2" />
-              <circle cx="12" cy="12" r="2" />
-              <path d="M12.3 6H12a6 6 0 1 0 6 6v-.3" />
-              <path d="M15 2.5A9.93 9.93 0 1 0 21.5 9" />
-            </g>
-          </svg>
+          <Image src="./icon.svg" alt="icon" width={32} height={32} />
           <div className="text-2xl">Aestimo</div>
         </Link>
         <div className="flex gap-2 items-center">

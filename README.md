@@ -1,4 +1,6 @@
-# Aestimo - self-hosted planning poker web app
+# Aestimo <img src="./src/app/icon.svg" alt="logo" width="24" />
+
+Aestimo is a planning poker web app
 
 ![screenshoot](./public/room.webp)
 
@@ -31,8 +33,9 @@ There are a lot of alternatives, even open-sourced ones here on github, but I fi
 
 ## Acknowledgements
 
-- [Next.js Documentation](https://nextjs.org/docs) - This porject uses Next.js, learn about their features and API from docs.
+- [Next.js Documentation](https://nextjs.org/docs)
 - [Planning Poker website](https://planning-poker-agile.web.app/) - This project took huge inspiration from [planning-poker](https://github.com/hellomuthu23/planning-poker), especially cards' color scheme. Support them with your star as well!
+- [ray.so](https://ray.so/icon) - favicon is made with their icon builder.
 
 ## env
 
