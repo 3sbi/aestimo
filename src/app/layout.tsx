@@ -4,7 +4,7 @@ import {
   getDictionary,
   i18nConfig
 } from "@/i18n/getDictionary";
-import { LOCALE_HEADER_KEY } from "@/middleware";
+import { LOCALE_HEADER_KEY } from "@/proxy";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Roboto } from "next/font/google";

@@ -6,10 +6,9 @@ until nc -z db 5432; do
   sleep 1
 done
 
-
-echo "Running migrations..."
+echo -e "Running migrations...\n"
 npx drizzle-kit migrate
-
+echo -e "Completed!\n"
 
 echo "Starting app..."
 npm run start

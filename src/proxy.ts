@@ -19,7 +19,7 @@ function getLocale(request: NextRequest): string {
   return locale;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const requestHeaders: Headers = new Headers(request.headers);
   const { pathname } = request.nextUrl;
 
