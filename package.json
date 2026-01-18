@@ -12,7 +12,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.15",
@@ -36,6 +39,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
     "@formatjs/intl-localematcher": "^0.6.2",
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/negotiator": "^0.6.4",
     "@types/node": "^24.10.1",
