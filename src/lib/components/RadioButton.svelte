@@ -54,7 +54,7 @@
 		border-radius: 50%;
 		position: relative;
 		transition: border-color 0.2s ease;
-		background-color: var(--background);
+		background-color: var(--color-input);
 		box-shadow: var(--shadow-xs);
 	}
 
@@ -65,7 +65,7 @@
 		left: 0.25rem;
 		width: 0.5em;
 		height: 0.5em;
-		background-color: var(--ring);
+		background-color: var(--color-ring);
 		border-radius: 50%;
 		transform: scale(0);
 		transition: transform 0.2s ease;
@@ -76,7 +76,7 @@
 	}
 
 	.radioContainer input:focus-visible + .customRadio {
-		outline: 2px solid var(--ring);
+		outline: 2px solid var(--color-ring);
 		outline-offset: 2px;
 	}
 
@@ -95,6 +95,6 @@
 		gap: 0.25rem;
 		width: 100%;
 		font-size: 14px;
-		color: var(--foreground);
+		color: var(--color-foreground);
 	}
 </style>

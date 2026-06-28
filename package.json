@@ -48,6 +48,7 @@
 		"zod": "^4.4.3"
 	},
 	"dependencies": {
-		"@lucide/svelte": "^1.17.0"
+		"@lucide/svelte": "^1.17.0",
+		"svelte-sonner": "^1.1.1"
 	}
 }

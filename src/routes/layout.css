@@ -1,27 +1,27 @@
 @import 'tailwindcss';
 
 :root {
-	--background: #f9f9fa;
-	--foreground: #0f1419;
-	--card: #f7f8f8;
-	--card-foreground: #0f1419;
-	--popover: #f7f8f8;
-	--popover-foreground: #0f1419;
-	--primary: #2e7d32;
-	--primary-active: hsl(140, 53%, 34%);
-	--primary-foreground: #ffffff;
-	--secondary: #e8f5e9;
-	--secondary-foreground: #1b5e20;
-	--muted: #f0e9e0;
-	--muted-foreground: #0f1419;
-	--accent: #c8e6c9;
-	--accent-foreground: #1b5e20;
-	--destructive: #c62828;
-	--destructive-foreground: #ffffff;
-	--border: #e0d6c9;
-	--input: #e0d6c9;
-	--ring: #2e7d32;
-	--radius: 0.5rem;
+	--color-background: #f3faff;
+	--color-foreground: #09131a;
+	--color-card: #ffffff;
+	--color-card-foreground: #09131a;
+	--color-popover: #ffffff;
+	--color-popover-foreground: #09131a;
+	--color-primary: #00a33d;
+	--color-primary-foreground: #f3faff;
+	--color-secondary: #e0edf8;
+	--color-secondary-foreground: #202a32;
+	--color-muted: #e0edf8;
+	--color-muted-foreground: #4c575f;
+	--color-accent: #28bc5e;
+	--color-accent-foreground: #f3faff;
+	--color-destructive: #f22a36;
+	--color-destructive-foreground: #f3faff;
+	--color-border: #d3e0ea;
+	--color-input: #d3e0ea;
+	--color-ring: #00a33d;
+
+	--radius: 0.75rem;
 	--shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
 	--shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
 	--shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
@@ -30,31 +30,26 @@
 	--shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
 	--shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
 	--shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-
-	--radix-popover-content-transform-origin: 50% 0px;
 }
 
 :root[data-theme='dark'] {
-	--background: hsl(220 15% 12%);
-	--foreground: hsl(0 0% 90%);
-	--card: hsl(197 7% 20%);
-	--card-foreground: hsl(0 0% 90%);
-	--popover: hsl(197 7% 20%);
-	--popover-foreground: hsl(0 0% 90%);
-	--primary: hsl(144 48% 40%);
-	--primary-foreground: hsl(0 0% 100%);
-	--secondary: hsl(143.8 61.2% 20.2%);
-	--secondary-foreground: hsl(0 0% 90%);
-	--muted: hsl(0 0% 27%);
-	--muted-foreground: hsl(0 0% 64%);
-	--accent: hsl(144 47.0588% 20%);
-	--accent-foreground: hsl(0 0% 100%);
-	--destructive: hsl(0 84% 60%);
-	--destructive-foreground: hsl(0 0% 100%);
-	--border: hsl(0 0% 27%);
-	--input: hsl(0 0% 27%);
-	--ring: hsl(144 48% 40%);
-	--radius: 0.5rem;
+	--color-background: #02080e;
+	--color-foreground: #e9f0f5;
+	--color-card: #09131a;
+	--color-card-foreground: #e9f0f5;
+	--color-input: #202a32;
+	--color-border: #202a32;
+	--color-ring: #2fbc5b;
+	--color-primary: #2fbc5b;
+	--color-primary-foreground: #000408;
+	--color-secondary: #172128;
+	--color-secondary-foreground: #e9f0f5;
+	--color-muted: #172128;
+	--color-muted-foreground: #85919a;
+	--color-destructive: hsl(0 84% 60%);
+	--color-destructive-foreground: hsl(0 0% 100%);
+
+	--radius: 0.75rem;
 	--shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
 	--shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
 	--shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
@@ -99,6 +94,12 @@
 		box-shadow 0.2s ease;
 }
 
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-border) transparent;
+	border-color: var(--color-border);
+}
+
 html,
 :host {
 	font-style: normal;
@@ -106,13 +107,51 @@ html,
 	line-height: 24px;
 	font-family: 'Nunito', sans-serif;
 }
+
 body {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 	overscroll-behavior: none;
-	background-color: var(--background);
-	color: var(--foreground);
+	background-color: var(--color-background);
+	color: var(--color-foreground);
 	font-synthesis-weight: none;
 	text-rendering: optimizeLegibility;
+}
+
+button {
+	display: inline-flex;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
+	border-radius: 0.5rem;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	font-weight: 500;
+	white-space: nowrap;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 300ms;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+button {
+	color: var(--color-primary-foreground);
+	background-color: var(--color-primary);
+}
+
+button:hover {
+	background-color: color-mix(in oklab, var(--color-primary) 90%, transparent);
+}
+
+button:active {
+	background-color: var(--color-accent);
+}
+
+button:disabled {
+	cursor: not-allowed;
 }

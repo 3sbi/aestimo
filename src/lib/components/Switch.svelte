@@ -39,7 +39,7 @@
 	.switchSlider {
 		position: absolute;
 		inset: 0;
-		background-color: var(--background);
+		background-color: var(--color-background);
 		border-width: 1px;
 		border-radius: 9999px;
 		transition: background-color 0.2s;
@@ -52,23 +52,23 @@
 		top: 3px;
 		height: 16px;
 		width: 16px;
-		background-color: var(--foreground);
+		background-color: var(--color-foreground);
 		border-radius: 9999px;
 		transition: transform 0.2s;
 		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	}
 
 	.switchContainer input:checked + .switchSlider {
-		background-color: var(--primary);
+		background-color: var(--color-primary);
 	}
 
 	.switchContainer input:checked + .switchSlider::before {
 		transform: translateX(18px);
-		background-color: var(--primary-foreground);
+		background-color: var(--color-primary-foreground);
 	}
 
 	.switchContainer input:focus-visible + .switchSlider {
-		outline: 2px solid var(--ring);
+		outline: 2px solid var(--color-ring);
 		outline-offset: 2px;
 	}
 

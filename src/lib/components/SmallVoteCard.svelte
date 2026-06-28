@@ -7,7 +7,13 @@
 	const textColor = $derived(getContrastYIQ(color));
 </script>
 
-<div title={value} class="smallVoteCard" class:rainbow style:color={textColor}>
+<div
+	title={value}
+	class="smallVoteCard"
+	class:rainbow
+	style:color={textColor}
+	style:background={color}
+>
 	{value}
 </div>
 

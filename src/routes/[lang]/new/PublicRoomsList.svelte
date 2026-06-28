@@ -50,7 +50,7 @@
 		cursor: pointer;
 		display: flex;
 		align-items: center;
-		border-bottom: 1px solid var(--border);
+		border-bottom: 1px solid var(--color-border);
 		gap: 8px;
 	}
 
@@ -77,6 +77,6 @@
 		gap: 12px;
 		align-items: center;
 		text-align: center;
-		color: var(--muted-foreground);
+		color: var(--color-muted-foreground);
 	}
 </style>
