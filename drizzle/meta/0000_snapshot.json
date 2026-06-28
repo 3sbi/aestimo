@@ -1,5 +1,5 @@
 {
-  "id": "ee8c2990-0fdf-4989-86f9-10a5d995fb21",
+  "id": "226bcd61-ffb9-4cd4-8e3f-a72cb40d8af5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -69,6 +69,13 @@
         },
         "private": {
           "name": "private",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "autoreveal": {
+          "name": "autoreveal",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,

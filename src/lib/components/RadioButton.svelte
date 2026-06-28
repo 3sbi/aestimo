@@ -1,0 +1,100 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	type Props = {
+		id: string;
+		name: string;
+		value: string;
+		checked: boolean;
+		disabled?: boolean;
+		onChange?: (event: Event) => void;
+		children?: Snippet;
+	};
+	let { id, name, value, checked, disabled = false, onChange, children }: Props = $props();
+</script>
+
+<label class="radioContainer" class:disabled>
+	<input
+		{id}
+		type="radio"
+		{name}
+		{value}
+		{checked}
+		{disabled}
+		onchange={(event) => onChange?.(event)}
+	/>
+
+	<span class="customRadio"></span>
+
+	{#if children}
+		<div class="radioLabel">
+			{@render children()}
+		</div>
+	{/if}
+</label>
+
+<style>
+	.radioContainer {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		cursor: pointer;
+		position: relative;
+		user-select: none;
+		font-family: system-ui, sans-serif;
+	}
+
+	.radioContainer input {
+		opacity: 0;
+		position: absolute;
+	}
+
+	.customRadio {
+		min-width: 16px;
+		min-height: 16px;
+		border-radius: 50%;
+		position: relative;
+		transition: border-color 0.2s ease;
+		background-color: var(--background);
+		box-shadow: var(--shadow-xs);
+	}
+
+	.customRadio::after {
+		content: '';
+		position: absolute;
+		top: 0.25rem;
+		left: 0.25rem;
+		width: 0.5em;
+		height: 0.5em;
+		background-color: var(--ring);
+		border-radius: 50%;
+		transform: scale(0);
+		transition: transform 0.2s ease;
+	}
+
+	.radioContainer input:checked + .customRadio::after {
+		transform: scale(1);
+	}
+
+	.radioContainer input:focus-visible + .customRadio {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+
+	.radioContainer:hover .customRadio {
+		border-color: #9ca3af;
+	}
+
+	.radioContainer.disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	.radioLabel {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		width: 100%;
+		font-size: 14px;
+		color: var(--foreground);
+	}
+</style>

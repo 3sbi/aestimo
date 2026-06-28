@@ -1,0 +1,107 @@
+import type { TransferAdminRightsDto } from '$lib/server/dtos';
+import { RoomNotFoundError, UserNotFoundError } from '$lib/server/errors';
+import { UserNotAdminError } from '$lib/server/errors/Users';
+import { RoomRepository, UserRepository, VoteRepository } from '$lib/server/repositories';
+import type { Room, User } from '$lib/types';
+
+class UsersService {
+	async getOne(id: User['id']): Promise<User> {
+		const user = await UserRepository.getById(id);
+		if (!user) {
+			throw new UserNotFoundError();
+		}
+		return user.users;
+	}
+
+	async isAdmin(): Promise<{ isAdmin: boolean; userId: User['id'] }> {
+		const { userId, roomSlug } = await getSession();
+		if (typeof roomSlug !== 'string') {
+			throw new RoomNotFoundError();
+		}
+		if (typeof userId !== 'number') {
+			throw new UserNotFoundError();
+		}
+		const data = await UserRepository.getById(userId);
+		if (!data || !data.users) {
+			throw new UserNotFoundError();
+		}
+		const user = data.users;
+		const isAdmin: boolean = user.role === 'admin' && roomSlug === data.rooms?.slug;
+		return { isAdmin, userId };
+	}
+
+	async checkIfUserExistsInRoom(
+		slug: Room['slug'],
+		userId: User['id']
+	): Promise<{ user: User; room: Room }> {
+		const room = await RoomRepository.getBySlug(slug);
+		if (!room) {
+			throw new RoomNotFoundError();
+		}
+
+		const users = await UserRepository.getAllByRoomId(room.id);
+		const user = users.find((user) => user.id === userId);
+		if (!user) {
+			throw new UserNotFoundError();
+		}
+
+		return { user, room };
+	}
+
+	async getVoteIndex(id: User['id'], room: Room): Promise<number | null> {
+		const votes = await VoteRepository.getAllRoundVotes(room.id, room.round);
+		const option = votes.find((vote) => vote.userId === id)?.option;
+		const index = room.voteOptions.findIndex(
+			({ value, color }) => value === option?.value && color === option.color
+		);
+		if (index === -1) {
+			return null;
+		}
+		return index;
+	}
+
+	/* basically soft-delete */
+	async leave(id: User['id']): Promise<User> {
+		const user = await UserRepository.update(id, { deleted: true });
+		if (!user) {
+			throw new UserNotFoundError();
+		}
+		return user;
+	}
+
+	async transferAdminRights(data: TransferAdminRightsDto): Promise<User> {
+		const { newAdminId, oldAdminId } = data;
+		const oldAdmin = (await UserRepository.getById(oldAdminId))?.users;
+		const newAdmin = (await UserRepository.getById(newAdminId))?.users;
+		if (!oldAdmin || !newAdmin) {
+			throw new UserNotFoundError();
+		}
+
+		if (oldAdmin?.roomId !== newAdmin?.roomId) {
+			// if user is from another room, it is basically not found, isn't it? =)
+			throw new UserNotFoundError();
+		}
+
+		if (oldAdmin.role !== 'admin') {
+			throw new UserNotAdminError();
+		}
+
+		await UserRepository.update(oldAdmin.id, { role: 'basic' });
+		const user = await UserRepository.update(newAdmin.id, { role: 'admin' });
+		if (!user) {
+			throw new UserNotFoundError();
+		}
+		return user;
+	}
+
+	async update(id: User['id'], data: Partial<Pick<User, 'name'>>): Promise<User> {
+		const user = await UserRepository.update(id, data);
+		if (!user) {
+			throw new UserNotFoundError();
+		}
+		return user;
+	}
+}
+
+const usersService = new UsersService();
+export default usersService;

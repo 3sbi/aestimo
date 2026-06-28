@@ -1,1 +1,0 @@
-ALTER TABLE "rooms" ADD COLUMN "autoreveal" boolean DEFAULT false NOT NULL;

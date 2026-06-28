@@ -1,0 +1,79 @@
+<script lang="ts">
+	type Props = {
+		id?: string;
+		checked?: boolean;
+		disabled?: boolean;
+		onChange?: (value: boolean) => void;
+	};
+	let { disabled, id, checked, onChange }: Props = $props();
+</script>
+
+<label class="switchContainer" class:disabled>
+	<input
+		{id}
+		type="checkbox"
+		{checked}
+		{disabled}
+		onchange={(event) => {
+			if (onChange) onChange(!!event.currentTarget.checked);
+		}}
+	/>
+	<span class="switchSlider"></span>
+</label>
+
+<style>
+	.switchContainer {
+		position: relative;
+		display: inline-block;
+		min-width: 42px;
+		height: 24px;
+		cursor: pointer;
+	}
+
+	.switchContainer input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.switchSlider {
+		position: absolute;
+		inset: 0;
+		background-color: var(--background);
+		border-width: 1px;
+		border-radius: 9999px;
+		transition: background-color 0.2s;
+	}
+
+	.switchSlider::before {
+		content: '';
+		position: absolute;
+		left: 3px;
+		top: 3px;
+		height: 16px;
+		width: 16px;
+		background-color: var(--foreground);
+		border-radius: 9999px;
+		transition: transform 0.2s;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	.switchContainer input:checked + .switchSlider {
+		background-color: var(--primary);
+	}
+
+	.switchContainer input:checked + .switchSlider::before {
+		transform: translateX(18px);
+		background-color: var(--primary-foreground);
+	}
+
+	.switchContainer input:focus-visible + .switchSlider {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+
+	.switchContainer.disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+</style>

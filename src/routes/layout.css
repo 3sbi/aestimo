@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+:root {
+	--background: #f9f9fa;
+	--foreground: #0f1419;
+	--card: #f7f8f8;
+	--card-foreground: #0f1419;
+	--popover: #f7f8f8;
+	--popover-foreground: #0f1419;
+	--primary: #2e7d32;
+	--primary-active: hsl(140, 53%, 34%);
+	--primary-foreground: #ffffff;
+	--secondary: #e8f5e9;
+	--secondary-foreground: #1b5e20;
+	--muted: #f0e9e0;
+	--muted-foreground: #0f1419;
+	--accent: #c8e6c9;
+	--accent-foreground: #1b5e20;
+	--destructive: #c62828;
+	--destructive-foreground: #ffffff;
+	--border: #e0d6c9;
+	--input: #e0d6c9;
+	--ring: #2e7d32;
+	--radius: 0.5rem;
+	--shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+	--shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+	--shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+	--shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+	--shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+	--shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+	--shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+	--shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+
+	--radix-popover-content-transform-origin: 50% 0px;
+}
+
+:root[data-theme='dark'] {
+	--background: hsl(220 15% 12%);
+	--foreground: hsl(0 0% 90%);
+	--card: hsl(197 7% 20%);
+	--card-foreground: hsl(0 0% 90%);
+	--popover: hsl(197 7% 20%);
+	--popover-foreground: hsl(0 0% 90%);
+	--primary: hsl(144 48% 40%);
+	--primary-foreground: hsl(0 0% 100%);
+	--secondary: hsl(143.8 61.2% 20.2%);
+	--secondary-foreground: hsl(0 0% 90%);
+	--muted: hsl(0 0% 27%);
+	--muted-foreground: hsl(0 0% 64%);
+	--accent: hsl(144 47.0588% 20%);
+	--accent-foreground: hsl(0 0% 100%);
+	--destructive: hsl(0 84% 60%);
+	--destructive-foreground: hsl(0 0% 100%);
+	--border: hsl(0 0% 27%);
+	--input: hsl(0 0% 27%);
+	--ring: hsl(144 48% 40%);
+	--radius: 0.5rem;
+	--shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+	--shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+	--shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+	--shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+	--shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+	--shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+	--shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+	--shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+}
+
+@font-face {
+	font-family: 'Nunito';
+	src: url('/fonts/Nunito-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Nunito';
+	src: url('/fonts/Nunito-SemiBold.woff2') format('woff2');
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Nunito';
+	src: url('/fonts/Nunito-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease,
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+html,
+:host {
+	font-style: normal;
+	font-size: 16px;
+	line-height: 24px;
+	font-family: 'Nunito', sans-serif;
+}
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overscroll-behavior: none;
+	background-color: var(--background);
+	color: var(--foreground);
+	font-synthesis-weight: none;
+	text-rendering: optimizeLegibility;
+}

@@ -11,6 +11,7 @@ CREATE TABLE "rooms" (
 	"password" varchar(255),
 	"slug" varchar(255) NOT NULL,
 	"private" boolean DEFAULT false NOT NULL,
+	"autoreveal" boolean DEFAULT false NOT NULL,
 	CONSTRAINT "rooms_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
