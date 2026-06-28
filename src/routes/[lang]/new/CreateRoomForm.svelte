@@ -14,9 +14,7 @@
 	const { predefinedVoteTypes }: Props = $props();
 
 	const i18n = locales.messages.pages.new.createRoomForm;
-	let username = $state<string>('');
 	let loading = $state<boolean>(false);
-	let name = $state<string>('');
 	let userVoteTypeId = $state<string | null>(null);
 	let voteTypeId = $derived(userVoteTypeId ?? predefinedVoteTypes[0].id);
 	let prefix = $state<string>('');
@@ -35,10 +33,10 @@
 		<h1 class="text-center font-semibold text-lg">{i18n.header}</h1>
 	</div>
 	<hr class="w-full" />
-	<form class="flex flex-col px-6 pb-6 pt-3 grow">
+	<form class="flex flex-col px-6 pb-6 pt-3 grow" method="POST" action="?/create">
 		<div class="grow">
-			<Input name="name" label={i18n.roomName} bind:value={name} />
-			<Input type="text" name="username" label={i18n.username} bind:value={username} />
+			<Input name="name" label={i18n.roomName} />
+			<Input type="text" name="username" label={i18n.username} />
 			<Input
 				type="text"
 				name="prefix"
@@ -47,7 +45,8 @@
 				bind:value={prefix}
 			/>
 			<div class="flex items-center gap-2 mb-3">
-				<Switch id="private" />
+				<Switch name="private" id="private" />
+				<label for="private">{i18n.private.label}</label>
 			</div>
 			<fieldset class="flex flex-col gap-4 mt-8 mb-8">
 				<legend class="font-semibold mb-3">{i18n.checkboxes}</legend>
@@ -58,7 +57,7 @@
 							name="voteType"
 							value={option.id}
 							checked={option.id === voteTypeId}
-							onChange={() => userVoteTypeId = option.id}
+							onChange={() => (userVoteTypeId = option.id)}
 						>
 							<b class="min-w-32">{option.name}</b>
 							<div class="flex gap-0.5 flex-wrap">
@@ -71,7 +70,7 @@
 				{/each}
 			</fieldset>
 		</div>
-		<button type="button">
+		<button type="submit">
 			{#if loading}
 				<LoaderCircleIcon class="animate-spin" size={20} />
 			{/if}

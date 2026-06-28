@@ -7,7 +7,7 @@
 
 	let { data }: PageProps = $props();
 
-	const currentTab = $derived(page.url.searchParams.get('tab'));
+	const currentTab = $derived(page.url.searchParams.get('tab') ?? 'create');
 	const TABS = [
 		{ value: 'create', label: 'Create' },
 		{ value: 'join', label: 'join' }

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import type { Dictionary } from '$lib/i18n';
 	import type { ClientRoom } from '$lib/types';
@@ -12,7 +13,7 @@
 	let { i18n, rooms }: Props = $props();
 
 	function getHref(room: ClientRoom) {
-		return resolve('/rooms/[slug]/join', { slug: room.slug });
+		return resolve(`/${page.params.lang}/rooms/${room.slug}/join`);
 	}
 </script>
 

@@ -1,19 +1,18 @@
 <script lang="ts">
-	type Props = {
-		id?: string;
-		checked?: boolean;
-		disabled?: boolean;
+	import type { HTMLInputAttributes } from 'svelte/elements';
+
+	interface Props extends HTMLInputAttributes {
 		onChange?: (value: boolean) => void;
-	};
-	let { disabled, id, checked, onChange }: Props = $props();
+	}
+	let { onChange, disabled, checked, ...rest }: Props = $props();
 </script>
 
 <label class="switchContainer" class:disabled>
 	<input
-		{id}
 		type="checkbox"
-		{checked}
 		{disabled}
+		bind:checked
+		{...rest}
 		onchange={(event) => {
 			if (onChange) onChange(!!event.currentTarget.checked);
 		}}
@@ -64,7 +63,6 @@
 
 	.switchContainer input:checked + .switchSlider::before {
 		transform: translateX(18px);
-		background-color: var(--color-primary-foreground);
 	}
 
 	.switchContainer input:focus-visible + .switchSlider {

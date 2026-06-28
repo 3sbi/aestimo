@@ -1,0 +1,75 @@
+<script lang="ts">
+	import type { Dictionary } from '$lib/i18n';
+	import type { ClientRoom, ClientUser } from '$lib/types';
+	import type { NextRoundEvent, RestartEvent } from '$lib/types/EventData';
+	import ArrowRightCircleIcon from '@lucide/svelte/icons/arrow-right-circle';
+	import EyeIcon from '@lucide/svelte/icons/eye';
+	import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
+
+	interface Props {
+		room: ClientRoom;
+		i18n: Dictionary['pages']['room']['toolbar'];
+		revealVotes: (data: ClientUser[]) => void;
+		restartRound: (data: RestartEvent['data']) => void;
+		goToNextRound: (data: NextRoundEvent['data']) => void;
+	}
+
+	let { room, i18n, revealVotes, restartRound, goToNextRound }: Props = $props();
+
+	let loadingButton = $state<'reveal' | 'next' | 'restart' | null>(null);
+
+	async function execute<T>(
+		action: 'reveal' | 'next' | 'restart',
+		url: string,
+		callback: (data: T) => void
+	) {
+		if (loadingButton) return;
+
+		loadingButton = action;
+
+		try {
+			const res = await fetch(url, { method: 'POST' });
+			const data = (await res.json()) as T;
+
+			callback(data);
+		} catch (err) {
+			console.error(err);
+		} finally {
+			loadingButton = null;
+		}
+	}
+</script>
+
+<div class="toolbar">
+	{#if room.status !== 'finished' && !room.autoreveal}
+		<button
+			onclick={() => execute<ClientUser[]>('reveal', `/api/rooms/${room.slug}/reveal`, revealVotes)}
+			disabled={loadingButton === 'reveal'}
+		>
+			<EyeIcon />
+			{i18n.reveal}
+		</button>
+	{/if}
+
+	{#if room.status === 'finished'}
+		<button
+			onclick={() =>
+				execute<NextRoundEvent['data']>('next', `/api/rooms/${room.slug}/next`, goToNextRound)}
+			disabled={loadingButton === 'next'}
+		>
+			<ArrowRightCircleIcon />
+			{i18n.next}
+		</button>
+	{/if}
+
+	{#if room.status !== 'finished'}
+		<button
+			onclick={() =>
+				execute<RestartEvent['data']>('restart', `/api/rooms/${room.slug}/restart`, restartRound)}
+			disabled={loadingButton === 'restart'}
+		>
+			<RotateCwIcon />
+			{i18n.restart}
+		</button>
+	{/if}
+</div>

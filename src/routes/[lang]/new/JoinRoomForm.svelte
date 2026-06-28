@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { toast } from 'svelte-sonner';
-
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import Input from '$lib/components/Input.svelte';
-	import { api } from '$lib/utils/api';
-
-	import { LoaderCircleIcon } from '@lucide/svelte';
-
 	import type { Dictionary } from '$lib/i18n/index';
+	import { LoaderCircleIcon } from '@lucide/svelte';
+	import { toast } from 'svelte-sonner';
 
 	interface Props {
 		i18n: Dictionary['pages']['new']['joinRoomForm'];
@@ -24,14 +22,14 @@
 		loading = true;
 
 		try {
-			const res = await api.post(`/api/rooms/${roomSlug}/join`, {
-				username
+			const res = await fetch(`/api/rooms/${roomSlug}/join`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ username })
 			});
 
 			if (res.ok) {
-				await goto(`/rooms/${roomSlug}`, {
-					replaceState: true
-				});
+				await goto(resolve(`/${page.params.lang}/rooms/${roomSlug}`), { replaceState: true });
 			} else {
 				const data = await res.json();
 				toast.error(data.error);
