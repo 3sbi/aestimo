@@ -22,6 +22,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// -----------------------------
 	const path = event.url.pathname;
 
+	if (path.startsWith('/api/')) {
+		return resolve(event);
+	}
+
 	const hasLocale = supported.some((lang) => path === `/${lang}` || path.startsWith(`/${lang}/`));
 
 	if (!hasLocale) {

@@ -8,7 +8,7 @@ import type { RequestHandler } from '../$types';
 export const GET: RequestHandler = async ({ params, locals, request }) => {
 	const roomSlug = params.roomSlug;
 
-	const userId = locals.session.userId;
+	const userId = locals.session?.userId;
 
 	if (typeof userId !== 'number') {
 		throw new UserNotFoundError();
@@ -16,7 +16,7 @@ export const GET: RequestHandler = async ({ params, locals, request }) => {
 
 	const user = await usersService.getOne(userId);
 
-	if (roomSlug !== locals.session.roomSlug) {
+	if (roomSlug !== locals.session?.roomSlug) {
 		return json({ error: 'Not allowed' }, { status: 403 });
 	}
 
@@ -59,7 +59,11 @@ export const GET: RequestHandler = async ({ params, locals, request }) => {
 					}
 				});
 
-				controller.close();
+				try {
+					controller.close();
+				} catch {
+					// stream may already be closed
+				}
 			});
 		}
 	});

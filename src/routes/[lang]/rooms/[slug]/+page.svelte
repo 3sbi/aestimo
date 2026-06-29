@@ -11,11 +11,11 @@
 	import Toolbar from './Toolbar.svelte';
 	import VoteHistory from './VoteHistory.svelte';
 
-	const props: PageProps = $props();
-	const { i18n } = props.data;
+	const { data }: PageProps = $props();
+	const { i18n } = data;
 
-	const state = createRoomState(props.data);
-	const currentUserId = $derived(props.data.user.id);
+	const state = createRoomState(data);
+	const currentUserId = $derived(data.user.id);
 
 	$effect(() => {
 		return state.connect();
@@ -105,8 +105,8 @@
 		{/if}
 	</div>
 	<CardsHand
-		setVoted={() => setVoted(user.id)}
-		bind:selectedIndex
+		setVoted={() => state.setVoted(currentUserId)}
+		bind:selectedIndex={state.selectedIndex}
 		voteOptions={state.voteOptions}
 		room={state.room}
 	/>
@@ -170,25 +170,6 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
-
-	.userCard .kickButton {
-		display: none;
-		transition-property: all;
-		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-		transition-duration: 150ms;
-		position: absolute;
-		top: 20px;
-		right: 4px;
-		fill: var(--card-foreground);
-	}
-
-	.userCard:hover .kickButton {
-		display: flex;
-	}
-
-	.userCard .kickButton button:hover {
-		fill: var(--destructive);
 	}
 
 	@media (width >= 48rem) {

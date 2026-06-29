@@ -7,6 +7,7 @@ import { roomsService } from '$lib/server/services';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '../$types';
 import type { Event } from '$lib/types/EventData';
+import { encodeSession } from '$lib/server/session';
 
 export const POST: RequestHandler = async ({ request, params, locals, cookies }) => {
 	try {
@@ -32,7 +33,7 @@ export const POST: RequestHandler = async ({ request, params, locals, cookies })
 			userId: user.id,
 			roomSlug: room.slug
 		};
-		cookies.set('session', JSON.stringify(locals.session), {
+		cookies.set('session', encodeSession(locals.session), {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'lax',

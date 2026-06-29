@@ -42,3 +42,24 @@
 		</svg>
 	</button>
 </div>
+
+<style>
+	.userCard:hover .kickButton {
+		display: flex;
+	}
+
+	.userCard .kickButton button:hover {
+		fill: var(--destructive);
+	}
+
+	.kickButton {
+		display: none;
+		transition-property: all;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-duration: 150ms;
+		position: absolute;
+		top: 20px;
+		right: 4px;
+		fill: var(--card-foreground);
+	}
+</style>

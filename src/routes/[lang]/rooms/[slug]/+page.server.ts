@@ -11,7 +11,7 @@ export const load = async ({ params, locals }) => {
 	const session = locals.session;
 
 	if (!session?.userId || !session?.roomSlug) {
-		redirect(307, `/${lang}/rooms/new`);
+		redirect(307, `/${lang}/new`);
 	}
 
 	const { room, user } = await usersService.checkIfUserExistsInRoom(params.slug, session.userId);
