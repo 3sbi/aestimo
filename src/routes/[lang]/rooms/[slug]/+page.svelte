@@ -3,6 +3,7 @@
 	import { getContrastYIQ } from '$lib/utils/colors';
 	import { CrownIcon } from '@lucide/svelte';
 	import Share2Icon from '@lucide/svelte/icons/share-2';
+	import { untrack } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
 	import type { PageProps } from './$types';
 	import CardsHand from './CardsHand.svelte';
@@ -12,9 +13,9 @@
 	import VoteHistory from './VoteHistory.svelte';
 
 	const { data }: PageProps = $props();
-	const { i18n } = data;
-
-	const state = createRoomState(data);
+	const initialData = untrack(() => data);
+	const { i18n } = initialData;
+	const state = createRoomState(initialData);
 	const currentUserId = $derived(data.user.id);
 
 	$effect(() => {

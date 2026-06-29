@@ -1,10 +1,10 @@
 <script lang="ts">
-	import SmallVoteCard from '$lib/components/SmallVoteCard.svelte';
 	import { i18n as locales } from '$lib/i18n/state.svelte';
 	import type { RoundHistory } from '$lib/types/EventData';
-	import { ArchiveIcon, FrownIcon } from '@lucide/svelte';
+	import { ArchiveIcon } from '@lucide/svelte';
 	import HistoryIcon from '@lucide/svelte/icons/history';
 	import { fly } from 'svelte/transition';
+	import VoteHistoryRound from './VoteHistoryRound.svelte';
 	interface Props {
 		roundsHistory: Record<number, RoundHistory>;
 	}
@@ -15,17 +15,29 @@
 
 	const i18n = locales.messages.pages.room['vote-history'];
 
+	function onDrawerClick(e: MouseEvent) {
+		if (e.currentTarget === e.target) {
+			opened = false;
+		}
+	}
+
 	function formatTimestamp(timestampMs: number) {
 		const d = new Date(timestampMs);
 
 		return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
 	}
 
-	function onDrawerClick(e: MouseEvent) {
-		if (e.currentTarget === e.target) {
-			opened = false;
-		}
-	}
+	const rounds = $derived.by(() =>
+		Object.entries(roundsHistory)
+			.reverse()
+			.map(([number, round]) => ({
+				number,
+				round,
+				endedAtText: round.endedAt ? formatTimestamp(round.endedAt) : null
+			}))
+	);
+
+	const hasRounds = $derived(rounds.length > 0);
 </script>
 
 <button class="btn" title={i18n.header} onclick={() => (opened = true)}>
@@ -49,42 +61,14 @@
 					{i18n.header}
 				</h2>
 
-				{#if Object.keys(roundsHistory).length === 0}
+				{#if !hasRounds}
 					<div class="empty">
 						<ArchiveIcon size={32} />
 						<p class="text-sm">{i18n.empty}</p>
 					</div>
 				{:else}
-					{#each Object.entries(roundsHistory).reverse() as [roundNumber, round] (roundNumber)}
-						<div class="roundItem">
-							<div class="flex items-baseline gap-1">
-								<h4 class="truncate text-lg font-semibold">
-									{i18n.round}
-									{roundNumber}
-								</h4>
-
-								{#if round.endedAt}
-									<span class="timestamp" title={formatTimestamp(round.endedAt)}>
-										{formatTimestamp(round.endedAt)}
-									</span>
-								{/if}
-							</div>
-
-							<div class="roundItemVotes">
-								{#if round.votes.length === 0}
-									<div class="noVotes">
-										{i18n['no-votes']}
-										<FrownIcon size={12} />
-									</div>
-								{:else}
-									{#each round.votes as vote (vote.userId)}
-										<div title={vote.userName}>
-											<SmallVoteCard {...vote.option} />
-										</div>
-									{/each}
-								{/if}
-							</div>
-						</div>
+					{#each rounds as { number, endedAtText, round } (number)}
+						<VoteHistoryRound {round} roundNumber={number} {endedAtText} />
 					{/each}
 				{/if}
 			</div>
@@ -147,34 +131,6 @@
 		min-width: 254px;
 		flex-direction: column;
 		padding: 24px;
-	}
-
-	.roundItemVotes {
-		display: flex;
-		gap: 2px;
-		flex-wrap: wrap;
-	}
-
-	.roundItem {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		width: 100%;
-	}
-
-	.roundItem .timestamp {
-		font-size: var(--text-xs);
-		line-height: var(--text-xs--line-height);
-		color: var(--muted-foreground);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	.noVotes {
-		display: flex;
-		gap: 4px;
-		color: var(--muted-foreground);
 	}
 
 	@media (width >= 48rem) {
