@@ -16,14 +16,14 @@
 	}
 </script>
 
-<button onclick={toggleTheme} class="relative" {title}>
+<button class="btn relative" onclick={toggleTheme} {title}>
 	<SunIcon
-		class="h-[1.2rem] w-[1.2rem] transition-all duration-300 {theme === 'dark'
+		class=" transition-all duration-300 {theme === 'dark'
 			? 'hidden scale-0 -rotate-90'
 			: 'scale-100 rotate-0'}"
 	/>
 	<MoonIcon
-		class="h-[1.2rem] w-[1.2rem] transition-all duration-300 {theme === 'dark'
+		class=" transition-all duration-300 {theme === 'dark'
 			? 'scale-100 rotate-0'
 			: 'hidden scale-0 rotate-90'}"
 	/>

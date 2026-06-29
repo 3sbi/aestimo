@@ -45,7 +45,7 @@
 			<Input id="username" label={i18n.username} bind:value={username} />
 		</div>
 
-		<button type="submit" class="mt-4" disabled={loading}>
+		<button class="btn mt-4" type="submit" disabled={loading}>
 			{#if loading}
 				<LoaderCircleIcon class="animate-spin" size={20} />
 			{/if}

@@ -28,7 +28,7 @@
 	}
 </script>
 
-<button title={i18n.header} onclick={() => (opened = true)}>
+<button class="btn" title={i18n.header} onclick={() => (opened = true)}>
 	<HistoryIcon />
 </button>
 
@@ -115,15 +115,15 @@
 		top: 0px;
 		right: 0px;
 		height: 100%;
-		width: 0px;
+		width: 256px;
 		z-index: 50;
 		transition-property: all;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 		transition-duration: 150ms;
 		border-left: 1px solid var(--border);
 		box-shadow: var(--shadow-md);
-		background-color: var(--card);
-		color: var(--card-foreground);
+		background-color: var(--color-card);
+		color: var(--color-card-foreground);
 		cursor: auto;
 	}
 
@@ -154,15 +154,15 @@
 		gap: 2px;
 		flex-wrap: wrap;
 	}
-	
-    .roundItem {
+
+	.roundItem {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
 		width: 100%;
 	}
-	
-    .roundItem .timestamp {
+
+	.roundItem .timestamp {
 		font-size: var(--text-xs);
 		line-height: var(--text-xs--line-height);
 		color: var(--muted-foreground);
@@ -170,7 +170,7 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-    
+
 	.noVotes {
 		display: flex;
 		gap: 4px;

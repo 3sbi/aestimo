@@ -43,6 +43,7 @@
 <div class="toolbar">
 	{#if room.status !== 'finished' && !room.autoreveal}
 		<button
+			class="btn"
 			onclick={() => execute<ClientUser[]>('reveal', `/api/rooms/${room.slug}/reveal`, revealVotes)}
 			disabled={loadingButton === 'reveal'}
 		>
@@ -53,6 +54,7 @@
 
 	{#if room.status === 'finished'}
 		<button
+			class="btn"
 			onclick={() =>
 				execute<NextRoundEvent['data']>('next', `/api/rooms/${room.slug}/next`, goToNextRound)}
 			disabled={loadingButton === 'next'}
@@ -64,6 +66,7 @@
 
 	{#if room.status !== 'finished'}
 		<button
+			class="btn"
 			onclick={() =>
 				execute<RestartEvent['data']>('restart', `/api/rooms/${room.slug}/restart`, restartRound)}
 			disabled={loadingButton === 'restart'}

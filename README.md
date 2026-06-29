@@ -2,7 +2,7 @@
 
 Aestimo is a planning poker web app
 
-![screenshoot](./public/room.webp)
+![screenshot](./static/room.webp)
 
 ## Getting Started
 

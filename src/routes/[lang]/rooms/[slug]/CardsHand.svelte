@@ -43,12 +43,12 @@
 		<button
 			class={[
 				'cursor-pointer rounded-lg border-2 px-4 py-4 text-4xl font-bold shadow-md transition md:px-6 md:py-8',
-				selectedIndex === index && '-translate-y-6 scale-110 border-card-foreground',
+				selectedIndex === index && '-translate-y-6 scale-110 border-(--color-card-foreground)',
 				roundFinished && 'cursor-not-allowed opacity-60'
 			].join(' ')}
 			style:background-color={voteOption.color}
 			style:color={getContrastYIQ(voteOption.color)}
-			style:border-color={selectedIndex === index ? 'var(--card-foreground)' : undefined}
+			style:border-color={selectedIndex === index ? 'var(--color-card-foreground)' : undefined}
 			title={voteOption.value}
 			onclick={() => vote(index)}
 		>

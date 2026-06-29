@@ -37,7 +37,7 @@
 		<div class="chip">
 			<div class="flex gap-2 items-center">
 				<b>{state.room.name}</b>
-				<button title={i18n.header.share.title} onclick={onClickInvite}>
+				<button class="btn" title={i18n.header.share.title} onclick={onClickInvite}>
 					{i18n.header.share.title}
 					<Share2Icon size={14} />
 				</button>
@@ -114,13 +114,22 @@
 <Toaster richColors position="top-center" />
 
 <style>
+	.room {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		gap: 20px;
+		padding: 0px 20px;
+		flex-grow: 1;
+	}
+
 	.chip {
 		display: flex;
 		align-items: center;
 		gap: 8px;
 		width: fit-content;
-		background: var(--card);
-		color: var(--card-foreground);
+		background: var(--color-card);
+		color: var(--color-card-foreground);
 		border-width: 1px;
 		padding: 8px 12px;
 		box-shadow: var(--shadow-2xl);
@@ -136,8 +145,8 @@
 	}
 
 	.userCard {
-		background: var(--card);
-		color: var(--card-foreground);
+		background: var(--color-card);
+		color: var(--color-card-foreground);
 		border-radius: var(--radius);
 		border-width: 1px;
 		box-shadow: var(--shadow-lg);
@@ -160,8 +169,8 @@
 		font-weight: 600;
 		border-width: 1px;
 		border-radius: var(--radius);
-		background-color: var(--secondary);
-		color: var(--secondary-foreground);
+		background-color: var(--color-secondary);
+		color: var(--color-secondary-foreground);
 		height: 32px;
 		text-align: center;
 		gap: 4px;

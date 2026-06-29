@@ -70,7 +70,7 @@
 				{/each}
 			</fieldset>
 		</div>
-		<button type="submit">
+		<button class="btn" type="submit">
 			{#if loading}
 				<LoaderCircleIcon class="animate-spin" size={20} />
 			{/if}

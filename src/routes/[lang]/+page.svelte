@@ -33,13 +33,13 @@
 
 				<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 					<a href={resolve(`/${page.params.lang}/new?tab=create`)}>
-						<button>
+						<button class="btn">
 							<RocketIcon />
 							{i18n.messages.pages.home.buttons.new}
 						</button>
 					</a>
 					<a href={resolve(`/${page.params.lang}/new?tab=join`)}>
-						<button>
+						<button class="btn">
 							<LinkIcon />
 							{i18n.messages.pages.home.buttons.join}
 						</button>
