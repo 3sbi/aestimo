@@ -118,3 +118,10 @@ body {
 	font-synthesis-weight: none;
 	text-rendering: optimizeLegibility;
 }
+
+[data-theme='dark'] .icon-sun {
+	display: none;
+}
+[data-theme='light'] .icon-moon {
+	display: none;
+}
