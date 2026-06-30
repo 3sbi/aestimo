@@ -50,7 +50,6 @@
 		display: flex;
 		justify-content: center;
 		flex-grow: 1;
-		padding: 8px;
 		background-color: var(--color-background);
 		color: var(--color-foreground);
 		cursor: pointer;
@@ -59,6 +58,7 @@
 	.tabs .tab > a {
 		height: 100%;
 		width: 100%;
+		padding: 8px;
 		text-align: center;
 		cursor: inherit;
 	}
