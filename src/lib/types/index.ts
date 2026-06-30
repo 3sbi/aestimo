@@ -1,11 +1,10 @@
-import { roomsTable, sessionsTable, usersTable, votesTable } from '$lib/server/db/schemas';
+import { roomsTable, usersTable, votesTable } from '$lib/server/db/schemas';
 import { ClientUserSchema } from '$lib/server/dtos/ClientUserSchema';
 import { z } from 'zod';
 
 export type Room = typeof roomsTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
 export type Vote = typeof votesTable.$inferSelect;
-export type Session = typeof sessionsTable.$inferSelect;
 export type VoteCard = { color: string; value: string };
 
 // for client-side only
