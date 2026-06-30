@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Button from '$lib/components/Button.svelte';
+	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import Share2Icon from '@lucide/svelte/icons/share-2';
 	import { untrack } from 'svelte';
@@ -7,9 +9,8 @@
 	import CardsHand from './CardsHand.svelte';
 	import { createRoomState } from './room-state.svelte';
 	import Toolbar from './Toolbar.svelte';
-	import VoteHistory from './VoteHistory.svelte';
 	import UserCard from './UserCard.svelte';
-	import Button from '$lib/components/Button.svelte';
+	import VoteHistory from './VoteHistory.svelte';
 
 	const { data }: PageProps = $props();
 	const initialData = untrack(() => data);
@@ -47,6 +48,7 @@
 		<div class="chip">
 			<VoteHistory roundsHistory={state.roundsHistory} />
 			<ThemeSwitcher />
+			<LanguageSelector />
 		</div>
 	</div>
 	<div class="flex flex-col gap-4 m-auto">

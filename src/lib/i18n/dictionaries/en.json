@@ -1,124 +1,130 @@
 {
-  "language": "English",
-  "metadata": {
-    "description": "Aestimo - planning poker app to estimate user stories"
-  },
+	"language": "English",
+	"metadata": {
+		"description": "Aestimo - planning poker app to estimate user stories"
+	},
 
-  "pages": {
-    "home": {
-      "header": "Aestimo",
-      "subheader": "planning poker app to estimate user stories",
+	"pages": {
+		"home": {
+			"header": "Aestimo",
+			"subheader": "planning poker app to estimate user stories",
 
-      "buttons": {
-        "new": "Create",
-        "join": "Join"
-      }
-    },
+			"buttons": {
+				"new": "Create",
+				"join": "Join"
+			}
+		},
 
-    "new": {
-      "tabs": {
-        "create": "Create",
-        "join": "Join"
-      },
-      "joinRoomForm": {
-        "header": "Join existing room",
-        "uuid": "UUID",
-        "username": "Your name",
-        "join": "Join",
-        "empty": "There are no rooms to join, create your own room"
-      },
+		"new": {
+			"tabs": {
+				"create": "Create",
+				"join": "Join"
+			},
+			"joinRoomForm": {
+				"header": "Join existing room",
+				"uuid": "UUID",
+				"username": "Your name",
+				"join": "Join",
+				"empty": "There are no rooms to join, create your own room"
+			},
 
-      "createRoomForm": {
-        "header": "Create new room",
-        "username": "Your name",
-        "roomName": "Room name",
-        "private": {
-          "label": "Private room",
-          "helper": "Other users can't join private room"
-        },
-        "custom": "Custom",
-        "slug": {
-          "label": "URL prefix",
-          "random": "Room address will be randomly generated",
-          "helper": "URL will look like this:"
-        },
-        "checkboxes": "Vote options",
-        "customVoteCard": {
-          "color": "Change background color",
-          "delete": "Delete"
-        },
-        "create": "Create"
-      }
-    },
+			"createRoomForm": {
+				"header": "Create new room",
+				"username": "Your name",
+				"roomName": "Room name",
+				"private": {
+					"label": "Private room",
+					"helper": "Other users can't join private room"
+				},
+				"custom": "Custom",
+				"slug": {
+					"label": "URL prefix",
+					"random": "Room address will be randomly generated",
+					"helper": "URL will look like this:"
+				},
+				"checkboxes": "Vote options",
+				"customVoteCard": {
+					"color": "Change background color",
+					"delete": "Delete"
+				},
+				"create": "Create"
+			}
+		},
 
-    "room": {
-      "settings": {
-        "label": "Settings",
-        "leave": {
-          "label": "Leave",
-          "select-new-admin": "Select a new admin:",
-          "modal": {
-            "header": "Are you sure?",
-            "help": "If you just want to leave the room yourself but keep it alive, give admin rights to one of the users. Once deleted, the room cannot be restored and all participants will be thrown back to the main screen.",
-            "confirm": "Delete",
-            "cancel": "Cancel"
-          }
-        },
-        "theme": "Change theme",
-        "language": "Change language",
-        "private": "Private room",
-        "autoreveal": {
-          "label": "Auto reveal",
-          "tooltip": "Ends the round automatically after the last vote"
-        }
-      },
+		"room": {
+			"settings": {
+				"label": "Settings",
+				"leave": {
+					"label": "Leave",
+					"select-new-admin": "Select a new admin:",
+					"modal": {
+						"header": "Are you sure?",
+						"help": "If you just want to leave the room yourself but keep it alive, give admin rights to one of the users. Once deleted, the room cannot be restored and all participants will be thrown back to the main screen.",
+						"confirm": "Delete",
+						"cancel": "Cancel"
+					}
+				},
+				"theme": "Change theme",
+				"language": "Change language",
+				"private": "Private room",
+				"autoreveal": {
+					"label": "Auto reveal",
+					"tooltip": "Ends the round automatically after the last vote"
+				}
+			},
 
-      "header": {
-        "round": "Round",
-        "share": {
-          "title": "Share",
-          "copied": "Copied!"
-        }
-      },
+			"header": {
+				"round": "Round",
+				"share": {
+					"title": "Share",
+					"copied": "Copied!"
+				}
+			},
 
-      "toolbar": {
-        "next": "Next round",
-        "reveal": "Reveal",
-        "restart": "Restart round"
-      },
+			"toolbar": {
+				"next": "Next round",
+				"reveal": "Reveal",
+				"restart": "Restart round"
+			},
 
-      "usersList": {
-        "you": "you",
-        "admin": "Admin",
-        "kick": "Kick",
-        "disconnected": "Disconnected"
-      },
-      "toast": {
-        "disconnected": "Something went wrong with server-sent events :(",
-        "reconnected": "Reconnected to server-sent events :)",
-        "unknown-event": "Unknown event"
-      },
+			"usersList": {
+				"you": "you",
+				"admin": "Admin",
+				"kick": "Kick",
+				"disconnected": "Disconnected"
+			},
+			"toast": {
+				"disconnected": "Something went wrong with server-sent events :(",
+				"reconnected": "Reconnected to server-sent events :)",
+				"unknown-event": "Unknown event"
+			},
 
-      "vote-history": {
-        "header": "History",
-        "round": "Round",
-        "empty": "The history of votes for all round will be here. No round has been completed yet",
-        "no-votes": "No one voted"
-      }
-    },
+			"vote-history": {
+				"header": "History",
+				"round": "Round",
+				"empty": "The history of votes for all round will be here. No round has been completed yet",
+				"no-votes": "No one voted"
+			}
+		},
 
-    "not-found": {
-      "no-room": {
-        "header": "Room was not found",
-        "button": "Create a new room"
-      },
-      "header": "Not found",
-      "button": "Return to app"
-    }
-  },
+		"not-found": {
+			"no-room": {
+				"header": "Room was not found",
+				"button": "Create a new room"
+			},
+			"header": "Not found",
+			"description": "The page you are looking for does not exist.",
+			"button": "Return to app"
+		},
+		"error": {
+			"header": "Something went wrong",
+			"description": "An unexpected error occurred. Please try again later.",
+			"button": "Return to app"
+		}
+	},
 
-  "errors": {
-    "Not found": "Not found",
-    "Not admin": "Not admin"
-  }
+	"errors": {
+		"Not found": "Not found",
+		"Not admin": "Not admin"
+	}
 }

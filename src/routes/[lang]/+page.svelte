@@ -2,6 +2,7 @@
 	import { asset, resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import Button from '$lib/components/Button.svelte';
+	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import { i18n } from '$lib/i18n/state.svelte';
 	import { LinkIcon, RocketIcon } from '@lucide/svelte';
@@ -15,6 +16,7 @@
 		</a>
 		<div class="flex gap-2 items-center">
 			<ThemeSwitcher />
+			<LanguageSelector />
 		</div>
 	</header>
 	<section

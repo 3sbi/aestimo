@@ -3,7 +3,7 @@ import { DICTIONARIES, i18nConfig, type I18nLocale } from '.';
 class I18n {
 	messages = $state(DICTIONARIES[i18nConfig.defaultLocale]);
 
-	async setLocale(locale: I18nLocale) {
+	setLocale(locale: I18nLocale) {
 		this.messages = DICTIONARIES[locale];
 	}
 }
