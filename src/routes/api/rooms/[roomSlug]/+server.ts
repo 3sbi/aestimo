@@ -6,11 +6,11 @@ import { roomsService, usersService } from '$lib/server/services';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const DELETE: RequestHandler = async ({ request, params, cookies }) => {
+export const DELETE: RequestHandler = async ({ request, params, cookies, locals }) => {
 	try {
 		const roomSlug = params.roomSlug;
 
-		const { isAdmin } = await usersService.isAdmin();
+		const { isAdmin } = await usersService.isAdmin(locals.session?.userId, roomSlug);
 
 		if (!isAdmin) {
 			throw new UserNotAdminError();
@@ -41,11 +41,11 @@ export const DELETE: RequestHandler = async ({ request, params, cookies }) => {
 	}
 };
 
-export const PATCH: RequestHandler = async ({ request, params }) => {
+export const PATCH: RequestHandler = async ({ request, params, locals }) => {
 	try {
 		const roomSlug = params.roomSlug;
 
-		const { isAdmin } = await usersService.isAdmin();
+		const { isAdmin } = await usersService.isAdmin(locals.session?.userId, roomSlug);
 
 		if (!isAdmin) {
 			throw new UserNotAdminError();

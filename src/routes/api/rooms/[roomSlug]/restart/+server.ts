@@ -7,10 +7,10 @@ import type { RestartEvent } from '$lib/types/EventData';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '../$types';
 
-export const POST: RequestHandler = async ({ request, params }) => {
+export const POST: RequestHandler = async ({ request, params, locals }) => {
 	try {
 		const roomSlug = params.roomSlug;
-		const { isAdmin, userId } = await usersService.isAdmin();
+		const { isAdmin, userId } = await usersService.isAdmin(locals.session?.userId, roomSlug);
 		if (!isAdmin) {
 			throw new UserNotAdminError();
 		}

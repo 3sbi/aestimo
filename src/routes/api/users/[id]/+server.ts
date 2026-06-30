@@ -51,7 +51,7 @@ export const DELETE: RequestHandler = async ({ request, params, locals, cookies 
 		if (Number.isNaN(id)) {
 			throw new UserNotFoundError();
 		}
-		const { isAdmin, userId } = await usersService.isAdmin();
+		const { isAdmin, userId } = await usersService.isAdmin(locals.session?.userId, locals.session?.roomSlug);
 		const user: User = await usersService.getOne(id);
 		const isMyself = userId === user.id;
 		if (!isAdmin && !isMyself) {

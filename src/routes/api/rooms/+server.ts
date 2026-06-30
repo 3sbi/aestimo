@@ -2,6 +2,7 @@ import { getDictionary, i18nConfig } from '$lib/i18n';
 import { CreateRoomDtoSchema } from '$lib/server/dtos';
 import { RoomNotFoundError, UserNotFoundError } from '$lib/server/errors';
 import { roomsService } from '$lib/server/services';
+import { encodeSession } from '$lib/server/session';
 import { generateUniqueSlug } from '$lib/utils/generateUniqueSlug';
 import { slugify } from '$lib/utils/slugify';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -29,7 +30,7 @@ export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 			userId: user.id
 		};
 
-		cookies.set('session', JSON.stringify(locals.session), {
+		cookies.set('session', encodeSession(locals.session), {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'lax',

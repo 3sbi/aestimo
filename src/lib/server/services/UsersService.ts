@@ -13,8 +13,7 @@ class UsersService {
 		return user.users;
 	}
 
-	async isAdmin(): Promise<{ isAdmin: boolean; userId: User['id'] }> {
-		const { userId, roomSlug } = await getSession();
+	async isAdmin(userId: User['id'] | undefined, roomSlug: string | undefined): Promise<{ isAdmin: boolean; userId: User['id'] }> {
 		if (typeof roomSlug !== 'string') {
 			throw new RoomNotFoundError();
 		}
