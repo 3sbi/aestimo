@@ -13,4 +13,6 @@ echo -e "Completed!\n"
 
 echo "Starting app..."
 
+node build
+
 exec "$@"

@@ -49,6 +49,7 @@
 	},
 	"dependencies": {
 		"@lucide/svelte": "^1.17.0",
+		"dotenv": "^17.4.2",
 		"svelte-sonner": "^1.1.1"
 	}
 }

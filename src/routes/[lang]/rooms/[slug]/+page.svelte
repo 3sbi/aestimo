@@ -1,16 +1,14 @@
 <script lang="ts">
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-	import { getContrastYIQ } from '$lib/utils/colors';
-	import { CrownIcon } from '@lucide/svelte';
 	import Share2Icon from '@lucide/svelte/icons/share-2';
 	import { untrack } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
 	import type { PageProps } from './$types';
 	import CardsHand from './CardsHand.svelte';
-	import KickButton from './KickButton.svelte';
 	import { createRoomState } from './room-state.svelte';
 	import Toolbar from './Toolbar.svelte';
 	import VoteHistory from './VoteHistory.svelte';
+	import UserCard from './UserCard.svelte';
 
 	const { data }: PageProps = $props();
 	const initialData = untrack(() => data);
@@ -53,45 +51,7 @@
 	<div class="flex flex-col gap-4 m-auto">
 		<div class="userCardList">
 			{#each state.users as user (user.id)}
-				{@const isCurrentUser = user.id === currentUserId}
-				{@const userIsAdmin = user.role === 'admin'}
-				<div
-					class="userCard"
-					title={user.name}
-					style:background-color={user.vote?.color}
-					style:color={user.vote ? getContrastYIQ(user.vote.color) : undefined}
-					style:opacity={!user.connected && !isCurrentUser ? 0.6 : undefined}
-				>
-					<h2 class="username" title={user.name}>
-						<span class="truncate">
-							{user.name}
-						</span>
-
-						{#if isCurrentUser}
-							<small class="text-secondary-foreground">
-								({i18n.usersList.you})
-							</small>
-						{/if}
-
-						{#if userIsAdmin}
-							<CrownIcon width={12} style="min-width:12px" title={i18n.usersList.admin} />
-						{/if}
-					</h2>
-
-					{#if state.isAdmin && !isCurrentUser}
-						<KickButton userId={user.id} onKicked={state.kickUser} title={i18n.usersList.kick} />
-					{/if}
-
-					{#if user.vote}
-						<div>{user.vote.value}</div>
-					{:else if !user.connected && !isCurrentUser}
-						<div title={i18n.usersList.disconnected}>💀</div>
-					{:else if user.voted}
-						<div>🗳️</div>
-					{:else}
-						<div>🤔</div>
-					{/if}
-				</div>
+				<UserCard {user} {currentUserId} {i18n} roomState={state} />
 			{/each}
 		</div>
 
@@ -143,56 +103,5 @@
 		flex-wrap: wrap;
 		gap: 20px 8px;
 		margin: auto;
-	}
-
-	.userCard {
-		background: var(--color-card);
-		color: var(--color-card-foreground);
-		border-radius: var(--radius);
-		border-width: 1px;
-		box-shadow: var(--shadow-lg);
-		padding: 32px 16px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		font-size: var(--text-3xl);
-		line-height: var(--text-3xl--line-height);
-		max-width: 100px;
-		width: 100px;
-		position: relative;
-	}
-
-	.userCard .username {
-		position: absolute;
-		top: -16px;
-		font-size: var(--text-sm);
-		line-height: var(--text-sm--line-height);
-		font-weight: 600;
-		border-width: 1px;
-		border-radius: var(--radius);
-		background-color: var(--color-secondary);
-		color: var(--color-secondary-foreground);
-		height: 32px;
-		text-align: center;
-		gap: 4px;
-		padding: 0px 8px;
-		width: 92px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	@media (width >= 48rem) {
-		.userCard {
-			padding: 48px 32px;
-			font-size: var(--text-5xl);
-			line-height: var(--text-5xl--line-height);
-			max-width: 120px;
-			width: 120px;
-		}
-
-		.userCard .username {
-			width: 112px;
-		}
 	}
 </style>
