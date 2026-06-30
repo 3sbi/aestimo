@@ -5,6 +5,7 @@
 	import HistoryIcon from '@lucide/svelte/icons/history';
 	import { fly } from 'svelte/transition';
 	import VoteHistoryRound from './VoteHistoryRound.svelte';
+	import Button from '$lib/components/Button.svelte';
 	interface Props {
 		roundsHistory: Record<number, RoundHistory>;
 	}
@@ -40,9 +41,9 @@
 	const hasRounds = $derived(rounds.length > 0);
 </script>
 
-<button class="btn" title={i18n.header} onclick={() => (opened = true)}>
+<Button variant="ghost" title={i18n.header} onclick={() => (opened = true)}>
 	<HistoryIcon />
-</button>
+</Button>
 
 {#if opened}
 	<div

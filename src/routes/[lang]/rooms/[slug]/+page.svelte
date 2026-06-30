@@ -9,6 +9,7 @@
 	import Toolbar from './Toolbar.svelte';
 	import VoteHistory from './VoteHistory.svelte';
 	import UserCard from './UserCard.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	const { data }: PageProps = $props();
 	const initialData = untrack(() => data);
@@ -36,10 +37,10 @@
 		<div class="chip">
 			<div class="flex gap-2 items-center">
 				<b>{state.room.name}</b>
-				<button class="btn" title={i18n.header.share.title} onclick={onClickInvite}>
+				<Button variant="ghost" title={i18n.header.share.title} onclick={onClickInvite}>
 					{i18n.header.share.title}
 					<Share2Icon size={14} />
-				</button>
+				</Button>
 			</div>
 			<h2>{`${i18n.header.round} ${state.room.round}`}</h2>
 		</div>

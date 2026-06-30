@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import RadioButton from '$lib/components/RadioButton.svelte';
 	import SmallVoteCard from '$lib/components/SmallVoteCard.svelte';
@@ -106,11 +107,11 @@
 				{/each}
 			</fieldset>
 		</div>
-		<button class="btn">
+		<Button>
 			{#if loading}
 				<LoaderCircleIcon class="animate-spin" size={20} />
 			{/if}
 			{i18n.create}
-		</button>
+		</Button>
 	</form>
 </div>

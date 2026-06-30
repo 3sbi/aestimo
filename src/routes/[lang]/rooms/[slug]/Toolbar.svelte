@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$lib/components/Button.svelte';
 	import type { Dictionary } from '$lib/i18n';
 	import type { ClientRoom, ClientUser } from '$lib/types';
 	import type { NextRoundEvent, RestartEvent } from '$lib/types/EventData';
@@ -42,38 +43,38 @@
 
 <div class="toolbar">
 	{#if room.status !== 'finished' && !room.autoreveal}
-		<button
-			class="btn"
+		<Button
+			class="toolbarBtn"
 			onclick={() => execute<ClientUser[]>('reveal', `/api/rooms/${room.slug}/reveal`, revealVotes)}
 			disabled={loadingButton === 'reveal'}
 		>
 			<EyeIcon />
 			{i18n.reveal}
-		</button>
+		</Button>
 	{/if}
 
 	{#if room.status === 'finished'}
-		<button
-			class="btn"
+		<Button
+			class="toolbarBtn"
 			onclick={() =>
 				execute<NextRoundEvent['data']>('next', `/api/rooms/${room.slug}/next`, goToNextRound)}
 			disabled={loadingButton === 'next'}
 		>
 			<ArrowRightCircleIcon />
 			{i18n.next}
-		</button>
+		</Button>
 	{/if}
 
 	{#if room.status !== 'finished'}
-		<button
-			class="btn"
+		<Button
+			class="toolbarBtn"
 			onclick={() =>
 				execute<RestartEvent['data']>('restart', `/api/rooms/${room.slug}/restart`, restartRound)}
 			disabled={loadingButton === 'restart'}
 		>
 			<RotateCwIcon />
 			{i18n.restart}
-		</button>
+		</Button>
 	{/if}
 </div>
 
@@ -94,7 +95,7 @@
 		width: 100%;
 	}
 
-	.toolbar button {
+	:global(.toolbarBtn) {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

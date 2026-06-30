@@ -1,6 +1,7 @@
 <script>
 	import { asset, resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import Button from '$lib/components/Button.svelte';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import { i18n } from '$lib/i18n/state.svelte';
 	import { LinkIcon, RocketIcon } from '@lucide/svelte';
@@ -33,16 +34,16 @@
 
 				<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 					<a href={resolve(`/${page.params.lang}/new?tab=create`)}>
-						<button class="btn">
+						<Button>
 							<RocketIcon />
 							{i18n.messages.pages.home.buttons.new}
-						</button>
+						</Button>
 					</a>
 					<a href={resolve(`/${page.params.lang}/new?tab=join`)}>
-						<button class="btn">
+						<Button>
 							<LinkIcon />
 							{i18n.messages.pages.home.buttons.join}
-						</button>
+						</Button>
 					</a>
 				</div>
 			</div>

@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import { LoaderCircleIcon } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
@@ -45,13 +46,13 @@
 			<Input id="username" label={i18n.username} bind:value={username} />
 		</div>
 
-		<button class="btn mt-4" type="submit" disabled={loading}>
+		<Button class="btn mt-4" type="submit" disabled={loading}>
 			{#if loading}
 				<LoaderCircleIcon class="animate-spin" size={20} />
 			{/if}
 
 			{i18n.join}
-		</button>
+		</Button>
 	</form>
 </div>
 
