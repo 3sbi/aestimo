@@ -35,8 +35,8 @@
 	<hr class="w-full" />
 	<form class="flex flex-col px-6 pb-6 pt-3 grow" method="POST" action="?/create">
 		<div class="grow">
-			<Input name="name" label={i18n.roomName} />
-			<Input type="text" name="username" label={i18n.username} />
+			<Input name="name" label={i18n.roomName} required />
+			<Input type="text" name="username" label={i18n.username} required />
 			<Input
 				type="text"
 				name="prefix"
@@ -49,7 +49,10 @@
 				<label for="private">{i18n.private.label}</label>
 			</div>
 			<fieldset class="flex flex-col gap-4 mt-8 mb-8">
-				<legend class="font-semibold mb-3">{i18n.checkboxes}</legend>
+				<legend class="font-semibold mb-3">
+					<span>{i18n.checkboxes}</span>
+					<span class="text-(--color-destructive)"> *</span>
+				</legend>
 				{#each predefinedVoteTypes as option (option.id)}
 					<div class="flex gap-2 items-center">
 						<RadioButton
