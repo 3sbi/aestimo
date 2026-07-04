@@ -7,8 +7,10 @@
 	import RadioButton from '$lib/components/RadioButton.svelte';
 	import SmallVoteCard from '$lib/components/SmallVoteCard.svelte';
 	import Switch from '$lib/components/Switch.svelte';
+	import VoteTypeCreator, { type CustomVoteCard } from '$lib/components/VoteTypeCreator.svelte';
 	import { i18n as locales } from '$lib/i18n/state.svelte';
 	import type { DefinedVoteType } from '$lib/server/consts/predefinedVoteTypes';
+	import type { VoteCard } from '$lib/types';
 	import { slugify } from '$lib/utils/slugify';
 	import { LoaderCircleIcon } from '@lucide/svelte';
 
@@ -21,6 +23,7 @@
 	let loading = $state<boolean>(false);
 	let userVoteTypeId = $state<string | null>(null);
 	let voteTypeId = $derived(userVoteTypeId ?? predefinedVoteTypes[0].id);
+	let customCards = $state<CustomVoteCard[]>([]);
 	let prefix = $state<string>('');
 
 	const renderSlugHelper = (): string => {
@@ -31,6 +34,15 @@
 		return `${i18n.slug.helper} ${url}`;
 	};
 
+	const getVoteOptions = (): VoteCard[] => {
+		console.log(userVoteTypeId);
+		if (userVoteTypeId === 'custom') {
+			return customCards;
+		}
+		const voteType = predefinedVoteTypes.find((voteType) => voteType.id === userVoteTypeId);
+		return voteType?.values ?? [];
+	};
+
 	const onSubmit = async (e: SubmitEvent) => {
 		e.preventDefault();
 		loading = true;
@@ -38,13 +50,12 @@
 		const form = e.target as HTMLFormElement;
 		const data = new FormData(form);
 
-		const voteType = predefinedVoteTypes.find((voteType) => voteType.id === voteTypeId);
 		const body = {
 			name: data.get('name') as string,
 			username: data.get('username') as string,
 			prefix: data.get('prefix') as string,
 			private: data.has('private'),
-			voteOptions: voteType?.values
+			voteOptions: getVoteOptions()
 		};
 
 		const res = await fetch('/api/rooms', {
@@ -105,6 +116,18 @@
 						</RadioButton>
 					</div>
 				{/each}
+				<div class="flex gap-2 items-center">
+					<RadioButton
+						id="custom"
+						name="voteType"
+						value="custom"
+						checked={voteTypeId === 'custom'}
+						onChange={() => (userVoteTypeId = 'custom')}
+					>
+						<b class="min-w-32">{i18n.custom}</b>
+						<VoteTypeCreator bind:cards={customCards} i18n={i18n.customVoteCard} />
+					</RadioButton>
+				</div>
 			</fieldset>
 		</div>
 		<Button>
