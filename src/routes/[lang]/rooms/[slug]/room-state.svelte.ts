@@ -47,6 +47,7 @@ export function createRoomState({
 
 		for (const user of users) {
 			user.voted = false;
+			user.vote = null;
 		}
 
 		selectedIndex = null;
