@@ -68,7 +68,7 @@
 		border-width: 1px;
 		border-radius: var(--radius);
 		font-weight: 600;
-		min-width: 60px;
+		width: 60px;
 		padding: 24px 8px;
 		background-color: transparent;
 		color: black;

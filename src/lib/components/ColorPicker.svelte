@@ -30,5 +30,6 @@
 		top: 0px;
 		left: 0px;
 		padding: 4px;
+		cursor: pointer;
 	}
 </style>
