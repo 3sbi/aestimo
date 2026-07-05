@@ -68,20 +68,22 @@
 		<div class="popup">
 			<h2 class="title">{i18n.label}</h2>
 
-			<label class="row">
-				<span>{i18n.private}</span>
-				<Switch checked={room.private} onChange={onPrivateChange} />
-			</label>
+			{#if isAdmin}
+				<label class="row">
+					<span>{i18n.private}</span>
+					<Switch checked={room.private} onChange={onPrivateChange} />
+				</label>
 
-			<label class="row">
-				<div class="flex items-center gap-2">
-					<span>{i18n.autoreveal.label}</span>
-					<Tooltip text={i18n.autoreveal.tooltip}>
-						<CircleQuestionMarkIcon size={14} />
-					</Tooltip>
-				</div>
-				<Switch checked={room.autoreveal} onChange={onAutorevealChange} />
-			</label>
+				<label class="row">
+					<div class="flex items-center gap-2">
+						<span>{i18n.autoreveal.label}</span>
+						<Tooltip text={i18n.autoreveal.tooltip}>
+							<CircleQuestionMarkIcon size={14} />
+						</Tooltip>
+					</div>
+					<Switch checked={room.autoreveal} onChange={onAutorevealChange} />
+				</label>
+			{/if}
 
 			<LeaveRoomButton {room} i18n={i18n.leave} {currentUserId} {isAdmin} />
 		</div>
