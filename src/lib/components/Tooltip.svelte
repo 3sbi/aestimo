@@ -1,0 +1,173 @@
+<script lang="ts">
+	type Placement = 'top' | 'bottom' | 'left' | 'right';
+	const PREFERRED: Placement = 'top';
+
+	interface Props {
+		text: string;
+		offset?: number;
+		delay?: number;
+		children: import('svelte').Snippet;
+	}
+
+	let { text, offset = 8, delay = 250, children }: Props = $props();
+
+	let trigger = $state<HTMLElement | null>(null);
+	let tooltip = $state<HTMLElement | null>(null);
+	let visible = $state<boolean>(false);
+
+	let top = $state<number>(0);
+	let left = $state<number>(0);
+	let placement = $state<Placement>(PREFERRED);
+
+	let timeout: number;
+
+	const placements: Placement[] = ['top', 'bottom', 'right', 'left'];
+
+	$effect(() => {
+		if (!visible || !trigger || !tooltip) return;
+
+		position();
+	});
+
+	async function show() {
+		clearTimeout(timeout);
+
+		timeout = window.setTimeout(() => {
+			visible = true;
+		}, delay);
+	}
+
+	function hide() {
+		clearTimeout(timeout);
+		visible = false;
+	}
+
+	function fits(rect: DOMRect, tip: DOMRect, p: Placement) {
+		switch (p) {
+			case 'top':
+				return rect.top >= tip.height + offset;
+
+			case 'bottom':
+				return window.innerHeight - rect.bottom >= tip.height + offset;
+
+			case 'left':
+				return rect.left >= tip.width + offset;
+
+			case 'right':
+				return window.innerWidth - rect.right >= tip.width + offset;
+		}
+	}
+
+	function compute(rect: DOMRect, tip: DOMRect, p: Placement) {
+		switch (p) {
+			case 'top':
+				return {
+					top: rect.top - tip.height - offset,
+					left: rect.left + rect.width / 2 - tip.width / 2
+				};
+
+			case 'bottom':
+				return {
+					top: rect.bottom + offset,
+					left: rect.left + rect.width / 2 - tip.width / 2
+				};
+
+			case 'left':
+				return {
+					top: rect.top + rect.height / 2 - tip.height / 2,
+					left: rect.left - tip.width - offset
+				};
+
+			case 'right':
+				return {
+					top: rect.top + rect.height / 2 - tip.height / 2,
+					left: rect.right + offset
+				};
+		}
+	}
+
+	function clamp(pos: { top: number; left: number }, tip: DOMRect) {
+		const padding = 8;
+
+		pos.left = Math.max(padding, Math.min(pos.left, window.innerWidth - tip.width - padding));
+
+		pos.top = Math.max(padding, Math.min(pos.top, window.innerHeight - tip.height - padding));
+
+		return pos;
+	}
+
+	function position() {
+		if (!trigger || !tooltip) return;
+
+		const rect = trigger.getBoundingClientRect();
+		const tip = tooltip.getBoundingClientRect();
+
+		const order = [PREFERRED, ...placements.filter((p) => p !== PREFERRED)];
+
+		placement = order.find((p) => fits(rect, tip, p)) ?? PREFERRED;
+
+		const pos = clamp(compute(rect, tip, placement), tip);
+
+		top = pos.top;
+		left = pos.left;
+	}
+
+	function update() {
+		if (visible) position();
+	}
+
+	$effect(() => {
+		if (!visible) return;
+
+		window.addEventListener('scroll', update, true);
+		window.addEventListener('resize', update);
+
+		return () => {
+			window.removeEventListener('scroll', update, true);
+			window.removeEventListener('resize', update);
+		};
+	});
+</script>
+
+<div
+	bind:this={trigger}
+	role="button"
+	tabindex="0"
+	onmouseenter={show}
+	onmouseleave={hide}
+	onfocus={show}
+	onblur={hide}
+>
+	{@render children()}
+</div>
+
+{#if visible}
+	<div
+		bind:this={tooltip}
+		class="tooltip {placement}"
+		style={`top:${top}px;left:${left}px`}
+		role="tooltip"
+	>
+		{text}
+	</div>
+{/if}
+
+<style>
+	.trigger {
+		display: inline-flex;
+	}
+
+	.tooltip {
+		position: fixed;
+		z-index: 1000;
+		max-width: 260px;
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.5rem;
+		background: var(--color-secondary-foreground);
+		color: var(--color-secondary);
+		font-size: 0.875rem;
+		line-height: 1.3;
+		pointer-events: none;
+		box-shadow: var(--shadow-lg);
+	}
+</style>

@@ -11,6 +11,7 @@
 	import { createRoomState } from './room-state.svelte';
 	import Toolbar from './Toolbar.svelte';
 	import UserCard from './UserCard.svelte';
+	import Settings from './Settings.svelte';
 	import VoteHistory from './VoteHistory.svelte';
 
 	const i18n = $derived(locales.messages.pages.room);
@@ -46,6 +47,7 @@
 			<h2>{`${i18n.header.round} ${state.room.round}`}</h2>
 		</div>
 		<div class="chip">
+			<Settings room={state.room} i18n={i18n.settings} />
 			<VoteHistory roundsHistory={state.roundsHistory} />
 			<ThemeSwitcher />
 			<LanguageSelector />
