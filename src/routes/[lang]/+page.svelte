@@ -6,7 +6,7 @@
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import { i18n as locales } from '$lib/i18n/state.svelte';
 	import { LinkIcon, RocketIcon } from '@lucide/svelte';
-	const i18n = locales.messages.pages.home;
+	const i18n = $derived(locales.messages.pages.home);
 </script>
 
 <div class="flex flex-col h-full grow">

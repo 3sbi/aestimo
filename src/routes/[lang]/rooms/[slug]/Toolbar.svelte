@@ -88,6 +88,7 @@
 		color: var(--color-card-foreground);
 		border-radius: var(--radius);
 		border-width: 1px;
+		font-weight: 700;
 		border-bottom-width: 0px;
 		box-shadow: var(--shadow-lg);
 		padding: 12px 20px;

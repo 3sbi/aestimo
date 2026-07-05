@@ -13,7 +13,7 @@
 	import UserCard from './UserCard.svelte';
 	import VoteHistory from './VoteHistory.svelte';
 
-	const i18n = locales.messages.pages.room;
+	const i18n = $derived(locales.messages.pages.room);
 	const { data }: PageProps = $props();
 	const initialData = untrack(() => data);
 	const state = createRoomState(initialData);

@@ -19,7 +19,7 @@
 	};
 	const { predefinedVoteTypes }: Props = $props();
 
-	const i18n = locales.messages.pages.new.createRoomForm;
+	const i18n = $derived(locales.messages.pages.new.createRoomForm);
 	let loading = $state<boolean>(false);
 	let userVoteTypeId = $state<string | null>(null);
 	let voteTypeId = $derived(userVoteTypeId ?? predefinedVoteTypes[0].id);

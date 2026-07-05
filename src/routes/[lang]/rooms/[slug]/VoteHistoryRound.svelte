@@ -6,7 +6,7 @@
 
 	type Props = { round: RoundHistory; roundNumber: string; endedAtText: string | null };
 	const { round, roundNumber, endedAtText }: Props = $props();
-	const i18n = locales.messages.pages.room['vote-history'];
+	const i18n = $derived(locales.messages.pages.room['vote-history']);
 </script>
 
 <div class="roundItem">

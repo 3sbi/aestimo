@@ -14,7 +14,7 @@
 
 	let opened = $state(false);
 
-	const i18n = locales.messages.pages.room['vote-history'];
+	const i18n = $derived(locales.messages.pages.room['vote-history']);
 
 	function onDrawerClick(e: MouseEvent) {
 		if (e.currentTarget === e.target) {
