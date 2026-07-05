@@ -65,7 +65,13 @@
 
 	{#if roomState.isAdmin && !isCurrentUser}
 		<div class="kickButton">
-			<Button disabled={loading} title={i18n.usersList.kick} onclick={onClick}>
+			<Button
+				variant="secondary"
+				iconOnly
+				disabled={loading}
+				title={i18n.usersList.kick}
+				onclick={onClick}
+			>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 100 100">
 					<polygon points="73.14 60.55 17.75 80.02 14.46 74.29 72.12 54.02 73.14 60.55" />
 					<path
