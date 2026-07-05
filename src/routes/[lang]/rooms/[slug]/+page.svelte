@@ -5,13 +5,13 @@
 	import { untrack } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
 	import type { PageProps } from './$types';
-	import CardsHand from './CardsHand.svelte';
+	import CardsHand from './_components/CardsHand.svelte';
+	import Settings from './_components/Settings/Settings.svelte';
+	import ShareButton from './_components/ShareButton.svelte';
+	import Toolbar from './_components/Toolbar.svelte';
+	import UserCard from './_components/UserCard.svelte';
+	import VoteHistory from './_components/VoteHistoryDrawer/VoteHistoryDrawer.svelte';
 	import { createRoomState } from './room-state.svelte';
-	import Settings from './Settings.svelte';
-	import Toolbar from './Toolbar.svelte';
-	import UserCard from './UserCard.svelte';
-	import VoteHistory from './VoteHistory.svelte';
-	import ShareButton from './ShareButton.svelte';
 
 	const i18n = $derived(locales.messages.pages.room);
 	const { data }: PageProps = $props();

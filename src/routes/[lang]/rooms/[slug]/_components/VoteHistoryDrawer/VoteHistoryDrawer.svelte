@@ -6,6 +6,7 @@
 	import { fly } from 'svelte/transition';
 	import VoteHistoryRound from './VoteHistoryRound.svelte';
 	import Button from '$lib/components/Button.svelte';
+
 	interface Props {
 		roundsHistory: Record<number, RoundHistory>;
 	}
