@@ -41,7 +41,7 @@
 	const hasRounds = $derived(rounds.length > 0);
 </script>
 
-<Button variant="ghost" title={i18n.header} onclick={() => (opened = true)}>
+<Button variant="ghost" title={i18n.header} onclick={() => (opened = true)} iconOnly>
 	<HistoryIcon />
 </Button>
 

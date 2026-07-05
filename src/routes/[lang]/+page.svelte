@@ -4,8 +4,9 @@
 	import Button from '$lib/components/Button.svelte';
 	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-	import { i18n } from '$lib/i18n/state.svelte';
+	import { i18n as locales } from '$lib/i18n/state.svelte';
 	import { LinkIcon, RocketIcon } from '@lucide/svelte';
+	const i18n = locales.messages.pages.home;
 </script>
 
 <div class="flex flex-col h-full grow">
@@ -27,24 +28,24 @@
 				<h1
 					class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-foreground leading-tight mb-4"
 				>
-					{i18n.messages.pages.home.header}
+					{i18n.header}
 				</h1>
 
 				<p class="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6">
-					{i18n.messages.pages.home.subheader}
+					{i18n.subheader}
 				</p>
 
 				<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 					<a href={resolve(`/${page.params.lang}/new?tab=create`)}>
 						<Button>
 							<RocketIcon />
-							{i18n.messages.pages.home.buttons.new}
+							{i18n.buttons.new}
 						</Button>
 					</a>
 					<a href={resolve(`/${page.params.lang}/new?tab=join`)}>
 						<Button>
 							<LinkIcon />
-							{i18n.messages.pages.home.buttons.join}
+							{i18n.buttons.join}
 						</Button>
 					</a>
 				</div>

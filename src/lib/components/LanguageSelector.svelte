@@ -25,7 +25,7 @@
 		i18n.setLocale(localeValue);
 
 		const path = `/${localeValue}${page.url.pathname.slice(current.length + 1)}${page.url.search}`;
-		goto(path);
+		goto(path, { replaceState: true });
 	}
 
 	$effect(() => {
@@ -49,6 +49,7 @@
 		class="btn relative"
 		onclick={toggle}
 		title={i18n.messages.pages.room.settings.language}
+		iconOnly
 	>
 		<LanguagesIcon />
 	</Button>

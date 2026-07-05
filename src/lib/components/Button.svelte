@@ -5,11 +5,12 @@
 	type Props = HTMLButtonAttributes & {
 		children?: Snippet;
 		variant?: 'primary' | 'secondary' | 'ghost' | 'destructive';
+		iconOnly?: boolean;
 	};
-	let { children, variant = 'primary', ...restProps }: Props = $props();
+	let { children, variant = 'primary', iconOnly, ...restProps }: Props = $props();
 </script>
 
-<button {...restProps} class="btn {variant} {restProps.class}">
+<button {...restProps} class={['btn', variant, restProps.class, iconOnly ? 'icon' : ''].join(' ')}>
 	{#if children}
 		{@render children()}
 	{/if}
@@ -25,10 +26,10 @@
 		gap: 0.5rem;
 		justify-content: center;
 		align-items: center;
-		border-radius: 0.5rem;
+		border-radius: var(--radius);
 		font-size: 0.875rem;
 		line-height: 1.25rem;
-		font-weight: 500;
+		font-weight: 600;
 		white-space: nowrap;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 		transition-duration: 300ms;
@@ -46,7 +47,7 @@
 	}
 
 	button.btn.primary:active {
-		background-color: var(--primary-active);
+		background-color: var(--color-primary-active);
 	}
 
 	button.btn.primary:active {
@@ -60,15 +61,10 @@
 	button.btn.ghost {
 		color: var(--color-secondary-foreground);
 		fill: var(--color-secondary-foreground);
-		background-color: color-mix(in oklab, var(--color-card) 30%, transparent);
-		backdrop-filter: blur(8px);
-		border-color: color-mix(in oklab, var(--color-secondary-foreground) 20%, transparent);
 	}
 
 	button.btn.ghost:hover {
-		background-color: color-mix(in oklab, var(--color-card) 50%, transparent);
-		backdrop-filter: blur(12px);
-		border-color: color-mix(in oklab, var(--color-secondary-foreground) 40%, transparent);
+		background-color: color-mix(in oklab, var(--color-accent) 80%, transparent);
 	}
 
 	button.btn.secondary {
@@ -84,5 +80,13 @@
 
 	button.btn.destructive:hover {
 		background-color: color-mix(in oklab, var(--color-destructive) 90%, transparent);
+	}
+
+	button.btn.icon {
+		padding: 0.5rem;
+		aspect-ratio: 1/1;
+		min-width: 14px;
+		min-height: 14px;
+		width: 36px;
 	}
 </style>

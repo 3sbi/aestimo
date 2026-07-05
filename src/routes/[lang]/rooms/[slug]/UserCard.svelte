@@ -59,7 +59,7 @@
 		{/if}
 
 		{#if roomState.isAdmin}
-			<CrownIcon width={12} style="min-width:12px" title={i18n.usersList.admin} />
+			<CrownIcon size={14} title={i18n.usersList.admin} />
 		{/if}
 	</h2>
 

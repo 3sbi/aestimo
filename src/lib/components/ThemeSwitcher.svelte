@@ -11,7 +11,7 @@
 	}
 </script>
 
-<Button variant="ghost" class="btn relative" onclick={toggleTheme} {title}>
+<Button variant="ghost" class="relative" onclick={toggleTheme} {title} iconOnly>
 	<SunIcon class="transition-all duration-300 icon-sun" />
 	<MoonIcon class="transition-all duration-300 icon-moon" />
 </Button>

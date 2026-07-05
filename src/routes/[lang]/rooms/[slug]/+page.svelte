@@ -2,6 +2,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
+	import { i18n as locales } from '$lib/i18n/state.svelte';
 	import Share2Icon from '@lucide/svelte/icons/share-2';
 	import { untrack } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
@@ -12,9 +13,9 @@
 	import UserCard from './UserCard.svelte';
 	import VoteHistory from './VoteHistory.svelte';
 
+	const i18n = locales.messages.pages.room;
 	const { data }: PageProps = $props();
 	const initialData = untrack(() => data);
-	const { i18n } = initialData;
 	const state = createRoomState(initialData);
 	const currentUserId = $derived(data.user.id);
 
@@ -38,9 +39,8 @@
 		<div class="chip">
 			<div class="flex gap-2 items-center">
 				<b>{state.room.name}</b>
-				<Button variant="ghost" title={i18n.header.share.title} onclick={onClickInvite}>
-					{i18n.header.share.title}
-					<Share2Icon size={14} />
+				<Button variant="ghost" iconOnly title={i18n.header.share.title} onclick={onClickInvite}>
+					<Share2Icon />
 				</Button>
 			</div>
 			<h2>{`${i18n.header.round} ${state.room.round}`}</h2>
