@@ -4,6 +4,8 @@
 	import { page } from '$app/state';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
+	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
+	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import { LoaderCircleIcon } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import type { PageProps } from './$types';
@@ -40,6 +42,10 @@
 	}
 </script>
 
+<div class="flex justify-end gap-2 p-4">
+	<ThemeSwitcher />
+	<LanguageSelector />
+</div>
 <div class="m-auto card relative w-120 flex flex-col max-h-3/5">
 	<form class="flex grow flex-col px-6 pt-3 pb-6" onsubmit={onFinish}>
 		<div class="grow">

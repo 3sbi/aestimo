@@ -2,6 +2,8 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { i18n as locales } from '$lib/i18n/state.svelte';
+	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
+	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import type { PageProps } from './$types';
 	import CreateRoomForm from './CreateRoomForm.svelte';
 	import PublicRoomsList from './PublicRoomsList.svelte';
@@ -16,6 +18,10 @@
 	]);
 </script>
 
+<div class="flex justify-end gap-2 p-4">
+	<ThemeSwitcher />
+	<LanguageSelector />
+</div>
 <div class="m-auto card relative w-120 flex flex-col max-h-3/5">
 	<div class="tabs">
 		{#each TABS as tab (tab.value)}
