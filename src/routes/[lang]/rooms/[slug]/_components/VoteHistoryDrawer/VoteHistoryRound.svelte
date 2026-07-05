@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SmallVoteCard from '$lib/components/SmallVoteCard.svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 	import { i18n as locales } from '$lib/i18n/state.svelte';
 	import type { RoundHistory } from '$lib/types/EventData';
 	import { FrownIcon } from '@lucide/svelte';
@@ -31,9 +32,11 @@
 			</div>
 		{:else}
 			{#each round.votes as vote (vote.userId)}
-				<div title={vote.userName}>
-					<SmallVoteCard {...vote.option} />
-				</div>
+				<Tooltip text={vote.userName ?? ''}>
+					<div title={vote.option.value}>
+						<SmallVoteCard {...vote.option} />
+					</div>
+				</Tooltip>
 			{/each}
 		{/if}
 	</div>
