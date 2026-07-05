@@ -58,7 +58,7 @@
 			</small>
 		{/if}
 
-		{#if roomState.isAdmin}
+		{#if user.role === 'admin'}
 			<CrownIcon size={14} title={i18n.usersList.admin} />
 		{/if}
 	</h2>
