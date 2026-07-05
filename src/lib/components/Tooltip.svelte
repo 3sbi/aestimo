@@ -23,16 +23,11 @@
 
 	const placements: Placement[] = ['top', 'bottom', 'right', 'left'];
 
-	$effect(() => {
-		if (!visible || !trigger || !tooltip) return;
-
-		position();
-	});
-
 	async function show() {
 		clearTimeout(timeout);
 
 		timeout = window.setTimeout(() => {
+			position();
 			visible = true;
 		}, delay);
 	}
@@ -141,16 +136,16 @@
 	{@render children()}
 </div>
 
-{#if visible}
-	<div
-		bind:this={tooltip}
-		class="tooltip {placement}"
-		style={`top:${top}px;left:${left}px`}
-		role="tooltip"
-	>
-		{text}
-	</div>
-{/if}
+<div
+	bind:this={tooltip}
+	class="tooltip {placement}"
+	class:visible
+	style={`top:${top}px;left:${left}px`}
+	role="tooltip"
+	aria-hidden={!visible}
+>
+	{text}
+</div>
 
 <style>
 	.trigger {
@@ -168,6 +163,41 @@
 		font-size: 0.875rem;
 		line-height: 1.3;
 		pointer-events: none;
+		transform: translateY(4px) scale(0.98);
 		box-shadow: var(--shadow-lg);
+		opacity: 0;
+		transition:
+			opacity 0.15s,
+			transform 0.15s;
+	}
+
+	.tooltip.visible {
+		opacity: 1;
+		transform: none;
+	}
+
+	.tooltip.top {
+		transform: translateY(8px);
+	}
+	.tooltip.top.visible {
+		transform: translateY(0);
+	}
+	.tooltip.bottom {
+		transform: translateY(-8px);
+	}
+	.tooltip.bottom.visible {
+		transform: translateY(0);
+	}
+	.tooltip.left {
+		transform: translateX(8px);
+	}
+	.tooltip.left.visible {
+		transform: translateX(0);
+	}
+	.tooltip.right {
+		transform: translateX(-8px);
+	}
+	.tooltip.right.visible {
+		transform: translateX(0);
 	}
 </style>
