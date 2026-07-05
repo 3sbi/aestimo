@@ -1,17 +1,20 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import Switch from '$lib/components/Switch.svelte';
-	import Tooltip from '$lib/components/Tooltip.svelte';
 	import type { Dictionary } from '$lib/i18n';
 	import type { ClientRoom } from '$lib/types';
 	import { CircleQuestionMarkIcon, Settings } from '@lucide/svelte';
+	import LeaveRoomButton from './LeaveRoomButton.svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 
 	interface Props {
 		room: ClientRoom;
 		i18n: Dictionary['pages']['room']['settings'];
+		currentUserId: number;
+		isAdmin: boolean;
 	}
 
-	let { room, i18n }: Props = $props();
+	let { room, i18n, currentUserId, isAdmin }: Props = $props();
 
 	let opened = $state(false);
 
@@ -36,6 +39,7 @@
 			});
 		} catch (err) {
 			console.error(err);
+
 		}
 	}
 
@@ -78,6 +82,8 @@
 				</div>
 				<Switch checked={room.autoreveal} onChange={onAutorevealChange} />
 			</label>
+
+			<LeaveRoomButton {room} i18n={i18n.leave} {currentUserId} {isAdmin} />
 		</div>
 	</div>
 {/if}
@@ -105,6 +111,7 @@
 		box-shadow: var(--shadow-lg);
 		padding: 24px;
 		min-width: 280px;
+		max-width: 400px;
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
@@ -121,7 +128,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 8px;
+		gap: 16px;
 		font-size: var(--text-sm);
 		font-weight: 600;
 		cursor: pointer;

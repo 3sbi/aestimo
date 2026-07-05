@@ -47,7 +47,7 @@
 			<h2>{`${i18n.header.round} ${state.room.round}`}</h2>
 		</div>
 		<div class="chip">
-			<Settings room={state.room} i18n={i18n.settings} />
+			<Settings room={state.room} i18n={i18n.settings} {currentUserId} isAdmin={state.isAdmin} />
 			<VoteHistory roundsHistory={state.roundsHistory} />
 			<ThemeSwitcher />
 			<LanguageSelector />
