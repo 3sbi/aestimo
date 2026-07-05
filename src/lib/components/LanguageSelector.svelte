@@ -3,8 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { i18n } from '$lib/i18n/state.svelte';
-	import { locale, DICTIONARIES, i18nConfig } from '$lib/i18n';
-	import type { I18nLocale } from '$lib/i18n';
+	import { DICTIONARIES, i18nConfig, locale, type I18nLocale } from '$lib/i18n';
 	import { LanguagesIcon, CheckIcon } from '@lucide/svelte';
 	import Button from './Button.svelte';
 
@@ -22,7 +21,6 @@
 		}
 
 		locale.set(localeValue);
-		i18n.setLocale(localeValue);
 
 		const path = `/${localeValue}${page.url.pathname.slice(current.length + 1)}${page.url.search}`;
 		goto(path, { replaceState: true });

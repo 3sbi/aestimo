@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import { i18n as locales } from '$lib/i18n/state.svelte';
 	import type { PageProps } from './$types';
 	import CreateRoomForm from './CreateRoomForm.svelte';
 	import PublicRoomsList from './PublicRoomsList.svelte';
 
 	let { data }: PageProps = $props();
 
+	const i18n = $derived(locales.messages.pages.new);
 	const currentTab = $derived(page.url.searchParams.get('tab') ?? 'create');
-	const TABS = [
-		{ value: 'create', label: 'Create' },
-		{ value: 'join', label: 'join' }
-	];
+	const TABS = $derived([
+		{ value: 'create', label: i18n.tabs.create },
+		{ value: 'join', label: i18n.tabs.join }
+	]);
 </script>
 
 <div class="m-auto card relative w-120 flex flex-col max-h-3/5">

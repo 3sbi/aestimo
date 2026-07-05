@@ -1,10 +1,12 @@
-import { DICTIONARIES, i18nConfig, type I18nLocale } from '.';
+import { DICTIONARIES, i18nConfig, locale } from '.';
 
 class I18n {
 	messages = $state(DICTIONARIES[i18nConfig.defaultLocale]);
 
-	setLocale(locale: I18nLocale) {
-		this.messages = DICTIONARIES[locale];
+	constructor() {
+		locale.subscribe((localeValue) => {
+			this.messages = DICTIONARIES[localeValue];
+		});
 	}
 }
 
