@@ -35,11 +35,10 @@
 	};
 
 	const getVoteOptions = (): VoteCard[] => {
-		console.log(userVoteTypeId);
-		if (userVoteTypeId === 'custom') {
+		if (voteTypeId === 'custom') {
 			return customCards;
 		}
-		const voteType = predefinedVoteTypes.find((voteType) => voteType.id === userVoteTypeId);
+		const voteType = predefinedVoteTypes.find((voteType) => voteType.id === voteTypeId);
 		return voteType?.values ?? [];
 	};
 
