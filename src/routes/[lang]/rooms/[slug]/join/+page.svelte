@@ -46,7 +46,7 @@
 	<ThemeSwitcher />
 	<LanguageSelector />
 </div>
-<div class="m-auto card relative w-120 flex flex-col max-h-3/5">
+<div class="mx-auto mb-5 mt-0 card relative w-120 flex flex-col max-h-3/5">
 	<form class="flex grow flex-col px-6 pt-3 pb-6" onsubmit={onFinish}>
 		<div class="grow">
 			<Input id="username" label={i18n.username} bind:value={username} required />

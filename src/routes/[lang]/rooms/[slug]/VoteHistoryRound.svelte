@@ -25,7 +25,7 @@
 
 	<div class="roundItemVotes">
 		{#if round.votes.length === 0}
-			<div class="noVotes">
+			<div class="noVotes" title={i18n['no-votes']}>
 				{i18n['no-votes']}
 				<FrownIcon size={12} />
 			</div>
@@ -64,6 +64,7 @@
 
 	.noVotes {
 		display: flex;
+		align-items: center;
 		gap: 4px;
 		color: var(--muted-foreground);
 	}
