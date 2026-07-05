@@ -1,18 +1,17 @@
 <script lang="ts">
-	import Button from '$lib/components/Button.svelte';
 	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import { i18n as locales } from '$lib/i18n/state.svelte';
-	import Share2Icon from '@lucide/svelte/icons/share-2';
 	import { untrack } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
 	import type { PageProps } from './$types';
 	import CardsHand from './CardsHand.svelte';
 	import { createRoomState } from './room-state.svelte';
+	import Settings from './Settings.svelte';
 	import Toolbar from './Toolbar.svelte';
 	import UserCard from './UserCard.svelte';
-	import Settings from './Settings.svelte';
 	import VoteHistory from './VoteHistory.svelte';
+	import ShareButton from './ShareButton.svelte';
 
 	const i18n = $derived(locales.messages.pages.room);
 	const { data }: PageProps = $props();
@@ -23,16 +22,6 @@
 	$effect(() => {
 		return state.connect();
 	});
-
-	async function onClickInvite() {
-		try {
-			await navigator.clipboard.writeText(
-				`${window.location.origin}/rooms/${state.room.slug}/join`
-			);
-		} catch (err) {
-			console.error(err);
-		}
-	}
 </script>
 
 <div class="room">
@@ -40,9 +29,7 @@
 		<div class="chip">
 			<div class="flex gap-2 items-center">
 				<b>{state.room.name}</b>
-				<Button variant="ghost" iconOnly title={i18n.header.share.title} onclick={onClickInvite}>
-					<Share2Icon />
-				</Button>
+				<ShareButton slug={state.room.slug} i18n={i18n.header.share} />
 			</div>
 			<h2>{`${i18n.header.round} ${state.room.round}`}</h2>
 		</div>

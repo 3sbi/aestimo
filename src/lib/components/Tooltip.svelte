@@ -6,35 +6,42 @@
 		text: string;
 		offset?: number;
 		delay?: number;
+		show?: boolean;
 		children: import('svelte').Snippet;
 	}
 
-	let { text, offset = 8, delay = 250, children }: Props = $props();
+	let { text, offset = 8, delay = 250, show, children }: Props = $props();
 
 	let trigger = $state<HTMLElement | null>(null);
 	let tooltip = $state<HTMLElement | null>(null);
-	let visible = $state<boolean>(false);
+	let hover = $state<boolean>(false);
+
+	let visible = $derived<boolean>(show ?? hover);
 
 	let top = $state<number>(0);
 	let left = $state<number>(0);
 	let placement = $state<Placement>(PREFERRED);
 
-	let timeout: number;
+	let timeoutId: number;
 
 	const placements: Placement[] = ['top', 'bottom', 'right', 'left'];
 
-	async function show() {
-		clearTimeout(timeout);
+	async function open() {
+		if (show !== undefined) return;
 
-		timeout = window.setTimeout(() => {
+		clearTimeout(timeoutId);
+
+		timeoutId = window.setTimeout(() => {
 			position();
-			visible = true;
+			hover = true;
 		}, delay);
 	}
 
-	function hide() {
-		clearTimeout(timeout);
-		visible = false;
+	function close() {
+		if (show !== undefined) return;
+
+		clearTimeout(timeoutId);
+		hover = false;
 	}
 
 	function fits(rect: DOMRect, tip: DOMRect, p: Placement) {
@@ -114,6 +121,7 @@
 	$effect(() => {
 		if (!visible) return;
 
+		position();
 		window.addEventListener('scroll', update, true);
 		window.addEventListener('resize', update);
 
@@ -128,10 +136,10 @@
 	bind:this={trigger}
 	role="button"
 	tabindex="0"
-	onmouseenter={show}
-	onmouseleave={hide}
-	onfocus={show}
-	onblur={hide}
+	onmouseenter={open}
+	onmouseleave={close}
+	onfocus={open}
+	onblur={close}
 >
 	{@render children()}
 </div>
