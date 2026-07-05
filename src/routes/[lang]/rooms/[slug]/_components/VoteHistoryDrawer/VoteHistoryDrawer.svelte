@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { i18n as locales } from '$lib/i18n/state.svelte';
+	import { locale } from '$lib/i18n';
 	import type { RoundHistory } from '$lib/types/EventData';
 	import { ArchiveIcon } from '@lucide/svelte';
 	import HistoryIcon from '@lucide/svelte/icons/history';
@@ -26,7 +27,7 @@
 	function formatTimestamp(timestampMs: number) {
 		const d = new Date(timestampMs);
 
-		return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+		return `${d.toLocaleDateString($locale)} ${d.toLocaleTimeString($locale)}`;
 	}
 
 	const rounds = $derived.by(() =>
